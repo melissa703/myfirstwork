@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bannière RSS en temps réel</title>
+   <link rel="stylesheet" href="cors.css">
+ 
+</head>
+<body>
+  <div class="rss-banner" role="region" aria-label="Fil d'actualité">
+    <div id="rssViewport" class="rss-viewport" tabindex="0" aria-live="polite"></div>
+    <div class="rss-controls" aria-hidden="false">
+      <button id="refreshBtn" title="Rafraîchir">🔄</button>
+      <button id="pauseBtn" title="Mettre en pause">⏸</button>
+    </div>
+  </div>
+
+  <main style="padding:20px;">
+    <h1>Contenu de la page</h1>
+    <p>Exemple: vous pouvez faire défiler un flux RSS dans la bannière en haut.</p>
+  </main>
+
+  <script src="cors.js"></script>
+</body>
+</html>

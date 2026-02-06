@@ -55,7 +55,7 @@
     </div>
 
     <div class="home-img">
-        <img src="WhatsApp_Image_2025-12-13_at_01_49_11_-_Copie.jpeg" alt="Melissa Bestani">
+        <img src="WhatsApp Image .jpg" alt="Melissa Bestani">
     </div>
 </section>
 
@@ -103,7 +103,7 @@
     <h2><span style="color:white;">My</span> <span style="color:#0ef;">Projects</span></h2>
     <div class="projects-container">
         <div class="project-card">
-            <img src="applications-to-do-list-1280x720.webp" alt="To-Do List App" class="project-img">
+            <img src="https://cdn.aptoide.com/imgs/f/a/2/fa282c9e3fab018c5534944381d5424f_fgraphic.png" alt="To-Do List App" class="project-img">
             <h3>To-Do List App</h3>
             <p>Small JavaScript project to manage tasks efficiently.</p>
             <a href="https://melissa703.github.io/myminiapp/" target="_blank" class="btn-box">Demo</a>
@@ -120,16 +120,16 @@
 <!-- CV -->
 <section class="cv-section" id="cv">
     <h2><span style="color:white;">My</span> <span style="color:#0ef;">CV</span></h2>
-    <p>Professional minimalist French CV — view or download:</p>
+    <p>Professional minimalist French CV – view or download:</p>
     <div class="cv-buttons">
-        <a href="CV_Professionnel_Français_Minimaliste_Blanc.pdf" class="btn-cv" target="_blank">View CV</a>
-        <a href="CV_Professionnel_Français_Minimaliste_Blanc.pdf" class="btn-cv" download>Download CV</a>
+        <a href="CV Professionnel Français Minimaliste Blanc.pdf" class="btn-cv" target="_blank">View CV</a>
+        <a href="CV Professionnel Français Minimaliste Blanc.pdf" class="btn-cv" download>Download CV</a>
     </div>
 </section>
 
 <!-- SKILLS -->
 <section id="skills" class="skills-section">
-    <h2><span style="color:white;">My</span> <span style="color:#0ef;">Skills</span></h2>
+    <h2><span style="color:white;">My</span> <span style="color:rgb(103, 100, 183);">Skills</span></h2>
 
     <div class="skills-wrapper">
         <!-- Technical Skills -->
@@ -209,57 +209,53 @@
 </section>
 
 <!-- TECHNOLOGY WATCH -->
-<div class="section-card" id="technology-watch">
-<section class="tech-watch">
-    <h2><span style="color:white;">Technology</span> <span style="color:#0ef;">Watch</span></h2>
-    <p>I actively follow cybersecurity news using <a href="https://www.google.com/alerts" target="_blank">Google Alerts</a> since December 2024.</p>
-    
-    <p><strong>Main topics monitored:</strong></p>
-    <ul>
-        <li>Cybersecurity threats & attacks</li>
-        <li>Data breaches & vulnerabilities</li>
-        <li>Web application security</li>
-        <li>SQL injection & database protection</li>
-        <li>Security best practices</li>
-    </ul>
+<section id="technology-watch" class="tech-watch">
+    <div class="section-card">
+        <h2><span style="color:white;">Technology</span> <span style="color:#0ef;">Watch</span></h2>
+        <p>I actively follow cybersecurity news using <a href="https://www.google.com/alerts" target="_blank">Google Alerts</a> since December 2025.</p>
+        
+        <p><strong>Main topics monitored:</strong></p>
+        <ul>
+            <li>Cybersecurity threats & attacks</li>
+            <li>Data breaches & vulnerabilities</li>
+            <li>Web application security</li>
+            <li>SQL injection & database protection</li>
+            <li>Security best practices</li>
+        </ul>
 
-    <!-- CAPTURE D'ÉCRAN GOOGLE ALERTS -->
-    <div class="alert-screenshot-section">
-        <h3>📧 My Google Alerts Setup</h3>
-        <p class="screenshot-description">
-            Here's a screenshot of my inbox showing the daily cybersecurity alerts I receive. 
-            This helps me stay updated on the latest security threats and best practices.
-        </p>
-        <div class="screenshot-container">
-            <img src="Capture_d_écran_5-2-2026_191210_mail_google_com.jpeg" 
-                 alt="Google Alerts Cybersecurity Email Screenshot" 
-                 class="google-alerts-screenshot">
-            <div class="screenshot-overlay">
-                <i class='bx bx-search-alt'></i>
-                <p>Click to enlarge</p>
+        <!-- NOUVELLE SECTION: Capture d'écran des Google Alerts -->
+        <div class="alert-screenshot-section">
+            <h3>📧 Google Alerts Email Evidence</h3>
+            <p class="screenshot-description">
+                Below is a screenshot of my Gmail inbox showing the cybersecurity alerts I receive daily from Google Alerts. 
+                This demonstrates my active monitoring of cybersecurity topics and my commitment to staying updated on the latest threats and security developments.
+            </p>
+            <div class="screenshot-container" onclick="this.classList.toggle('fullscreen')">
+                <img src="Capture d’écran-mail.google.com.jpeg" 
+                     alt="Google Alerts Cybersecurity Emails" 
+                     class="google-alerts-screenshot">
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- BANNIÈRE RSS EN TEMPS RÉEL -->
-    <div style="margin-top: 4rem;">
-        <h3 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--light);">
-            📡 Live Cybersecurity News Feed
-        </h3>
-        <div class="rss-banner" role="region" aria-label="Fil d'actualité">
-            <div id="rssViewport" class="rss-viewport" tabindex="0" aria-live="polite"></div>
-            <div class="rss-controls" aria-hidden="false">
-                <button id="refreshBtn" title="Rafraîchir">🔄</button>
-                <button id="pauseBtn" title="Mettre en pause">⏸</button>
+        <!-- BANNIÈRE RSS EN TEMPS RÉEL -->
+        <div style="margin-top: 4rem;">
+            <h3 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--light);">
+                📡 Live Cybersecurity News Feed
+            </h3>
+            <div class="rss-banner" role="region" aria-label="Fil d'actualité">
+                <div id="rssViewport" class="rss-viewport" tabindex="0" aria-live="polite"></div>
+                <div class="rss-controls" aria-hidden="false">
+                    <button id="refreshBtn" title="Rafraîchir">🔄</button>
+                    <button id="pauseBtn" title="Mettre en pause">⏸</button>
+                </div>
             </div>
         </div>
     </div>
 </section>
-</div>
-
-<!-- CONTACT -->
+    <!-- CONTACT -->
 <section class="contact" id="Contact">
-    <h2><span style="color:white;">Contact</span> <span style="color:#0ef;">Me</span></h2>
+    <h2><span style="color:white;">Contact</span> <span style="color:rgb(68, 72, 172);">Me</span></h2>
     <p>Feel free to reach out via the form or social media.</p>
 
     <div class="contact-container">
