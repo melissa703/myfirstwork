@@ -472,19 +472,34 @@ if ('IntersectionObserver' in window) {
 // ============================================
 // SCREENSHOT FULLSCREEN TOGGLE
 // ============================================
-const screenshotContainer = document.querySelector('.screenshot-container');
-
-if (screenshotContainer) {
-    screenshotContainer.addEventListener('click', function() {
-        this.classList.toggle('fullscreen');
-        
-        // Empêcher le scroll quand en fullscreen
-        if (this.classList.contains('fullscreen')) {
+function showScreenshot() {
+    const modal = document.getElementById('screenshotModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.classList.add('fullscreen');
             document.body.style.overflow = 'hidden';
-        } else {
+        }, 10);
+    }
+}
+
+function hideScreenshot() {
+    const modal = document.getElementById('screenshotModal');
+    if (modal) {
+        modal.classList.remove('fullscreen');
+        setTimeout(() => {
+            modal.style.display = 'none';
             document.body.style.overflow = '';
-        }
-    });
+        }, 400);
+    }
+}
+
+// Fermer avec la touche Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        hideScreenshot();
+    }
+});
     
     // Fermer avec la touche Escape
     document.addEventListener('keydown', (e) => {
@@ -492,5 +507,73 @@ if (screenshotContainer) {
             screenshotContainer.classList.remove('fullscreen');
             document.body.style.overflow = '';
         }
+    });/* ===== RSS TICKER – Veille cybersécurité & FINANCEMENT / INVESTISSEMENTS 2026 ===== */
+function updateRssFeed() {
+    const content = document.getElementById('rssContent');
+    const duplicate = document.querySelector('.rss-duplicate');
+    
+    if (!content || !duplicate) return;
+
+    // Actualités réelles février 2026 sur investissements, funding, cyber insurance, stratégie France, etc.
+    const news = [
+        {
+            text: "Seed-Stage Cybersecurity VCs Actually Investing (2026) – Liste des fonds actifs",
+            link: "https://www.betaboom.com/magazine/article/seed-stage-cybersecurity-vcs-investing"
+        },
+        {
+            text: "The NASDAQ Cybersecurity ETF Looks Like One of 2026's Best Investments",
+            link: "https://cybersecurityventures.com/the-nasdaq-cybersecurity-etf-looks-like-one-of-2026s-best-investments"
+        },
+        {
+            text: "Momentum Builds Toward More Security Startups, Strategic M&A in 2026",
+            link: "https://www.secureworld.io/industry-news/cybersecurity-funding-momentum-2026"
+        },
+        {
+            text: "Global Cybersecurity Outlook 2026 – World Economic Forum (rapport complet)",
+            link: "https://www.weforum.org/publications/global-cybersecurity-outlook-2026"
+        },
+        {
+            text: "Stratégie nationale de cybersécurité 2026-2030 – France (SGDSN officiel)",
+            link: "https://www.sgdsn.gouv.fr/publications/strategie-nationale-de-cybersecurite-2026-2030"
+        },
+        {
+            text: "Cyber Insurance Market Outlook 2026: Resilient Earnings, Tougher Competition",
+            link: "https://www.spglobal.com/ratings/en/regulatory/article/cyber-insurance-market-outlook-2026-resilient-earnings-tougher-competition-pockets-of-growth-s101658506"
+        },
+        {
+            text: "7 Predictions For Cyber Risk And Insurance In 2026",
+            link: "https://www.wiley.law/article-7-Predictions-For-Cyber-Risk-And-Insurance-In-2026"
+        },
+        {
+            text: "Cyber risk: A look ahead to 2026 – WTW (tendances cyber insurance)",
+            link: "https://www.wtwco.com/en-us/insights/2026/02/cyber-risk-a-look-ahead-to-2026"
+        }
+    ];
+
+    // Construction du HTML avec liens cliquables + séparateurs pour lisibilité
+    let html = '   ';
+    news.forEach(item => {
+        html += `<a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.text}</a>        •       `;
     });
+    html += '   ';
+
+    content.innerHTML = html;
+    duplicate.innerHTML = html;  // duplication pour défilement infini sans coupure
 }
+
+// Lancement + boutons (refresh + pause)
+document.addEventListener('DOMContentLoaded', () => {
+    updateRssFeed();
+
+    document.getElementById('refreshBtn')?.addEventListener('click', updateRssFeed);
+
+    const pauseBtn = document.getElementById('pauseBtn');
+    const ticker = document.querySelector('.rss-ticker');
+
+    if (pauseBtn && ticker) {
+        pauseBtn.addEventListener('click', () => {
+            ticker.classList.toggle('paused');
+            pauseBtn.innerHTML = ticker.classList.contains('paused') ? '▶' : '⏸';
+        });
+    }
+});

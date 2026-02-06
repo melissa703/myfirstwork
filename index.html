@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Melissa Bestani | Développeuse Web & Étudiante BTS SIO SLAM</title>
+    <title>Melissa Bestani | Web Developer & BTS SIO SLAM Student</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="cors.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <meta name="description" content="Portfolio de Melissa Bestani, étudiante en BTS SIO SLAM. Spécialisée en développement web, applications et bases de données. Projets, compétences et veille technologique cybersécurité.">
+    <meta name="description" content="Melissa Bestani's portfolio - BTS SIO SLAM student. Specialized in web development, applications, and databases. Projects, skills, and cybersecurity technology watch.">
 </head>
 <body>
 
-<!-- Bouton theme toggle -->
-<button id="theme-toggle" title="Changer de thème">
+<!-- Theme toggle button -->
+<button id="theme-toggle" title="Toggle theme">
     <i class="bx bx-sun"></i>
 </button>
 
@@ -223,37 +223,42 @@
             <li>Security best practices</li>
         </ul>
 
-        <!-- NOUVELLE SECTION: Capture d'écran des Google Alerts -->
         <div class="alert-screenshot-section">
             <h3>📧 Google Alerts Email Evidence</h3>
             <p class="screenshot-description">
                 Below is a screenshot of my Gmail inbox showing the cybersecurity alerts I receive daily from Google Alerts. 
                 This demonstrates my active monitoring of cybersecurity topics and my commitment to staying updated on the latest threats and security developments.
             </p>
-            <div class="screenshot-container" onclick="this.classList.toggle('fullscreen')">
-                <img src="Capture d’écran-mail.google.com.jpeg" 
-                     alt="Google Alerts Cybersecurity Emails" 
-                     class="google-alerts-screenshot">
-                </div>
-            </div>
+
+            <a href="Capture d’écran-mail.google.com.jpeg" 
+               target="_blank" 
+               class="view-screenshot-btn">
+                View Screenshot
+            </a>
         </div>
 
-        <!-- BANNIÈRE RSS EN TEMPS RÉEL -->
+        <!-- RSS FEED INFINI -->
         <div style="margin-top: 4rem;">
             <h3 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--light);">
                 📡 Live Cybersecurity News Feed
             </h3>
-            <div class="rss-banner" role="region" aria-label="Fil d'actualité">
-                <div id="rssViewport" class="rss-viewport" tabindex="0" aria-live="polite"></div>
+            <div class="rss-banner" role="region" aria-label="News ticker">
+                <div class="rss-ticker">
+                    <div id="rssContent" class="rss-content">
+                        Loading latest cybersecurity news...
+                    </div>
+                    <div class="rss-content rss-duplicate"></div>
+                </div>
                 <div class="rss-controls" aria-hidden="false">
-                    <button id="refreshBtn" title="Rafraîchir">🔄</button>
-                    <button id="pauseBtn" title="Mettre en pause">⏸</button>
+                    <button id="refreshBtn" title="Refresh">🔄</button>
+                    <button id="pauseBtn" title="Pause">⏸</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
-    <!-- CONTACT -->
+
+<!-- CONTACT -->
 <section class="contact" id="Contact">
     <h2><span style="color:white;">Contact</span> <span style="color:rgb(68, 72, 172);">Me</span></h2>
     <p>Feel free to reach out via the form or social media.</p>
