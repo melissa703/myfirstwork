@@ -1,579 +1,612 @@
-// ============================================
-// TYPED.JS ANIMATION
-// ============================================
+/* ========================================
+   PREMIUM 3D PORTFOLIO - SCRIPT.JS
+   ENHANCED VERSION
+   ======================================== */
+
+// ========================================
+// TYPED.JS - TEXT ANIMATION
+// ========================================
 const typed = new Typed('.text', {
-    strings: ['Developer', 'BTS SIO Student', 'Web Designer', 'Tech Enthusiast'],
+    strings: ['Web Developer', 'BTS SIO Student', 'Frontend Developer', 'UI/UX Enthusiast'],
     typeSpeed: 80,
     backSpeed: 60,
-    backDelay: 1500,
+    backDelay: 2000,
     loop: true,
     showCursor: true,
     cursorChar: '|'
 });
 
-// ============================================
-// THEME TOGGLE
-// ============================================
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
-
-// Charger le thÃ¨me sauvegardÃ©
-const currentTheme = localStorage.getItem('portfolio-theme') || 'dark';
-if (currentTheme === 'light') {
-    body.classList.add('light-theme');
-    themeIcon.classList.replace('bx-sun', 'bx-moon');
-}
-
-// Toggle theme
-themeToggle.addEventListener('click', () => {
-    body.classList.toggle('light-theme');
-    
-    if (body.classList.contains('light-theme')) {
-        themeIcon.classList.replace('bx-sun', 'bx-moon');
-        localStorage.setItem('portfolio-theme', 'light');
-    } else {
-        themeIcon.classList.replace('bx-moon', 'bx-sun');
-        localStorage.setItem('portfolio-theme', 'dark');
-    }
-});
-
-// ============================================
+// ========================================
 // HEADER SCROLL EFFECT
-// ============================================
-const header = document.querySelector('.header');
-
+// ========================================
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 80) {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 50) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
 });
 
-// ============================================
-// SMOOTH SCROLLING
-// ============================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+// ========================================
+// SMOOTH SCROLL FOR NAVIGATION
+// ========================================
+document.querySelectorAll('.navbar a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
-        
-        if (targetId === '#') return;
-        
         const targetSection = document.querySelector(targetId);
+        
         if (targetSection) {
-            const headerHeight = header.offsetHeight;
-            const targetPosition = targetSection.offsetTop - headerHeight;
-            
             window.scrollTo({
-                top: targetPosition,
+                top: targetSection.offsetTop - 80,
                 behavior: 'smooth'
             });
         }
     });
 });
 
-// ============================================
-// ACTIVE NAVIGATION LINK
-// ============================================
-const sections = document.querySelectorAll('section');
-const navLinks = document.querySelectorAll('.navbar a');
+// ========================================
+// THEME TOGGLE (DARK/LIGHT MODE) - IMPROVED
+// ========================================
+const themeToggle = document.getElementById('theme-toggle');
+let isLightMode = false;
 
-function updateActiveLink() {
-    const scrollPosition = window.scrollY + 150;
+// Load saved theme
+if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-mode');
+    themeToggle.innerHTML = '<i class="bx bx-moon"></i>';
+    isLightMode = true;
+}
+
+themeToggle.addEventListener('click', () => {
+    isLightMode = !isLightMode;
     
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
+    if (isLightMode) {
+        document.body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="bx bx-moon"></i>';
+        localStorage.setItem('theme', 'light');
+    } else {
+        document.body.classList.remove('light-mode');
+        themeToggle.innerHTML = '<i class="bx bx-sun"></i>';
+        localStorage.setItem('theme', 'dark');
+    }
+});
+
+// ========================================
+// COLOR PICKER WIDGET - IN HEADER
+// ========================================
+function createColorPicker() {
+    const colorPickerHTML = `
+        <div class="color-picker-widget">
+            <button class="color-picker-toggle">🎨</button>
+            <div class="color-picker-panel">
+                <div class="color-picker-title">Choose Your Color</div>
+                <div class="color-options">
+                    <div class="color-option color-cyan active" data-primary="#0ef" data-secondary="#6764b7" data-accent="#ff2d75"></div>
+                    <div class="color-option color-purple" data-primary="#9c27b0" data-secondary="#764ba2" data-accent="#667eea"></div>
+                    <div class="color-option color-pink" data-primary="#ff2d75" data-secondary="#f093fb" data-accent="#f5576c"></div>
+                    <div class="color-option color-green" data-primary="#00e676" data-secondary="#00c853" data-accent="#b2ff59"></div>
+                    <div class="color-option color-orange" data-primary="#ffab00" data-secondary="#ff6f00" data-accent="#ffd54f"></div>
+                    <div class="color-option color-red" data-primary="#f44336" data-secondary="#d32f2f" data-accent="#ff5252"></div>
+                    <div class="color-option color-blue" data-primary="#42a5f5" data-secondary="#1e88e5" data-accent="#82b1ff"></div>
+                    <div class="color-option color-gold" data-primary="#ffd700" data-secondary="#ffb300" data-accent="#ffed4e"></div>
+                    <div class="color-option color-mint" data-primary="#69f0ae" data-secondary="#00e676" data-accent="#b9f6ca"></div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Insert into header container
+    const container = document.getElementById('color-picker-container');
+    if (container) {
+        container.innerHTML = colorPickerHTML;
+    } else {
+        // Fallback: insert at end of body if container not found
+        document.body.insertAdjacentHTML('beforeend', colorPickerHTML);
+    }
+    
+    const toggle = document.querySelector('.color-picker-toggle');
+    const panel = document.querySelector('.color-picker-panel');
+    const colorOptions = document.querySelectorAll('.color-option');
+    
+    // Toggle panel
+    toggle.addEventListener('click', () => {
+        panel.classList.toggle('active');
+    });
+    
+    // Close panel when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.color-picker-widget')) {
+            panel.classList.remove('active');
         }
+    });
+    
+    // Load saved color
+    const savedColor = localStorage.getItem('primaryColor');
+    if (savedColor) {
+        applyColor(savedColor, localStorage.getItem('secondaryColor'), localStorage.getItem('accentColor'));
+    }
+    
+    // Color selection
+    colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            colorOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            
+            const primary = this.dataset.primary;
+            const secondary = this.dataset.secondary;
+            const accent = this.dataset.accent;
+            
+            applyColor(primary, secondary, accent);
+            
+            // Save to localStorage
+            localStorage.setItem('primaryColor', primary);
+            localStorage.setItem('secondaryColor', secondary);
+            localStorage.setItem('accentColor', accent);
+        });
     });
 }
 
-window.addEventListener('scroll', updateActiveLink);
+function applyColor(primary, secondary, accent) {
+    document.documentElement.style.setProperty('--primary', primary);
+    document.documentElement.style.setProperty('--secondary', secondary);
+    document.documentElement.style.setProperty('--accent', accent);
+    document.documentElement.style.setProperty('--gradient-glow', 
+        `linear-gradient(135deg, ${primary}, ${secondary}, ${accent})`);
+}
 
-// ============================================
-// INTERSECTION OBSERVER - FADE IN ANIMATIONS
-// ============================================
-const observerOptions = {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px'
-};
+createColorPicker();
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in-active');
-        }
-    });
-}, observerOptions);
+// ========================================
+// FLOATING LABELS AROUND PHOTO
+// ========================================
+function createFloatingLabels() {
+    const labels = ['Code', 'Web', 'App', 'UI', 'SQL', 'Dev'];
+    
+    const homeImg = document.querySelector('.home-img');
+    if (homeImg) {
+        labels.forEach((label, index) => {
+            const labelElement = document.createElement('div');
+            labelElement.classList.add('floating-label');
+            labelElement.textContent = label;
+            labelElement.style.animationDelay = `${index * 0.5}s`;
+            homeImg.appendChild(labelElement);
+        });
+    }
+}
 
-// Observer pour les services
-document.querySelectorAll('.service-box').forEach((box, index) => {
-    box.style.opacity = '0';
-    box.style.transform = 'translateY(40px)';
-    box.style.transition = `all 0.6s ease ${index * 0.1}s`;
-    observer.observe(box);
-});
+createFloatingLabels();
 
-// Observer pour les projets
-document.querySelectorAll('.project-card').forEach((card, index) => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(40px)';
-    card.style.transition = `all 0.6s ease ${index * 0.15}s`;
-    observer.observe(card);
-});
+// ========================================
+// FLOATING PARTICLES BACKGROUND
+// ========================================
+function createParticles() {
+    const particlesContainer = document.createElement('div');
+    particlesContainer.classList.add('floating-particles');
+    document.body.appendChild(particlesContainer);
+    
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 4 + 2}px;
+            height: ${Math.random() * 4 + 2}px;
+            background: radial-gradient(circle, rgba(14, 240, 255, 0.8), transparent);
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${Math.random() * 10 + 10}s linear infinite;
+            opacity: ${Math.random() * 0.5 + 0.3};
+        `;
+        particlesContainer.appendChild(particle);
+    }
+}
 
-// Style pour l'animation fade in
+// Add particle animation CSS
 const style = document.createElement('style');
 style.textContent = `
-    .fade-in-active {
-        opacity: 1 !important;
-        transform: translateY(0) !important;
+    @keyframes float {
+        0% {
+            transform: translateY(0) translateX(0);
+            opacity: 0.3;
+        }
+        50% {
+            opacity: 0.8;
+        }
+        100% {
+            transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}px);
+            opacity: 0;
+        }
     }
 `;
 document.head.appendChild(style);
 
-// ============================================
-// SKILLS ANIMATION
-// ============================================
-const skillsSection = document.querySelector('.skills-section');
-let skillsAnimated = false;
+createParticles();
 
-const skillsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !skillsAnimated) {
-            animateSkills();
-            skillsAnimated = true;
-        }
-    });
-}, { threshold: 0.25 });
-
-if (skillsSection) {
-    skillsObserver.observe(skillsSection);
-}
-
-function animateSkills() {
-    // Animer les barres de progression
-    const progressBars = document.querySelectorAll('.progress-fill');
-    progressBars.forEach((bar, index) => {
-        const targetWidth = bar.style.width;
-        bar.style.width = '0%';
-        
-        setTimeout(() => {
-            bar.style.width = targetWidth;
-        }, index * 150);
-    });
+// ========================================
+// 3D TILT EFFECT ON CARDS
+// ========================================
+function add3DTiltEffect(selector) {
+    const cards = document.querySelectorAll(selector);
     
-    // Animer les cercles
-    const circles = document.querySelectorAll('.progress-ring');
-    circles.forEach((circle, index) => {
-        const targetProgress = circle.style.getPropertyValue('--progress');
-        circle.style.setProperty('--progress', '0');
-        
-        setTimeout(() => {
-            animateCircularProgress(circle, targetProgress);
-        }, index * 200);
-    });
-}
-
-function animateCircularProgress(element, targetValue) {
-    let current = 0;
-    const increment = targetValue / 60; // 60 frames pour l'animation
-    
-    const animation = setInterval(() => {
-        current += increment;
-        if (current >= targetValue) {
-            current = targetValue;
-            clearInterval(animation);
-        }
-        element.style.setProperty('--progress', current);
-    }, 25);
-}
-
-// ============================================
-// PARALLAX EFFECT
-// ============================================
-let ticking = false;
-
-function updateParallax() {
-    const scrolled = window.scrollY;
-    const parallaxElements = document.querySelectorAll('.home-content, .home-img');
-    
-    if (scrolled < 800) {
-        parallaxElements.forEach((element, index) => {
-            const speed = (index + 1) * 0.2;
-            element.style.transform = `translateY(${scrolled * speed}px)`;
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
         });
-    }
-    
-    ticking = false;
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        });
+    });
 }
 
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        requestAnimationFrame(updateParallax);
-        ticking = true;
+// Apply 3D tilt to service boxes, project cards
+add3DTiltEffect('.service-box');
+add3DTiltEffect('.project-card');
+add3DTiltEffect('.about-text');
+
+// ========================================
+// SCROLL REVEAL ANIMATIONS
+// ========================================
+function revealOnScroll() {
+    const reveals = document.querySelectorAll('.service-box, .project-card, .skill-bar-item, .circle-item');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+    
+    reveals.forEach(reveal => {
+        reveal.style.opacity = '0';
+        reveal.style.transform = 'translateY(50px)';
+        reveal.style.transition = 'all 0.8s ease';
+        observer.observe(reveal);
+    });
+}
+
+revealOnScroll();
+
+// ========================================
+// SKILL BARS ANIMATION ON SCROLL
+// ========================================
+function animateSkillBars() {
+    const skillBars = document.querySelectorAll('.progress-fill');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const bar = entry.target;
+                const width = bar.style.width;
+                bar.style.width = '1';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            }
+        });
+    }, {
+        threshold: 0.20
+    });
+    
+    skillBars.forEach(bar => {
+        observer.observe(bar);
+    });
+}
+
+animateSkillBars();
+
+// ========================================
+// CIRCULAR SKILL ANIMATION
+// ========================================
+function animateCircularSkills() {
+    const circles = document.querySelectorAll('.progress-ring');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const circle = entry.target;
+                const progress = circle.style.getPropertyValue('--progress');
+                circle.style.setProperty('--progress', 0);
+                
+                setTimeout(() => {
+                    circle.style.setProperty('--progress', progress);
+                    circle.style.transition = 'all 2s ease';
+                }, 100);
+            }
+        });
+    }, {
+        threshold: 0.20
+    });
+    
+    circles.forEach(circle => {
+        observer.observe(circle);
+    });
+}
+
+animateCircularSkills();
+
+// ========================================
+// CURSOR TRAIL EFFECT
+// ========================================
+function createCursorTrail() {
+    const coords = { x: 0, y: 0 };
+    const circles = [];
+    
+    for (let i = 0; i < 20; i++) {
+        const circle = document.createElement('div');
+        circle.style.cssText = `
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, rgba(14, 240, 255, 0.6), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.3s ease;
+        `;
+        circles.push(circle);
+        document.body.appendChild(circle);
     }
+    
+    window.addEventListener('mousemove', (e) => {
+        coords.x = e.clientX;
+        coords.y = e.clientY;
+    });
+    
+    function animateCircles() {
+        let x = coords.x;
+        let y = coords.y;
+        
+        circles.forEach((circle, index) => {
+            circle.style.left = x - 5 + 'px';
+            circle.style.top = y - 5 + 'px';
+            circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
+            
+            const nextCircle = circles[index + 1] || circles[0];
+            x += (parseInt(nextCircle.style.left) - x) * 0.3;
+            y += (parseInt(nextCircle.style.top) - y) * 0.3;
+        });
+        
+        requestAnimationFrame(animateCircles);
+    }
+    
+    animateCircles();
+}
+
+createCursorTrail();
+
+// ========================================
+// PARALLAX EFFECT ON SCROLL
+// ========================================
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallaxElements = document.querySelectorAll('.home-img, .home-content');
+    
+    parallaxElements.forEach(element => {
+        const speed = element.classList.contains('home-img') ? 0.5 : 0.3;
+        element.style.transform = `translateY(${scrolled * speed}px)`;
+    });
 });
 
-// ============================================
+// ========================================
+// MAGNETIC BUTTON EFFECT
+// ========================================
+function magneticButtons() {
+    const buttons = document.querySelectorAll('.btn-box, .btn-cv, .btn-contact');
+    
+    buttons.forEach(button => {
+        button.addEventListener('mousemove', (e) => {
+            const rect = button.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            button.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = 'translate(0, 0)';
+        });
+    });
+}
+
+magneticButtons();
+
+// ========================================
+// IMAGE HOVER 3D EFFECT
+// ========================================
+const homeImg = document.querySelector('.home-img img');
+
+if (homeImg) {
+    homeImg.addEventListener('mousemove', (e) => {
+        const rect = homeImg.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateY = (x - centerX) / 10;
+        const rotateX = (centerY - y) / 10;
+        
+        homeImg.style.transform = `scale(1.05) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    
+    homeImg.addEventListener('mouseleave', () => {
+        homeImg.style.transform = 'scale(1) rotateX(0) rotateY(0)';
+    });
+}
+
+// ========================================
+// PROJECT CARD FLIP EFFECT
+// ========================================
+const projectCards = document.querySelectorAll('.project-card');
+
+projectCards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-20px) rotateX(5deg) rotateY(5deg)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+    });
+});
+
+// ========================================
+// ACTIVE SECTION HIGHLIGHT IN NAV
+// ========================================
+window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navbar a');
+    
+    let current = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.offsetHeight;
+        
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+            link.classList.add('active');
+        }
+    });
+});
+
+// Add active class style
+const activeStyle = document.createElement('style');
+activeStyle.textContent = `
+    .navbar a.active {
+        color: var(--primary);
+    }
+    .navbar a.active::before {
+        width: 100%;
+    }
+`;
+document.head.appendChild(activeStyle);
+
+// ========================================
 // FORM VALIDATION
-// ============================================
+// ========================================
 const contactForm = document.querySelector('.contact-form');
 
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
-        const name = contactForm.querySelector('input[name="name"]').value.trim();
-        const email = contactForm.querySelector('input[name="email"]').value.trim();
-        const message = contactForm.querySelector('textarea[name="message"]').value.trim();
+        const name = contactForm.querySelector('input[name="name"]').value;
+        const email = contactForm.querySelector('input[name="email"]').value;
+        const message = contactForm.querySelector('textarea[name="message"]').value;
         
-        // Validation
         if (!name || !email || !message) {
             e.preventDefault();
-            showNotification('Veuillez remplir tous les champs du formulaire.', 'error');
+            alert('Please fill in all fields');
             return false;
         }
         
-        // Validation email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!email.includes('@')) {
             e.preventDefault();
-            showNotification('Veuillez entrer une adresse email valide.', 'error');
+            alert('Please enter a valid email address');
             return false;
         }
-        
-        // Si tout est OK, on laisse le formulaire se soumettre
-        showNotification('Message prÃªt Ã  Ãªtre envoyÃ© !', 'success');
     });
 }
 
-// ============================================
-// NOTIFICATION SYSTEM
-// ============================================
-function showNotification(message, type = 'info') {
-    // Supprimer les notifications existantes
-    const existingNotifs = document.querySelectorAll('.custom-notification');
-    existingNotifs.forEach(notif => notif.remove());
-    
-    const notification = document.createElement('div');
-    notification.className = `custom-notification ${type}`;
-    notification.textContent = message;
-    
-    const notifStyles = `
-        position: fixed;
-        top: 10rem;
-        right: 3rem;
-        padding: 1.5rem 2.5rem;
-        background: ${type === 'error' ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
-        color: white;
-        border-radius: 12px;
-        font-size: 1.5rem;
-        font-weight: 600;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        z-index: 10000;
-        animation: slideInRight 0.4s ease;
-    `;
-    
-    notification.style.cssText = notifStyles;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.4s ease';
-        setTimeout(() => notification.remove(), 400);
-    }, 3000);
-}
+// ========================================
+// SERVICE BOX READ MORE FUNCTIONALITY
+// ========================================
+const serviceButtons = document.querySelectorAll('.service-btn .btn');
 
-// Animations pour les notifications
-const notifAnimations = document.createElement('style');
-notifAnimations.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(400px);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(400px);
-            opacity: 0;
-        }
-    }
+serviceButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const serviceBox = btn.closest('.service-box');
+        const serviceTitle = serviceBox.querySelector('h3').textContent;
+        
+        alert(`More information about ${serviceTitle} coming soon!`);
+    });
+});
+
+// ========================================
+// SCROLL TO TOP BUTTON
+// ========================================
+const scrollTopBtn = document.createElement('button');
+scrollTopBtn.innerHTML = '<i class="bx bx-up-arrow-alt"></i>';
+scrollTopBtn.style.cssText = `
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-glow);
+    border: none;
+    border-radius: 50%;
+    color: var(--light);
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    z-index: 9999;
+    box-shadow: 0 10px 30px rgba(14, 240, 255, 0.3);
 `;
-document.head.appendChild(notifAnimations);
 
-// ============================================
-// CURSOR EFFECT (Desktop only)
-// ============================================
-if (window.innerWidth > 1024) {
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    cursor.style.cssText = `
-        position: fixed;
-        width: 40px;
-        height: 40px;
-        border: 2px solid rgba(102, 126, 234, 0.6);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transition: all 0.15s ease;
-        transform: translate(-50%, -50%);
-        mix-blend-mode: difference;
-    `;
-    document.body.appendChild(cursor);
-    
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-    
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.15;
-        cursorY += (mouseY - cursorY) * 0.15;
-        
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        
-        requestAnimationFrame(animateCursor);
+document.body.appendChild(scrollTopBtn);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) {
+        scrollTopBtn.style.opacity = '1';
+        scrollTopBtn.style.visibility = 'visible';
+    } else {
+        scrollTopBtn.style.opacity = '0';
+        scrollTopBtn.style.visibility = 'hidden';
     }
-    
-    animateCursor();
-    
-    // Effet hover sur les Ã©lÃ©ments interactifs
-    const interactiveElements = document.querySelectorAll('a, button, .btn-box, .service-box, .project-card');
-    
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-            cursor.style.borderColor = 'rgba(236, 72, 153, 0.8)';
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-            cursor.style.borderColor = 'rgba(102, 126, 234, 0.6)';
-        });
+});
+
+scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
     });
-}
+});
 
-// ============================================
-// FLOATING PARTICLES BACKGROUND
-// ============================================
-function createParticle() {
-    const particle = document.createElement('div');
-    const size = Math.random() * 4 + 2;
-    const x = Math.random() * window.innerWidth;
-    const duration = Math.random() * 3 + 2;
-    
-    particle.style.cssText = `
-        position: fixed;
-        width: ${size}px;
-        height: ${size}px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 50%;
-        left: ${x}px;
-        bottom: -10px;
-        pointer-events: none;
-        z-index: 1;
-        opacity: 0.6;
-        animation: floatUp ${duration}s ease-in forwards;
-    `;
-    
-    document.body.appendChild(particle);
-    
-    setTimeout(() => particle.remove(), duration * 1000);
-}
+scrollTopBtn.addEventListener('mouseenter', () => {
+    scrollTopBtn.style.transform = 'scale(1.2) translateY(-5px)';
+});
 
-// Ajouter l'animation CSS
-const particleAnimation = document.createElement('style');
-particleAnimation.textContent = `
-    @keyframes floatUp {
-        0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 0.6;
-        }
-        100% {
-            transform: translateY(-100vh) rotate(360deg);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(particleAnimation);
+scrollTopBtn.addEventListener('mouseleave', () => {
+    scrollTopBtn.style.transform = 'scale(1) translateY(0)';
+});
 
-// CrÃ©er une particule toutes les 4 secondes
-setInterval(createParticle, 4000);
-
-// ============================================
-// CONSOLE MESSAGE
-// ============================================
-console.log(
-    '%cðŸ‘‹ Bienvenue sur mon portfolio !',
-    'color: #667eea; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);'
-);
-console.log(
-    '%cMelissa Bestani - BTS SIO SLAM',
-    'color: #764ba2; font-size: 16px; font-weight: 600;'
-);
-console.log(
-    '%cðŸ’¼ N\'hÃ©site pas Ã  me contacter !',
-    'color: #ec4899; font-size: 14px;'
-);
-
-// ============================================
-// PAGE LOAD COMPLETE
-// ============================================
+// ========================================
+// PAGE LOAD ANIMATION
+// ========================================
 window.addEventListener('load', () => {
-    document.body.style.opacity = '1';
-    updateActiveLink(); // Initialiser le lien actif au chargement
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        document.body.style.transition = 'opacity 1s ease';
+        document.body.style.opacity = '1';
+    }, 100);
 });
 
-// ============================================
-// PERFORMANCE OPTIMIZATION
-// ============================================
-// Lazy loading pour les images
-if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                }
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-    
-    document.querySelectorAll('img[data-src]').forEach(img => {
-        imageObserver.observe(img);
-    });
-}
-// ============================================
-// SCREENSHOT FULLSCREEN TOGGLE
-// ============================================
-function showScreenshot() {
-    const modal = document.getElementById('screenshotModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        setTimeout(() => {
-            modal.classList.add('fullscreen');
-            document.body.style.overflow = 'hidden';
-        }, 10);
-    }
-}
-
-function hideScreenshot() {
-    const modal = document.getElementById('screenshotModal');
-    if (modal) {
-        modal.classList.remove('fullscreen');
-        setTimeout(() => {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-        }, 400);
-    }
-}
-
-// Fermer avec la touche Escape
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        hideScreenshot();
-    }
-});
-    
-    // Fermer avec la touche Escape
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && screenshotContainer.classList.contains('fullscreen')) {
-            screenshotContainer.classList.remove('fullscreen');
-            document.body.style.overflow = '';
-        }
-    });/* ===== RSS TICKER – Veille cybersécurité & FINANCEMENT / INVESTISSEMENTS 2026 ===== */
-function updateRssFeed() {
-    const content = document.getElementById('rssContent');
-    const duplicate = document.querySelector('.rss-duplicate');
-    
-    if (!content || !duplicate) return;
-
-    // Actualités réelles février 2026 sur investissements, funding, cyber insurance, stratégie France, etc.
-    const news = [
-        {
-            text: "Seed-Stage Cybersecurity VCs Actually Investing (2026) – Liste des fonds actifs",
-            link: "https://www.betaboom.com/magazine/article/seed-stage-cybersecurity-vcs-investing"
-        },
-        {
-            text: "The NASDAQ Cybersecurity ETF Looks Like One of 2026's Best Investments",
-            link: "https://cybersecurityventures.com/the-nasdaq-cybersecurity-etf-looks-like-one-of-2026s-best-investments"
-        },
-        {
-            text: "Momentum Builds Toward More Security Startups, Strategic M&A in 2026",
-            link: "https://www.secureworld.io/industry-news/cybersecurity-funding-momentum-2026"
-        },
-        {
-            text: "Global Cybersecurity Outlook 2026 – World Economic Forum (rapport complet)",
-            link: "https://www.weforum.org/publications/global-cybersecurity-outlook-2026"
-        },
-        {
-            text: "Stratégie nationale de cybersécurité 2026-2030 – France (SGDSN officiel)",
-            link: "https://www.sgdsn.gouv.fr/publications/strategie-nationale-de-cybersecurite-2026-2030"
-        },
-        {
-            text: "Cyber Insurance Market Outlook 2026: Resilient Earnings, Tougher Competition",
-            link: "https://www.spglobal.com/ratings/en/regulatory/article/cyber-insurance-market-outlook-2026-resilient-earnings-tougher-competition-pockets-of-growth-s101658506"
-        },
-        {
-            text: "7 Predictions For Cyber Risk And Insurance In 2026",
-            link: "https://www.wiley.law/article-7-Predictions-For-Cyber-Risk-And-Insurance-In-2026"
-        },
-        {
-            text: "Cyber risk: A look ahead to 2026 – WTW (tendances cyber insurance)",
-            link: "https://www.wtwco.com/en-us/insights/2026/02/cyber-risk-a-look-ahead-to-2026"
-        }
-    ];
-
-    // Construction du HTML avec liens cliquables + séparateurs pour lisibilité
-    let html = '   ';
-    news.forEach(item => {
-        html += `<a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.text}</a>        •       `;
-    });
-    html += '   ';
-
-    content.innerHTML = html;
-    duplicate.innerHTML = html;  // duplication pour défilement infini sans coupure
-}
-
-// Lancement + boutons (refresh + pause)
-document.addEventListener('DOMContentLoaded', () => {
-    updateRssFeed();
-
-    document.getElementById('refreshBtn')?.addEventListener('click', updateRssFeed);
-
-    const pauseBtn = document.getElementById('pauseBtn');
-    const ticker = document.querySelector('.rss-ticker');
-
-    if (pauseBtn && ticker) {
-        pauseBtn.addEventListener('click', () => {
-            ticker.classList.toggle('paused');
-            pauseBtn.innerHTML = ticker.classList.contains('paused') ? '▶' : '⏸';
-        });
-    }
-});
+console.log('🚀 Premium 3D Portfolio loaded successfully!');
+console.log('🎨 Color picker activated!');
+console.log('🎂 Year counter added!');

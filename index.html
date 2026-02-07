@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Melissa Bestani | Web Developer & BTS SIO SLAM Student</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="cors.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +18,10 @@
 </button>
 
 <header class="header"> 
-    <a href="#" class="logo">Melissa Bestani</a>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="#" class="logo">Melissa Bestani</a>
+        <div id="color-picker-container"></div>
+    </div>
     <nav class="navbar">
         <a href="#Home" style="--i:1">Home</a>
         <a href="#about" style="--i:2">About</a>
@@ -56,12 +58,13 @@
 
     <div class="home-img">
         <img src="WhatsApp Image .jpg" alt="Melissa Bestani">
+        <!-- Floating labels will be added by JavaScript -->
     </div>
 </section>
 
 <!-- ABOUT -->
 <section class="about" id="about">
-    <h2><span style="color:white;">About</span> <span style="color:#0ef;">Me</span></h2>
+    <h2><span >About</span> <span >Me</span></h2>
     <div class="about-text">
         <p>
             I'm a first-year BTS SIO student, SLAM option, passionate about technology and software development.<br>
@@ -75,7 +78,7 @@
 
 <!-- SERVICES -->
 <section id="service" class="service">
-    <h2><span style="color:white;">My</span> <span style="color:#0ef;">Services</span></h2>
+    <h2><span>My</span> <span >Services</span></h2>
     <div class="section-services">
         <div class="service-box">
             <i class='bx bxs-layer service-icon'></i>
@@ -91,8 +94,8 @@
         </div>
         <div class="service-box">
             <i class='bx bx-desktop service-icon'></i>
-            <h3>Database & Back-End Basics</h3>
-            <p>SQL databases + PHP basics for dynamic content.</p>
+            <h3>Database & Back-End</h3>
+            <p>SQL databases, PHP & C++ for dynamic applications and robust systems.</p>
             <div class="btn-box service-btn"><a href="#" class="btn">Read More</a></div>
         </div>
     </div>
@@ -100,7 +103,7 @@
 
 <!-- PROJECTS -->
 <section class="projects" id="projects">
-    <h2><span style="color:white;">My</span> <span style="color:#0ef;">Projects</span></h2>
+    <h2><span >My</span> <span >Projects</span></h2>
     <div class="projects-container">
         <div class="project-card">
             <img src="https://cdn.aptoide.com/imgs/f/a/2/fa282c9e3fab018c5534944381d5424f_fgraphic.png" alt="To-Do List App" class="project-img">
@@ -119,17 +122,17 @@
 
 <!-- CV -->
 <section class="cv-section" id="cv">
-    <h2><span style="color:white;">My</span> <span style="color:#0ef;">CV</span></h2>
+    <h2><span >My</span> <span>CV</span></h2>
     <p>Professional minimalist French CV – view or download:</p>
     <div class="cv-buttons">
-        <a href="CV Professionnel Français Minimaliste Blanc.pdf" class="btn-cv" target="_blank">View CV</a>
-        <a href="CV Professionnel Français Minimaliste Blanc.pdf" class="btn-cv" download>Download CV</a>
+<a href="CV Professionnel Français Minimaliste Blanc (1).pdf" class="btn-cv" target="_blank">View CV</a>
+<a href="CV Professionnel Français Minimaliste Blanc (1).pdf" class="btn-cv" download>Download CV</a>
     </div>
 </section>
 
 <!-- SKILLS -->
 <section id="skills" class="skills-section">
-    <h2><span style="color:white;">My</span> <span style="color:rgb(103, 100, 183);">Skills</span></h2>
+    <h2><span>My</span> <span >Skills</span></h2>
 
     <div class="skills-wrapper">
         <!-- Technical Skills -->
@@ -161,6 +164,24 @@
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">PHP</span>
+                        <span class="skill-percentage">75%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-header">
+                        <span class="skill-icon">C++</span>
+                        <span class="skill-percentage">70%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%;"></div>
                     </div>
                 </div>
                 <div class="skill-bar-item">
@@ -211,8 +232,8 @@
 <!-- TECHNOLOGY WATCH -->
 <section id="technology-watch" class="tech-watch">
     <div class="section-card">
-        <h2><span style="color:white;">Technology</span> <span style="color:#0ef;">Watch</span></h2>
-        <p>I actively follow cybersecurity news using <a href="https://www.google.com/alerts" target="_blank">Google Alerts</a> since December 2025.</p>
+        <h2><span >Technology</span> <span >Watch</span></h2>
+        <p>I actively follow cybersecurity news using <a href="https://www.google.com/alerts" target="_blank" style="color: var(--primary); text-decoration: underline;">Google Alerts</a> since December 2024.</p>
         
         <p><strong>Main topics monitored:</strong></p>
         <ul>
@@ -260,7 +281,7 @@
 
 <!-- CONTACT -->
 <section class="contact" id="Contact">
-    <h2><span style="color:white;">Contact</span> <span style="color:rgb(68, 72, 172);">Me</span></h2>
+    <h2><span >Contact</span> <span >Me</span></h2>
     <p>Feel free to reach out via the form or social media.</p>
 
     <div class="contact-container">
@@ -278,6 +299,7 @@
     </div>
 </section>
 
+<!-- Scripts -->
 <script src="script.js"></script>
 <script src="cors.js"></script>
 
