@@ -1,7 +1,7 @@
-// ===================================
-// RSS FEED FETCHER - CYBERSECURITY NEWS
-// Technology Watch Section
-// ===================================
+// =============================================
+// CORS.JS — Flux RSS Cybersécurité
+// Corrigé : IDs alignés avec index.html
+// =============================================
 
 const RSS_FEEDS = [
     'https://feeds.feedburner.com/TheHackersNews',
@@ -10,255 +10,215 @@ const RSS_FEEDS = [
 ];
 
 let isPaused = false;
-let newsItems = [];
+let scrollOffset = 0;
+let animFrame = null;
+let allItems = [];
 
-// ===================================
-// FETCH RSS FEEDS
-// ===================================
+// =============================================
+// FETCH RSS
+// =============================================
 async function fetchRSSFeeds() {
-    const rssContent = document.getElementById('rssContent');
-    
-    if (!rssContent) return;
-    
     try {
-        // Utiliser un proxy CORS pour récupérer les flux RSS
         const proxyUrl = 'https://api.allorigins.win/raw?url=';
-        
+
         const feedPromises = RSS_FEEDS.map(async (feedUrl) => {
             try {
                 const response = await fetch(proxyUrl + encodeURIComponent(feedUrl));
                 const text = await response.text();
                 const parser = new DOMParser();
                 const xml = parser.parseFromString(text, 'text/xml');
-                
                 const items = xml.querySelectorAll('item');
                 const articles = [];
-                
+
                 items.forEach((item, index) => {
-                    if (index < 5) { // Limite à 5 articles par feed
-                        const title = item.querySelector('title')?.textContent || 'No title';
-                        const link = item.querySelector('link')?.textContent || '#';
+                    if (index < 5) {
+                        const title = item.querySelector('title')?.textContent?.trim() || '';
+                        const link = item.querySelector('link')?.textContent?.trim() || '#';
                         const pubDate = item.querySelector('pubDate')?.textContent || '';
-                        
-                        articles.push({
-                            title: title.trim(),
-                            link: link.trim(),
-                            date: formatDate(pubDate)
-                        });
+                        if (title) articles.push({ title, link, date: formatDate(pubDate) });
                     }
                 });
-                
                 return articles;
-            } catch (error) {
-                console.warn(`Failed to fetch ${feedUrl}:`, error);
+            } catch {
                 return [];
             }
         });
-        
+
         const results = await Promise.all(feedPromises);
-        newsItems = results.flat();
-        
-        if (newsItems.length > 0) {
-            displayNews();
-        } else {
-            // Fallback avec des nouvelles statiques
-            displayFallbackNews();
-        }
-        
-    } catch (error) {
-        console.error('Error fetching RSS feeds:', error);
-        displayFallbackNews();
+        allItems = results.flat();
+
+        if (allItems.length === 0) throw new Error('No items');
+        renderTicker(allItems);
+
+    } catch {
+        renderTicker(getFallbackNews());
     }
 }
 
-// ===================================
-// DISPLAY NEWS ITEMS
-// ===================================
-function displayNews() {
-    const rssContent = document.getElementById('rssContent');
-    const rssDuplicate = document.querySelector('.rss-duplicate');
-    
-    if (!rssContent) return;
-    
-    const newsHTML = newsItems.map(item => `
-        <span>
-            <strong>🔒</strong> 
-            <a href="${item.link}" target="_blank" rel="noopener noreferrer" style="color: var(--text-primary); text-decoration: none;">
+// =============================================
+// FALLBACK
+// =============================================
+function getFallbackNews() {
+    return [
+        { title: 'Violation de données massive : des millions d\'utilisateurs affectés', link: '#', date: "Aujourd'hui" },
+        { title: 'Nouveau zero-day découvert dans un logiciel populaire', link: '#', date: 'Il y a 2h' },
+        { title: 'Ransomware cible le secteur hospitalier en Europe', link: '#', date: 'Il y a 5h' },
+        { title: 'Mise à jour critique de sécurité pour Windows', link: '#', date: 'Hier' },
+        { title: 'Campagne de phishing exploite les contenus générés par IA', link: '#', date: 'Hier' },
+        { title: 'Bonnes pratiques de sécurité des bases de données 2026', link: '#', date: 'Il y a 2j' },
+        { title: 'L\'injection SQL reste parmi les vulnérabilités web les plus critiques', link: '#', date: 'Il y a 3j' },
+        { title: 'Nouveau framework de cybersécurité publié par l\'ANSSI', link: '#', date: 'Il y a 1 sem' },
+        { title: 'Les menaces cloud en forte hausse au premier trimestre 2026', link: '#', date: 'Il y a 1 sem' },
+        { title: 'Détection des menaces par IA : résultats prometteurs', link: '#', date: 'Il y a 2 sem' },
+    ];
+}
+
+// =============================================
+// RENDER — défilement vertical dans #rssViewport
+// =============================================
+function renderTicker(items) {
+    const viewport = document.getElementById('rssViewport');
+    if (!viewport) return;
+
+    // Construire la liste d'items (doublée pour boucle infinie)
+    const doubled = [...items, ...items];
+    const html = doubled.map(item => `
+        <div class="rss-item">
+            <span class="rss-bullet">🔒</span>
+            <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="rss-link">
                 ${item.title}
             </a>
-            ${item.date ? `<em style="color: var(--text-secondary); font-size: 0.85rem;"> • ${item.date}</em>` : ''}
-        </span>
+            ${item.date ? `<span class="rss-date"> · ${item.date}</span>` : ''}
+        </div>
     `).join('');
-    
-    rssContent.innerHTML = newsHTML;
-    
-    // Dupliquer pour l'effet de défilement infini
-    if (rssDuplicate) {
-        rssDuplicate.innerHTML = newsHTML;
-    }
+
+    viewport.innerHTML = `<div class="rss-track">${html}</div>`;
+
+    injectTickerStyles();
+    startScroll();
 }
 
-// ===================================
-// FALLBACK NEWS (Static)
-// ===================================
-function displayFallbackNews() {
-    const rssContent = document.getElementById('rssContent');
-    const rssDuplicate = document.querySelector('.rss-duplicate');
-    
-    if (!rssContent) return;
-    
-    const fallbackNews = [
-        { title: 'Major Data Breach Affects Millions of Users', date: 'Today' },
-        { title: 'New Zero-Day Vulnerability Discovered in Popular Software', date: '2 hours ago' },
-        { title: 'Ransomware Attack Targets Healthcare Sector', date: '5 hours ago' },
-        { title: 'Critical Security Update Released for Windows', date: 'Yesterday' },
-        { title: 'Phishing Campaign Exploits AI-Generated Content', date: 'Yesterday' },
-        { title: 'Database Security Best Practices 2026', date: '2 days ago' },
-        { title: 'SQL Injection Still Among Top Web Vulnerabilities', date: '3 days ago' },
-        { title: 'New Cybersecurity Framework Released', date: '1 week ago' },
-        { title: 'Cloud Security Threats on the Rise', date: '1 week ago' },
-        { title: 'AI-Powered Threat Detection Improves Security', date: '2 weeks ago' }
-    ];
-    
-    const newsHTML = fallbackNews.map(item => `
-        <span>
-            <strong>🔒</strong> ${item.title}
-            <em style="color: var(--text-secondary); font-size: 0.85rem;"> • ${item.date}</em>
-        </span>
-    `).join('');
-    
-    rssContent.innerHTML = newsHTML;
-    
-    if (rssDuplicate) {
-        rssDuplicate.innerHTML = newsHTML;
+// =============================================
+// SCROLL ANIMATION (JS — plus fiable que CSS)
+// =============================================
+function startScroll() {
+    const track = document.querySelector('.rss-track');
+    if (!track) return;
+
+    cancelAnimationFrame(animFrame);
+    scrollOffset = 0;
+
+    const itemHeight = 50; // px par item (voir CSS)
+    const totalItems = allItems.length || getFallbackNews().length;
+    const halfHeight = totalItems * itemHeight;
+
+    function step() {
+        if (!isPaused) {
+            scrollOffset += 0.6; // vitesse (px/frame)
+            if (scrollOffset >= halfHeight) scrollOffset = 0;
+            track.style.transform = `translateY(-${scrollOffset}px)`;
+        }
+        animFrame = requestAnimationFrame(step);
     }
+
+    animFrame = requestAnimationFrame(step);
 }
 
-// ===================================
+// =============================================
+// STYLES INJECTÉS (n'écrase pas style.css)
+// =============================================
+function injectTickerStyles() {
+    if (document.getElementById('rss-injected-styles')) return;
+
+    const s = document.createElement('style');
+    s.id = 'rss-injected-styles';
+    s.textContent = `
+        #rssViewport {
+            height: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+        .rss-track {
+            display: flex;
+            flex-direction: column;
+            will-change: transform;
+        }
+        .rss-item {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .rss-bullet { flex-shrink: 0; font-size: 1.4rem; }
+        .rss-link {
+            color: var(--light, #f1f5f9);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .rss-link:hover { color: #a5b4fc; text-decoration: underline; }
+        .rss-date {
+            color: var(--gray, #64748b);
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+    `;
+    document.head.appendChild(s);
+}
+
+// =============================================
 // FORMAT DATE
-// ===================================
+// =============================================
 function formatDate(dateString) {
     if (!dateString) return '';
-    
     try {
         const date = new Date(dateString);
-        const now = new Date();
-        const diffMs = now - date;
-        const diffMins = Math.floor(diffMs / 60000);
-        const diffHours = Math.floor(diffMs / 3600000);
-        const diffDays = Math.floor(diffMs / 86400000);
-        
-        if (diffMins < 60) {
-            return `${diffMins} min ago`;
-        } else if (diffHours < 24) {
-            return `${diffHours}h ago`;
-        } else if (diffDays < 7) {
-            return `${diffDays}d ago`;
-        } else {
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        }
-    } catch (error) {
-        return '';
-    }
+        const diffMs = Date.now() - date;
+        const mins  = Math.floor(diffMs / 60000);
+        const hours = Math.floor(diffMs / 3600000);
+        const days  = Math.floor(diffMs / 86400000);
+
+        if (mins  < 60) return `Il y a ${mins} min`;
+        if (hours < 24) return `Il y a ${hours}h`;
+        if (days  <  7) return `Il y a ${days}j`;
+        return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+    } catch { return ''; }
 }
 
-// ===================================
-// PAUSE/RESUME FUNCTIONALITY
-// ===================================
-const pauseBtn = document.getElementById('pauseBtn');
-const ticker = document.querySelector('.rss-ticker');
-
-if (pauseBtn && ticker) {
-    pauseBtn.addEventListener('click', () => {
-        isPaused = !isPaused;
-        
-        if (isPaused) {
-            ticker.classList.add('paused');
-            pauseBtn.innerHTML = '▶';
-            pauseBtn.title = 'Resume';
-        } else {
-            ticker.classList.remove('paused');
-            pauseBtn.innerHTML = '⏸';
-            pauseBtn.title = 'Pause';
-        }
-    });
-}
-
-// ===================================
-// REFRESH FUNCTIONALITY
-// ===================================
-const refreshBtn = document.getElementById('refreshBtn');
-
-if (refreshBtn) {
-    refreshBtn.addEventListener('click', async () => {
-        refreshBtn.style.transform = 'rotate(360deg)';
-        refreshBtn.style.transition = 'transform 0.6s ease';
-        
-        await fetchRSSFeeds();
-        
-        setTimeout(() => {
-            refreshBtn.style.transform = 'rotate(0deg)';
-        }, 600);
-    });
-}
-
-// ===================================
-// HOVER EFFECTS ON NEWS ITEMS
-// ===================================
-function addNewsHoverEffects() {
-    const newsLinks = document.querySelectorAll('.rss-content a');
-    
-    newsLinks.forEach(link => {
-        link.addEventListener('mouseenter', function() {
-            this.style.color = 'var(--primary-color)';
-            this.style.textDecoration = 'underline';
-        });
-        
-        link.addEventListener('mouseleave', function() {
-            this.style.color = 'var(--text-primary)';
-            this.style.textDecoration = 'none';
-        });
-    });
-}
-
-// ===================================
-// AUTO-REFRESH EVERY 5 MINUTES
-// ===================================
-setInterval(() => {
-    if (!isPaused) {
-        fetchRSSFeeds();
-    }
-}, 300000); // 5 minutes
-
-// ===================================
-// INITIALIZE ON PAGE LOAD
-// ===================================
+// =============================================
+// BOUTONS PAUSE / REFRESH
+// =============================================
 document.addEventListener('DOMContentLoaded', () => {
     fetchRSSFeeds();
-    
-    // Add hover effects after a short delay to ensure DOM is ready
-    setTimeout(() => {
-        addNewsHoverEffects();
-    }, 1000);
+
+    const pauseBtn = document.getElementById('pauseBtn');
+    if (pauseBtn) {
+        pauseBtn.addEventListener('click', () => {
+            isPaused = !isPaused;
+            pauseBtn.textContent = isPaused ? '▶' : '⏸';
+            pauseBtn.title = isPaused ? 'Reprendre' : 'Pause';
+        });
+    }
+
+    const refreshBtn = document.getElementById('refreshBtn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', async () => {
+            refreshBtn.style.transition = 'transform 0.6s ease';
+            refreshBtn.style.transform = 'rotate(360deg)';
+            await fetchRSSFeeds();
+            setTimeout(() => { refreshBtn.style.transform = 'rotate(0deg)'; }, 650);
+        });
+    }
 });
 
-// ===================================
-// SMOOTH SCROLL SPEED ADJUSTMENT
-// ===================================
-const rssContentElement = document.querySelector('.rss-content');
+// Auto-refresh toutes les 5 minutes
+setInterval(() => { if (!isPaused) fetchRSSFeeds(); }, 300000);
 
-if (rssContentElement) {
-    rssContentElement.addEventListener('mouseenter', () => {
-        rssContentElement.style.animationDuration = '120s'; // Ralentir au survol
-    });
-    
-    rssContentElement.addEventListener('mouseleave', () => {
-        rssContentElement.style.animationDuration = '60s'; // Vitesse normale
-    });
-}
-
-// ===================================
-// CONSOLE MESSAGE
-// ===================================
-console.log('%c📡 RSS Feed System Initialized', 'color: #0ef; font-size: 14px; font-weight: bold;');
-console.log('%c🔒 Monitoring cybersecurity news in real-time', 'color: #6366f1; font-size: 12px;');
+console.log('%c📡 RSS Flux cybersécurité initialisé', 'color: #6366f1; font-weight: bold;');
