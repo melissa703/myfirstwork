@@ -7,7 +7,6 @@
 // ========================================
 // TYPED.JS
 // ========================================
-// Typed — s'adapte au nouveau hero (.hero-typed) ou à l'ancien (.text)
 var typed = new Typed('#typed-text', {
   strings: [
     "Développeuse Full-Stack",
@@ -112,11 +111,8 @@ if (themeToggle) {
 
 // ========================================
 // COLOR PICKER — CORRIGÉ
-// Le widget est injecté dans le body
-// et stylisé via color-picker-addon.css
 // ========================================
 function createColorPicker() {
-    // Supprimer l'ancien widget s'il existe
     const existing = document.querySelector('.color-picker-widget');
     if (existing) existing.remove();
 
@@ -156,7 +152,6 @@ function createColorPicker() {
         }
     });
 
-    // Restaurer la couleur sauvegardée
     const saved = localStorage.getItem('portfolioGradient');
     if (saved) applyGradient(JSON.parse(saved));
 
@@ -337,24 +332,53 @@ function initProjectFilters() {
 }
 
 // ========================================
-// FORM VALIDATION
+// EMAILJS — CONTACT FORM
 // ========================================
-const contactForm = document.querySelector('.contact-form');
+emailjs.init('lF2CUuV8KmlUSMEN1');
+
+const contactForm = document.getElementById('contact-form');
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        const name    = contactForm.querySelector('input[name="name"]')?.value;
-        const email   = contactForm.querySelector('input[name="email"]')?.value;
-        const message = contactForm.querySelector('textarea[name="message"]')?.value;
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name    = document.getElementById('name').value.trim();
+        const email   = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+        const btn     = document.getElementById('submit-btn');
 
         if (!name || !email || !message) {
-            e.preventDefault();
             alert('Veuillez remplir tous les champs.');
             return;
         }
         if (!email.includes('@')) {
-            e.preventDefault();
             alert('Veuillez entrer une adresse email valide.');
+            return;
         }
+
+        btn.disabled = true;
+        btn.innerHTML = 'Envoi en cours... <i class="bx bx-loader-alt bx-spin"></i>';
+
+        emailjs.sendForm('service_noq8mic', 'template_3nnjcwk', this)
+            .then(() => {
+                btn.innerHTML = 'Message envoyé ! <i class="bx bx-check"></i>';
+                btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+                contactForm.reset();
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Envoyer <i class="bx bx-send"></i>';
+                    btn.style.background = '';
+                }, 4000);
+            })
+            .catch((err) => {
+                console.error('EmailJS error:', err);
+                btn.innerHTML = 'Erreur — réessaie <i class="bx bx-error"></i>';
+                btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                btn.disabled = false;
+                setTimeout(() => {
+                    btn.innerHTML = 'Envoyer <i class="bx bx-send"></i>';
+                    btn.style.background = '';
+                }, 4000);
+            });
     });
 }
 
@@ -379,6 +403,7 @@ window.addEventListener('load', () => {
 });
 
 console.log('✅ Portfolio chargé — Melissa Bestani');
+
 // ========================================
 // CURSEUR PERSONNALISÉ
 // ========================================
@@ -508,13 +533,16 @@ function switchLumoura(thumb, src, label) {
     if (labelEl) labelEl.textContent = label;
     thumbs.forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
-}// Remplace ou complète la fonction switchLumoura dans script.js
+}
+
 function switchLumoura(el, src, label) {
     document.getElementById('lumouraMainImg').src = src;
     document.getElementById('lumouraLabel').textContent = label;
     document.querySelectorAll('.lumoura-thumb-item').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
-}// ========================================
+}
+
+// ========================================
 // CYBER NEWS TICKER (VRAIES ACTUALITÉS)
 // ========================================
 async function loadCyberNewsTicker() {
@@ -534,11 +562,10 @@ async function loadCyberNewsTicker() {
 
     for (let feed of feeds) {
         try {
-            // Utilisation d'un proxy CORS fiable
             const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(feed)}`;
             const res = await fetch(proxy);
             if (!res.ok) continue;
-            
+
             const data = await res.json();
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(data.contents, "text/xml");
@@ -560,7 +587,6 @@ async function loadCyberNewsTicker() {
         }
     }
 
-    // Si aucun feed ne marche (problème réseau), on met des news récentes en fallback
     if (allItems.length < 3) {
         allItems = [
             { title: "Nouvelles vulnérabilités critiques dans les frameworks web", link: "https://thehackernews.com" },
@@ -569,9 +595,8 @@ async function loadCyberNewsTicker() {
         ];
     }
 
-    // Construction du contenu (dupliqué pour boucle infinie fluide)
     let html = '';
-    const displayItems = [...allItems, ...allItems]; // duplication
+    const displayItems = [...allItems, ...allItems];
 
     displayItems.forEach(item => {
         html += `
@@ -586,7 +611,6 @@ async function loadCyberNewsTicker() {
 
     tickerContent.innerHTML = html;
 
-    // Contrôles
     const pauseBtn = document.getElementById('ticker-pause');
     let paused = false;
 
@@ -599,5 +623,206 @@ async function loadCyberNewsTicker() {
     document.getElementById('ticker-refresh')?.addEventListener('click', loadCyberNewsTicker);
 }
 
-// Lancer le ticker
 document.addEventListener('DOMContentLoaded', loadCyberNewsTicker);
+
+/* =============================================
+   MODAL GALERIE LUMOURA — captures du site
+   ============================================= */
+const lgmSlides = [
+    { src: 'panier.jpeg',      label: 'Panier' },
+    { src: 'formulaire.jpeg',  label: 'Connexion' },
+    { src: 'facture.jpeg',     label: 'Facture PDF' },
+    { src: 'adresse.jpeg',     label: 'API Adresse' },
+];
+let lgmIndex = 0;
+
+function openLumouraGallery(startIndex = 0) {
+    lgmIndex = startIndex;
+    const modal = document.getElementById('lumouraGalleryModal');
+    const thumbsEl = document.getElementById('lgmThumbs');
+    if (!thumbsEl.children.length) {
+        lgmSlides.forEach((s, i) => {
+            const t = document.createElement('div');
+            t.className = 'lgm-thumb' + (i === 0 ? ' active' : '');
+            t.innerHTML = `<img src="${s.src}" alt="${s.label}"><span>${s.label}</span>`;
+            t.addEventListener('click', () => lgmGoTo(i));
+            thumbsEl.appendChild(t);
+        });
+        document.getElementById('lgmTotal').textContent = lgmSlides.length;
+    }
+    lgmGoTo(lgmIndex, false);
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLumouraGallery() {
+    document.getElementById('lumouraGalleryModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function closeLumouraGalleryBg(e) {
+    if (e.target === document.getElementById('lumouraGalleryModal')) closeLumouraGallery();
+}
+
+function lgmGoTo(idx, animate = true) {
+    lgmIndex = (idx + lgmSlides.length) % lgmSlides.length;
+    const img = document.getElementById('lgmMainImg');
+    if (animate) { img.style.opacity = 0; }
+    setTimeout(() => {
+        img.src = lgmSlides[lgmIndex].src;
+        img.alt = lgmSlides[lgmIndex].label;
+        document.getElementById('lgmLabel').textContent = lgmSlides[lgmIndex].label;
+        document.getElementById('lgmCurrent').textContent = lgmIndex + 1;
+        img.style.opacity = 1;
+    }, animate ? 150 : 0);
+    document.querySelectorAll('.lgm-thumb').forEach((t, i) => {
+        t.classList.toggle('active', i === lgmIndex);
+    });
+}
+
+function lgmNav(dir) { lgmGoTo(lgmIndex + dir); }
+
+document.addEventListener('keydown', e => {
+    if (!document.getElementById('lumouraGalleryModal').classList.contains('open')) return;
+    if (e.key === 'ArrowRight') lgmNav(1);
+    if (e.key === 'ArrowLeft')  lgmNav(-1);
+    if (e.key === 'Escape')     closeLumouraGallery();
+});
+
+/* =============================================
+   MODAL CONVERTISSEUR
+   ============================================= */
+function openConvertModal() {
+    document.getElementById('convertModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeConvertModal() {
+    document.getElementById('convertModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+/* =============================================
+   MODAL CASE STUDY LUMOURA
+   ============================================= */
+function openCaseStudy() {
+    document.getElementById('caseStudyModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeCaseStudy() {
+    document.getElementById('caseStudyModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+/* =============================================
+   EASTER EGG — KONAMI CODE + MATRIX
+   ============================================= */
+(function() {
+    const konamiCode = [
+        'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
+        'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight'
+    ];
+    let konamiIndex = 0;
+
+    window.addEventListener('keydown', (e) => {
+        const tag = document.activeElement.tagName.toLowerCase();
+        if (tag === 'input' || tag === 'textarea') return;
+
+        if (e.key === konamiCode[konamiIndex]) {
+            e.preventDefault();
+            konamiIndex++;
+            if (konamiIndex === konamiCode.length) {
+                konamiIndex = 0;
+                launchMatrix();
+            }
+        } else {
+            konamiIndex = e.key === konamiCode[0] ? 1 : 0;
+        }
+    });
+
+    function launchMatrix() {
+        window._matrixRunning = true;
+        const canvas = document.createElement('canvas');
+        canvas.id = 'matrix-canvas';
+        canvas.style.cssText = `
+            position: fixed; inset: 0; z-index: 999999;
+            width: 100vw; height: 100vh;
+            background: #000; opacity: 0;
+            transition: opacity 0.5s ease;
+            cursor: pointer;
+        `;
+        document.body.appendChild(canvas);
+
+        const msg = document.createElement('div');
+        msg.id = 'matrix-msg';
+        msg.innerHTML = `
+            <div class="matrix-msg-inner">
+                <span class="matrix-msg-code">// EASTER EGG UNLOCKED</span>
+                <h2>Bienvenue dans la <span style="color:#00ff41">Matrix</span>, Melissa 👾</h2>
+                <p>Tu as trouvé le code secret !</p>
+                <button onclick="closeMatrix()">Sortir de la Matrix</button>
+            </div>
+        `;
+        msg.style.cssText = `
+            position: fixed; inset: 0; z-index: 1000000;
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: none; opacity: 0;
+            transition: opacity 0.8s ease 0.5s;
+        `;
+        document.body.appendChild(msg);
+
+        setTimeout(() => {
+            canvas.style.opacity = '1';
+            msg.style.opacity = '1';
+            msg.style.pointerEvents = 'auto';
+            runMatrix(canvas);
+        }, 50);
+
+        canvas.addEventListener('click', closeMatrix);
+    }
+
+    function runMatrix(canvas) {
+        const ctx = canvas.getContext('2d');
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()アイウエオカキクケコ';
+        const fontSize = 14;
+        const cols = Math.floor(canvas.width / fontSize);
+        const drops = Array(cols).fill(1);
+
+        let animId;
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+
+            drops.forEach((y, i) => {
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillStyle = i % 3 === 0 ? '#ffffff' : '#00ff41';
+                ctx.fillText(char, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+            animId = requestAnimationFrame(draw);
+            canvas._animId = animId;
+        }
+        draw();
+    }
+
+    window.closeMatrix = function() {
+        const canvas = document.getElementById('matrix-canvas');
+        const msg    = document.getElementById('matrix-msg');
+        if (canvas) {
+            cancelAnimationFrame(canvas._animId);
+            canvas.style.opacity = '0';
+            setTimeout(() => canvas.remove(), 500);
+        }
+        if (msg) {
+            msg.style.opacity = '0';
+            setTimeout(() => msg.remove(), 600);
+        }
+    };
+
+    window.launchMatrix = launchMatrix;
+})();

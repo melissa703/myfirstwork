@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <meta name="description" content="Portfolio de Melissa Bestani – BTS SIO SLAM, développeuse web, PHP, React, MySQL.">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -221,108 +222,87 @@
     <div class="projects-container">
 
         <!-- LUMOURA -->
-        <!-- LUMOURA — layout image gauche / texte droite -->
-<div class="project-card lumoura-card" data-tags="php mysql javascript">
-
-    <div class="lumoura-split">
-
-        <!-- COLONNE GAUCHE : galerie -->
-        <div class="lumoura-left">
-            <div class="lumoura-main-wrap">
-                <img src="090e0c87-c30f-411c-b88f-6b29898077d6.png"
-                     alt="Lumoura accueil"
-                     class="lumoura-main-img"
-                     id="lumouraMainImg">
-                <span class="lumoura-img-label" id="lumouraLabel">Accueil</span>
-            </div>
-            <div class="lumoura-thumbs-row">
-                <div class="lumoura-thumb-item active"
-                     onclick="switchLumoura(this, '090e0c87-c30f-411c-b88f-6b29898077d6.png', 'Accueil')">
-                    <img src="090e0c87-c30f-411c-b88f-6b29898077d6.png" alt="Accueil">
-                    <span>Accueil</span>
+        <div class="project-card lumoura-card" data-tags="php mysql javascript">
+            <div class="lumoura-split">
+                <!-- COLONNE GAUCHE : image + bouton captures amélioré -->
+                <div class="lumoura-left">
+                    <div class="lumoura-main-wrap">
+                        <img src="lumoura-accueil.png"
+                             alt="Lumoura accueil"
+                             class="lumoura-main-img"
+                             id="lumouraMainImg"
+                             onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683702?w=800&q=80'">
+                        <span class="lumoura-img-label" id="lumouraLabel">Accueil</span>
+                        <!-- Overlay cliquable sur l'image pour ouvrir la galerie -->
+                        <div class="lumoura-img-overlay" onclick="openLumouraGallery()">
+                            <span><i class="bx bx-zoom-in"></i> Voir les captures</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="lumoura-thumb-item"
-                     onclick="switchLumoura(this, 'lumoura-panier.png', 'Panier')">
-                    <img src="lumoura-panier.png" alt="Panier">
-                    <span>Panier</span>
+
+                <!-- COLONNE DROITE : infos -->
+                <div class="lumoura-right">
+                    <div class="project-tags">
+                        <span class="tag">PHP</span>
+                        <span class="tag">MySQL</span>
+                        <span class="tag">MVC</span>
+                        <span class="tag">API REST</span>
+                        <span class="tag">OTP</span>
+                        <span class="tag">mPDF</span>
+                    </div>
+
+                    <h3>Lumoura · E-commerce Luxe</h3>
+
+                    <p>Plateforme e-commerce complète de parfums haut de gamme.
+                       Authentification OTP, panier, suivi de commandes,
+                       factures PDF, autocomplétion d'adresse,
+                       interface administrateur.</p>
+
+                    <div class="lumoura-features-inline">
+                        <span><i class="bx bx-lock-alt"></i> Auth OTP</span>
+                        <span><i class="bx bx-cart"></i> Panier & commandes</span>
+                        <span><i class="bx bx-file"></i> Factures PDF</span>
+                        <span><i class="bx bx-map"></i> API adresse</span>
+                        <span><i class="bx bx-shield"></i> PDO sécurisé</span>
+                        <span><i class="bx bx-cog"></i> Interface admin</span>
+                    </div>
+
+                    <div class="project-links">
+                        <a href="https://github.com/melissa703/lumoura-ecommerce"
+                           target="_blank"
+                           class="btn-box">
+                            <i class="bx bxl-github"></i>
+                        </a>
+                        <a href="https://github.com/melissa703/lumoura-ecommerce"
+                           target="_blank"
+                           class="btn-ghost">
+                            <i class="bx bx-link-external"></i>
+                            Voir le projet
+                        </a>
+                        <button class="btn-casestudy" onclick="openCaseStudy()">
+                            <i class="bx bx-book-open"></i>
+                            Voir le case study
+                        </button>
+                    </div>
                 </div>
-                <div class="lumoura-thumb-item"
-                     onclick="switchLumoura(this, 'lumoura-commandes.png', 'Commandes')">
-                    <img src="lumoura-commandes.png" alt="Commandes">
-                    <span>Commandes</span>
-                </div>
-                <div class="lumoura-thumb-item"
-                     onclick="switchLumoura(this, 'lumoura-admin.png', 'Admin')">
-                    <img src="lumoura-admin.png" alt="Admin">
-                    <span>Admin</span>
-                </div>
-                <div class="lumoura-thumb-item"
-                     onclick="switchLumoura(this, 'lumoura-adresse.png', 'API Adresse')">
-                    <img src="lumoura-adresse.png" alt="API Adresse">
-                    <span>API Adresse</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- COLONNE DROITE : infos -->
-        <div class="lumoura-right">
-            <div class="project-tags">
-                <span class="tag">PHP</span>
-                <span class="tag">MySQL</span>
-                <span class="tag">MVC</span>
-                <span class="tag">API REST</span>
-                <span class="tag">OTP</span>
-                <span class="tag">mPDF</span>
-            </div>
-
-            <h3>Lumoura · E-commerce Luxe</h3>
-
-            <p>Plateforme e-commerce complète de parfums haut de gamme.
-               Authentification OTP, panier, suivi de commandes,
-               factures PDF, autocomplétion d'adresse,
-               interface administrateur.</p>
-
-            <div class="lumoura-features-inline">
-                <span><i class="bx bx-lock-alt"></i> Auth OTP</span>
-                <span><i class="bx bx-cart"></i> Panier & commandes</span>
-                <span><i class="bx bx-file"></i> Factures PDF</span>
-                <span><i class="bx bx-map"></i> API adresse</span>
-                <span><i class="bx bx-shield"></i> PDO sécurisé</span>
-                <span><i class="bx bx-cog"></i> Interface admin</span>
-            </div>
-
-            <div class="project-links">
-                <a href="https://github.com/melissa703/lumoura-ecommerce"
-                   target="_blank"
-                   class="btn-box">
-                    <i class="bx bxl-github"></i>
-                    Voir le projet
-                </a>
             </div>
         </div>
-
-    </div>
-</div>
 
         <!-- MULTICONVERTISSEUR -->
         <div class="project-card" data-tags="csharp">
 
             <div class="project-img-wrap">
-                <img src="images/convertisseur.jpeg"
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80"
                      alt="MultiConvertisseur"
                      class="project-img">
-
                 <div class="project-overlay">
-                    <a href="https://github.com/melissa703/convertisseur-bts-sio"
-                       target="_blank"
-                       class="overlay-btn">
-                        GitHub →
-                    </a>
+                    <button class="overlay-btn" onclick="openConvertModal()">
+                        <i class="bx bx-zoom-in"></i> Voir la capture
+                    </button>
                 </div>
             </div>
 
             <div class="project-body">
-
                 <div class="project-tags">
                     <span class="tag">C#</span>
                     <span class="tag">.NET</span>
@@ -346,15 +326,6 @@
                     <span><i class="bx bx-code-alt"></i> C# .NET</span>
                     <span><i class="bx bx-cog"></i> Événements</span>
                 </div>
-
-                <div class="project-links">
-                    <a href="https://github.com/melissa703/convertisseur-bts-sio"
-                       target="_blank"
-                       class="btn-box">
-                        <i class="bx bxl-github"></i>
-                        Voir le projet
-                    </a>
-                </div>
             </div>
         </div>
 
@@ -362,7 +333,7 @@
         <div class="project-card" data-tags="javascript">
 
             <div class="project-img-wrap">
-                <img src="https://cdn.aptoide.com/imgs/f/a/2/fa282c9e3fab018c5534944381d5424f_fgraphic.png"
+                <img src="https://images.unsplash.com/photo-1540350394557-8d14678e7f91?w=600&q=80"
                      alt="To-Do App"
                      class="project-img">
 
@@ -370,13 +341,16 @@
                     <a href="https://melissa703.github.io/myminiapp/"
                        target="_blank"
                        class="overlay-btn">
-                        Demo →
+                    </a>
+                    <a href="https://github.com/melissa703/myminiapp"
+                       target="_blank"
+                       class="overlay-btn">
+                        GitHub →
                     </a>
                 </div>
             </div>
 
             <div class="project-body">
-
                 <div class="project-tags">
                     <span class="tag">JavaScript</span>
                     <span class="tag">HTML</span>
@@ -395,7 +369,6 @@
                     <a href="https://melissa703.github.io/myminiapp/"
                        target="_blank"
                        class="btn-box">
-                        Demo Live
                     </a>
                 </div>
             </div>
@@ -411,7 +384,6 @@
 
                 <div class="project-overlay">
                     <a href="#Home" class="overlay-btn">Ce site →</a>
-
                     <a href="https://github.com/melissa703"
                        target="_blank"
                        class="overlay-btn">
@@ -421,7 +393,6 @@
             </div>
 
             <div class="project-body">
-
                 <div class="project-tags">
                     <span class="tag">HTML</span>
                     <span class="tag">CSS</span>
@@ -440,14 +411,6 @@
                     <a href="https://melissa703.github.io/myfirstwork/"
                        target="_blank"
                        class="btn-box">
-                        Demo Live
-                    </a>
-
-                    <a href="https://github.com/melissa703"
-                       target="_blank"
-                       class="btn-ghost">
-                        <i class="bx bxl-github"></i>
-                        GitHub
                     </a>
                 </div>
             </div>
@@ -668,21 +631,20 @@
             <a href="Capture -écran_.jpeg" target="_blank" class="view-screenshot-btn">Voir la capture</a>
         </div>
         <!-- ===================== FLUX RSS CONTINU (BFM TV STYLE) ===================== -->
-<section class="rss-ticker-section">
-    <div class="ticker-container">
-        <div class="ticker-label">
-            <span>📡 CYBER NEWS LIVE</span>
-        </div>
-        <div class="ticker-wrapper">
-            <div id="ticker-content" class="ticker-content"></div>
-        </div>
-        <div class="ticker-controls">
-            <button id="ticker-pause" title="Pause/Play">⏸</button>
-            <button id="ticker-refresh" title="Rafraîchir">🔄</button>
-        </div>
-    </div>
-</section>
-        </div>
+        <section class="rss-ticker-section">
+            <div class="ticker-container">
+                <div class="ticker-label">
+                    <span>📡 CYBER NEWS LIVE</span>
+                </div>
+                <div class="ticker-wrapper">
+                    <div id="ticker-content" class="ticker-content"></div>
+                </div>
+                <div class="ticker-controls">
+                    <button id="ticker-pause" title="Pause/Play">⏸</button>
+                    <button id="ticker-refresh" title="Rafraîchir">🔄</button>
+                </div>
+            </div>
+        </section>
     </div>
 </section>
 
@@ -691,11 +653,13 @@
     <h2><span>Me</span> <span class="grad-text">Contacter</span></h2>
     <p>N'hésitez pas à me contacter pour une alternance ou un projet.</p>
     <div class="contact-container">
-        <form action="mailto:sissaminuilla@gmail.com" method="post" enctype="text/plain" class="contact-form">
-            <input type="text" name="name" placeholder="Votre nom" required>
-            <input type="email" name="email" placeholder="Votre email" required>
-            <textarea name="message" rows="5" placeholder="Votre message" required></textarea>
-            <button type="submit" class="btn-contact">Envoyer <i class="bx bx-send"></i></button>
+        <form id="contact-form" class="contact-form">
+            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+            <input type="email" id="email" name="email" placeholder="Votre email" required>
+            <textarea id="message" name="message" rows="5" placeholder="Votre message" required></textarea>
+            <button type="submit" class="btn-contact" id="submit-btn">
+                Envoyer <i class="bx bx-send"></i>
+            </button>
         </form>
         <div class="contact-info">
             <div class="contact-card">
@@ -718,6 +682,127 @@
     </div>
 </section>
 
+<!-- ===================== MODAL CASE STUDY LUMOURA ===================== -->
+<div id="caseStudyModal" class="lgm-overlay" onclick="if(event.target===this)closeCaseStudy()">
+    <div class="lgm-inner cs-inner">
+        <div class="lgm-header">
+            <div class="lgm-title">
+                <i class="bx bx-book-open"></i>
+                <span>Case Study · Lumoura</span>
+            </div>
+            <button class="lgm-close" onclick="closeCaseStudy()"><i class="bx bx-x"></i></button>
+        </div>
+        <div class="cs-body">
+
+            <!-- PROBLÈME -->
+            <div class="cs-block">
+                <div class="cs-block-icon" style="background:rgba(239,68,68,0.1);color:#f87171">
+                    <i class="bx bx-error-circle"></i>
+                </div>
+                <div class="cs-block-content">
+                    <h4>Le problème</h4>
+                    <p>Créer une plateforme e-commerce de parfums de luxe complète et fonctionnelle, avec gestion des utilisateurs, des commandes et une interface d'administration robuste — le tout sans framework back-end, en PHP pur avec architecture MVC.</p>
+                </div>
+            </div>
+
+            <!-- SOLUTION -->
+            <div class="cs-block">
+                <div class="cs-block-icon" style="background:rgba(34,197,94,0.1);color:#4ade80">
+                    <i class="bx bx-bulb"></i>
+                </div>
+                <div class="cs-block-content">
+                    <h4>La solution</h4>
+                    <p>Architecture MVC maison avec routeur personnalisé, authentification sécurisée par OTP email, API REST pour l'autocomplétion d'adresse (API Adresse gouv.fr), génération de factures PDF avec mPDF, et un dashboard admin complet pour gérer produits et commandes.</p>
+                </div>
+            </div>
+
+            <!-- TECHNOS -->
+            <div class="cs-block">
+                <div class="cs-block-icon" style="background:rgba(99,102,241,0.1);color:#a5b4fc">
+                    <i class="bx bx-code-alt"></i>
+                </div>
+                <div class="cs-block-content">
+                    <h4>Technologies utilisées</h4>
+                    <div class="cs-tags">
+                        <span>PHP 8</span><span>MySQL</span><span>Architecture MVC</span>
+                        <span>API REST</span><span>OTP Email</span><span>mPDF</span>
+                        <span>PDO sécurisé</span><span>JavaScript</span><span>CSS3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIFFICULTÉS -->
+            <div class="cs-block">
+                <div class="cs-block-icon" style="background:rgba(251,191,36,0.1);color:#fbbf24">
+                    <i class="bx bx-wrench"></i>
+                </div>
+                <div class="cs-block-content">
+                    <h4>Difficultés rencontrées</h4>
+                    <ul class="cs-list">
+                        <li>Implémenter le système OTP avec expiration et renouvellement sécurisé</li>
+                        <li>Gérer les sessions et la sécurité des requêtes SQL avec PDO</li>
+                        <li>Intégrer mPDF pour générer des factures PDF dynamiques formatées</li>
+                        <li>Concevoir un routeur MVC sans framework depuis zéro</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- RÉSULTAT -->
+            <div class="cs-block">
+                <div class="cs-block-icon" style="background:rgba(139,92,246,0.1);color:#c084fc">
+                    <i class="bx bx-trophy"></i>
+                </div>
+                <div class="cs-block-content">
+                    <h4>Résultat final</h4>
+                    <p>Plateforme e-commerce 100% fonctionnelle avec catalogue produits, panier, système de commandes complet, espace client, génération de factures PDF téléchargeables et interface admin pour gérer l'ensemble du site. Projet phare du BTS SIO SLAM.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===================== MODAL CONVERTISSEUR ===================== -->
+<div id="convertModal" class="lgm-overlay" onclick="if(event.target===this)closeConvertModal()">
+    <div class="lgm-inner" style="max-width:56rem">
+        <div class="lgm-header">
+            <div class="lgm-title">
+                <i class="bx bx-desktop"></i>
+                <span>MultiConvertisseur · Capture</span>
+            </div>
+            <button class="lgm-close" onclick="closeConvertModal()"><i class="bx bx-x"></i></button>
+        </div>
+        <div style="padding:2rem 2.4rem 2.4rem; display:flex; justify-content:center; background:#000;">
+            <img src="convertisseur.jpeg"
+                 alt="MultiConvertisseur screenshot"
+                 style="max-width:100%; max-height:70vh; object-fit:contain; border-radius:1rem; display:block;">
+        </div>
+    </div>
+</div>
+
+<!-- ===================== MODAL GALERIE LUMOURA ===================== -->
+<div id="lumouraGalleryModal" class="lgm-overlay" onclick="closeLumouraGalleryBg(event)">
+    <div class="lgm-inner">
+        <div class="lgm-header">
+            <div class="lgm-title">
+                <i class="bx bx-images"></i>
+                <span>Lumoura · Captures du site</span>
+            </div>
+            <button class="lgm-close" onclick="closeLumouraGallery()"><i class="bx bx-x"></i></button>
+        </div>
+        <div class="lgm-stage">
+            <button class="lgm-nav lgm-prev" onclick="lgmNav(-1)"><i class="bx bx-chevron-left"></i></button>
+            <div class="lgm-img-wrap">
+                <img id="lgmMainImg" src="" alt="">
+                <span id="lgmLabel" class="lgm-label"></span>
+            </div>
+            <button class="lgm-nav lgm-next" onclick="lgmNav(1)"><i class="bx bx-chevron-right"></i></button>
+        </div>
+        <div class="lgm-thumbs" id="lgmThumbs"></div>
+        <div class="lgm-counter"><span id="lgmCurrent">1</span> / <span id="lgmTotal">5</span></div>
+    </div>
+</div>
+
 <!-- FOOTER -->
 <footer class="footer">
     <p>Conçu & développé par <strong>Melissa Bestani</strong> · BTS SIO SLAM 2026</p>
@@ -725,6 +810,8 @@
         <a href="https://github.com/melissa703" target="_blank"><i class="bx bxl-github"></i></a>
         <a href="https://www.linkedin.com/in/melissa-bestani-8324b435a" target="_blank"><i class="bx bxl-linkedin"></i></a>
     </div>
+    <!-- Bouton easter egg caché -->
+    <span id="egg-trigger" onclick="launchMatrix()" title="🎮">·</span>
 </footer>
 
 <!-- BADGE DISPONIBILITÉ -->
