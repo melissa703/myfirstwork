@@ -8,19 +8,19 @@
 // TYPED.JS
 // ========================================
 // Typed — s'adapte au nouveau hero (.hero-typed) ou à l'ancien (.text)
-if (document.querySelector('.hero-typed')) {
-    new Typed('.hero-typed', {
-        strings: ['Web Developer', 'BTS SIO SLAM', 'Frontend Developer', 'UI/UX Enthusiast'],
-        typeSpeed: 80, backSpeed: 60, backDelay: 2000,
-        loop: true, showCursor: true, cursorChar: '|'
-    });
-} else if (document.querySelector('.text')) {
-    new Typed('.text', {
-        strings: ['Web Developer', 'BTS SIO Student', 'Frontend Developer', 'UI/UX Enthusiast'],
-        typeSpeed: 80, backSpeed: 60, backDelay: 2000,
-        loop: true, showCursor: true, cursorChar: '|'
-    });
-}
+var typed = new Typed('#typed-text', {
+  strings: [
+    "Développeuse Full-Stack",
+    "BTS SIO SLAM · INSTA Paris",
+    "Disponible en alternance · Sept. 2026",
+    "PHP · React · MySQL · API REST"
+  ],
+  typeSpeed: 60,
+  backSpeed: 30,
+  backDelay: 2000,
+  loop: true,
+  smartBackspace: true
+});
 
 // ========================================
 // SCROLL PROGRESS BAR
@@ -439,7 +439,7 @@ console.log('✅ Portfolio chargé — Melissa Bestani');
             requestAnimationFrame(update);
             observer.unobserve(el);
         });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.2 });
 
     counters.forEach(el => observer.observe(el));
 })();
@@ -488,3 +488,116 @@ console.log('✅ Portfolio chargé — Melissa Bestani');
     });
 })();
 
+
+// ========================================
+// LUMOURA GALLERY — SWITCH SCREENSHOT
+// ========================================
+function switchLumoura(thumb, src, label) {
+    const mainImg = document.getElementById('lumouraMainImg');
+    const labelEl = document.getElementById('lumouraLabel');
+    const thumbs  = document.querySelectorAll('.lumoura-thumb');
+
+    if (mainImg) {
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+            mainImg.src = src;
+            mainImg.alt = label;
+            mainImg.style.opacity = '1';
+        }, 150);
+    }
+    if (labelEl) labelEl.textContent = label;
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+}// Remplace ou complète la fonction switchLumoura dans script.js
+function switchLumoura(el, src, label) {
+    document.getElementById('lumouraMainImg').src = src;
+    document.getElementById('lumouraLabel').textContent = label;
+    document.querySelectorAll('.lumoura-thumb-item').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}// ========================================
+// CYBER NEWS TICKER (VRAIES ACTUALITÉS)
+// ========================================
+async function loadCyberNewsTicker() {
+    const tickerContent = document.getElementById('ticker-content');
+    if (!tickerContent) return;
+
+    tickerContent.innerHTML = `<div class="ticker-item"><span class="ticker-dot"></span>Chargement des actualités cybersécurité...</div>`;
+
+    const feeds = [
+        "https://feeds.feedburner.com/TheHackerNews",
+        "https://krebsonsecurity.com/feed/",
+        "https://www.darkreading.com/rss_simple.asp",
+        "https://www.zdnet.com/topic/security/rss.xml"
+    ];
+
+    let allItems = [];
+
+    for (let feed of feeds) {
+        try {
+            // Utilisation d'un proxy CORS fiable
+            const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(feed)}`;
+            const res = await fetch(proxy);
+            if (!res.ok) continue;
+            
+            const data = await res.json();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+
+            const items = xmlDoc.querySelectorAll("item");
+            items.forEach(item => {
+                const titleEl = item.querySelector("title");
+                const linkEl = item.querySelector("link");
+                if (titleEl && linkEl) {
+                    const title = titleEl.textContent.trim();
+                    const link = linkEl.textContent.trim();
+                    if (title.length > 15) {
+                        allItems.push({ title, link });
+                    }
+                }
+            });
+        } catch (err) {
+            console.warn("Feed échoué :", feed);
+        }
+    }
+
+    // Si aucun feed ne marche (problème réseau), on met des news récentes en fallback
+    if (allItems.length < 3) {
+        allItems = [
+            { title: "Nouvelles vulnérabilités critiques dans les frameworks web", link: "https://thehackernews.com" },
+            { title: "Attaques par supply chain en hausse en 2026", link: "https://krebsonsecurity.com" },
+            { title: "Mise à jour urgente : CVE-2026-XXXX", link: "https://www.darkreading.com" }
+        ];
+    }
+
+    // Construction du contenu (dupliqué pour boucle infinie fluide)
+    let html = '';
+    const displayItems = [...allItems, ...allItems]; // duplication
+
+    displayItems.forEach(item => {
+        html += `
+            <div class="ticker-item">
+                <span class="ticker-dot"></span>
+                <a href="${item.link}" target="_blank" rel="noopener noreferrer">
+                    ${item.title}
+                </a>
+            </div>
+        `;
+    });
+
+    tickerContent.innerHTML = html;
+
+    // Contrôles
+    const pauseBtn = document.getElementById('ticker-pause');
+    let paused = false;
+
+    pauseBtn?.addEventListener('click', () => {
+        paused = !paused;
+        tickerContent.style.animationPlayState = paused ? 'paused' : 'running';
+        pauseBtn.textContent = paused ? '▶' : '⏸';
+    });
+
+    document.getElementById('ticker-refresh')?.addEventListener('click', loadCyberNewsTicker);
+}
+
+// Lancer le ticker
+document.addEventListener('DOMContentLoaded', loadCyberNewsTicker);

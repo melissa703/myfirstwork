@@ -68,8 +68,9 @@
         <div class="hero-sub-row">
             <div class="hero-role-text">
                 <span class="role-label">// Je suis</span>
-                <span class="text hero-typed"></span>
+                <span class="text hero-typed" id="typed-text"></span>
             </div>
+            <p class="hero-pitch">Quadrilingue · Bac Maths · Prépa · Développeuse full-stack PHP/React disponible en alternance dès septembre 2026 sur Paris.</p>
             <div class="hero-cta">
                 <a href="#projects" class="btn-box">Voir mes projets</a>
                 <a href="CV_alternance2026.pdf" class="btn-outline" download>Télécharger CV</a>
@@ -207,72 +208,251 @@
 <!-- ===================== PROJECTS ===================== -->
 <section class="projects" id="projects">
     <h2><span>Mes</span> <span class="grad-text">Projets</span></h2>
+
     <div class="project-filters">
         <button class="filter-btn active" data-filter="all">Tous</button>
         <button class="filter-btn" data-filter="php">PHP</button>
         <button class="filter-btn" data-filter="javascript">JavaScript</button>
         <button class="filter-btn" data-filter="react">React</button>
         <button class="filter-btn" data-filter="mysql">MySQL</button>
+        <button class="filter-btn" data-filter="csharp">C#</button>
     </div>
+
     <div class="projects-container">
-        <div class="project-card" data-tags="php mysql javascript">
-            <div class="project-img-wrap">
-                <img src="090e0c87-c30f-411c-b88f-6b29898077d6.png" alt="Lumoura" class="project-img">
-                <div class="project-overlay">
-                    <a href="https://melissa703.github.io/myfirstportfolio/" target="_blank" class="overlay-btn">Demo →</a>
-                    <a href="https://github.com/melissa703" target="_blank" class="overlay-btn">GitHub →</a>
-                </div>
+
+        <!-- LUMOURA -->
+        <!-- LUMOURA — layout image gauche / texte droite -->
+<div class="project-card lumoura-card" data-tags="php mysql javascript">
+
+    <div class="lumoura-split">
+
+        <!-- COLONNE GAUCHE : galerie -->
+        <div class="lumoura-left">
+            <div class="lumoura-main-wrap">
+                <img src="090e0c87-c30f-411c-b88f-6b29898077d6.png"
+                     alt="Lumoura accueil"
+                     class="lumoura-main-img"
+                     id="lumouraMainImg">
+                <span class="lumoura-img-label" id="lumouraLabel">Accueil</span>
             </div>
-            <div class="project-body">
-                <div class="project-tags">
-                    <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">MVC</span><span class="tag">API REST</span><span class="tag">OTP</span><span class="tag">PDF</span>
+            <div class="lumoura-thumbs-row">
+                <div class="lumoura-thumb-item active"
+                     onclick="switchLumoura(this, '090e0c87-c30f-411c-b88f-6b29898077d6.png', 'Accueil')">
+                    <img src="090e0c87-c30f-411c-b88f-6b29898077d6.png" alt="Accueil">
+                    <span>Accueil</span>
                 </div>
-                <h3>Lumoura · E-commerce Luxe</h3>
-                <p>Plateforme full-stack de vente de parfums haut de gamme. Architecture MVC, API REST, authentification OTP, génération de factures PDF, interface admin complète.</p>
-                <div class="project-links">
-                    <a href="https://melissa703.github.io/myfirstportfolio/" target="_blank" class="btn-box">Demo Live</a>
-                    <a href="https://github.com/melissa703" target="_blank" class="btn-ghost"><i class="bx bxl-github"></i> Code</a>
+                <div class="lumoura-thumb-item"
+                     onclick="switchLumoura(this, 'lumoura-panier.png', 'Panier')">
+                    <img src="lumoura-panier.png" alt="Panier">
+                    <span>Panier</span>
+                </div>
+                <div class="lumoura-thumb-item"
+                     onclick="switchLumoura(this, 'lumoura-commandes.png', 'Commandes')">
+                    <img src="lumoura-commandes.png" alt="Commandes">
+                    <span>Commandes</span>
+                </div>
+                <div class="lumoura-thumb-item"
+                     onclick="switchLumoura(this, 'lumoura-admin.png', 'Admin')">
+                    <img src="lumoura-admin.png" alt="Admin">
+                    <span>Admin</span>
+                </div>
+                <div class="lumoura-thumb-item"
+                     onclick="switchLumoura(this, 'lumoura-adresse.png', 'API Adresse')">
+                    <img src="lumoura-adresse.png" alt="API Adresse">
+                    <span>API Adresse</span>
                 </div>
             </div>
         </div>
+
+        <!-- COLONNE DROITE : infos -->
+        <div class="lumoura-right">
+            <div class="project-tags">
+                <span class="tag">PHP</span>
+                <span class="tag">MySQL</span>
+                <span class="tag">MVC</span>
+                <span class="tag">API REST</span>
+                <span class="tag">OTP</span>
+                <span class="tag">mPDF</span>
+            </div>
+
+            <h3>Lumoura · E-commerce Luxe</h3>
+
+            <p>Plateforme e-commerce complète de parfums haut de gamme.
+               Authentification OTP, panier, suivi de commandes,
+               factures PDF, autocomplétion d'adresse,
+               interface administrateur.</p>
+
+            <div class="lumoura-features-inline">
+                <span><i class="bx bx-lock-alt"></i> Auth OTP</span>
+                <span><i class="bx bx-cart"></i> Panier & commandes</span>
+                <span><i class="bx bx-file"></i> Factures PDF</span>
+                <span><i class="bx bx-map"></i> API adresse</span>
+                <span><i class="bx bx-shield"></i> PDO sécurisé</span>
+                <span><i class="bx bx-cog"></i> Interface admin</span>
+            </div>
+
+            <div class="project-links">
+                <a href="https://github.com/melissa703/lumoura-ecommerce"
+                   target="_blank"
+                   class="btn-box">
+                    <i class="bx bxl-github"></i>
+                    Voir le projet
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+        <!-- MULTICONVERTISSEUR -->
+        <div class="project-card" data-tags="csharp">
+
+            <div class="project-img-wrap">
+                <img src="images/convertisseur.jpeg"
+                     alt="MultiConvertisseur"
+                     class="project-img">
+
+                <div class="project-overlay">
+                    <a href="https://github.com/melissa703/convertisseur-bts-sio"
+                       target="_blank"
+                       class="overlay-btn">
+                        GitHub →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-body">
+
+                <div class="project-tags">
+                    <span class="tag">C#</span>
+                    <span class="tag">.NET</span>
+                    <span class="tag">Windows Forms</span>
+                </div>
+
+                <h3>MultiConvertisseur</h3>
+
+                <p>
+                    Application bureautique développée en C# permettant
+                    d'effectuer plusieurs types de conversions à travers
+                    une interface graphique intuitive.
+                    Ce projet a renforcé mes compétences en programmation
+                    orientée objet, gestion des événements et développement
+                    d'applications Windows.
+                </p>
+
+                <div class="lumoura-features-inline">
+                    <span><i class="bx bx-calculator"></i> Conversions</span>
+                    <span><i class="bx bx-desktop"></i> Interface GUI</span>
+                    <span><i class="bx bx-code-alt"></i> C# .NET</span>
+                    <span><i class="bx bx-cog"></i> Événements</span>
+                </div>
+
+                <div class="project-links">
+                    <a href="https://github.com/melissa703/convertisseur-bts-sio"
+                       target="_blank"
+                       class="btn-box">
+                        <i class="bx bxl-github"></i>
+                        Voir le projet
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TODO APP -->
         <div class="project-card" data-tags="javascript">
+
             <div class="project-img-wrap">
-                <img src="https://cdn.aptoide.com/imgs/f/a/2/fa282c9e3fab018c5534944381d5424f_fgraphic.png" alt="To-Do App" class="project-img">
+                <img src="https://cdn.aptoide.com/imgs/f/a/2/fa282c9e3fab018c5534944381d5424f_fgraphic.png"
+                     alt="To-Do App"
+                     class="project-img">
+
                 <div class="project-overlay">
-                    <a href="https://melissa703.github.io/myminiapp/" target="_blank" class="overlay-btn">Demo →</a>
+                    <a href="https://melissa703.github.io/myminiapp/"
+                       target="_blank"
+                       class="overlay-btn">
+                        Demo →
+                    </a>
                 </div>
             </div>
+
             <div class="project-body">
+
                 <div class="project-tags">
-                    <span class="tag">JavaScript</span><span class="tag">HTML</span><span class="tag">CSS</span>
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">HTML</span>
+                    <span class="tag">CSS</span>
                 </div>
+
                 <h3>To-Do List App</h3>
-                <p>Application de gestion de tâches en JavaScript vanilla. Ajout, suppression, marquage des tâches réalisées avec persistance locale.</p>
+
+                <p>
+                    Application de gestion de tâches permettant
+                    l'ajout, la suppression et le suivi des tâches
+                    avec sauvegarde locale.
+                </p>
+
                 <div class="project-links">
-                    <a href="https://melissa703.github.io/myminiapp/" target="_blank" class="btn-box">Demo Live</a>
+                    <a href="https://melissa703.github.io/myminiapp/"
+                       target="_blank"
+                       class="btn-box">
+                        Demo Live
+                    </a>
                 </div>
             </div>
         </div>
+
+        <!-- PORTFOLIO -->
         <div class="project-card" data-tags="javascript react">
+
             <div class="project-img-wrap">
-                <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80" alt="Portfolio" class="project-img">
+                <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80"
+                     alt="Portfolio"
+                     class="project-img">
+
                 <div class="project-overlay">
                     <a href="#Home" class="overlay-btn">Ce site →</a>
-                    <a href="https://github.com/melissa703" target="_blank" class="overlay-btn">GitHub →</a>
+
+                    <a href="https://github.com/melissa703"
+                       target="_blank"
+                       class="overlay-btn">
+                        GitHub →
+                    </a>
                 </div>
             </div>
+
             <div class="project-body">
+
                 <div class="project-tags">
-                    <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+                    <span class="tag">HTML</span>
+                    <span class="tag">CSS</span>
+                    <span class="tag">JavaScript</span>
                 </div>
+
                 <h3>Portfolio Personnel</h3>
-                <p>Ce portfolio — animations CSS, typed.js, thème sombre/clair, curseur personnalisé, compteurs animés et design responsive premium.</p>
+
+                <p>
+                    Portfolio professionnel responsive intégrant animations,
+                    mode sombre/clair, filtres dynamiques, curseur personnalisé
+                    et présentation détaillée des projets réalisés.
+                </p>
+
                 <div class="project-links">
-                    <a href="https://melissa703.github.io/myfirstwork/" target="_blank" class="btn-box">Demo Live</a>
-                    <a href="https://github.com/melissa703" target="_blank" class="btn-ghost"><i class="bx bxl-github"></i> Code</a>
+                    <a href="https://melissa703.github.io/myfirstwork/"
+                       target="_blank"
+                       class="btn-box">
+                        Demo Live
+                    </a>
+
+                    <a href="https://github.com/melissa703"
+                       target="_blank"
+                       class="btn-ghost">
+                        <i class="bx bxl-github"></i>
+                        GitHub
+                    </a>
                 </div>
             </div>
         </div>
+
     </div>
 </section>
 
@@ -473,7 +653,7 @@
 <section id="technology-watch" class="tech-watch">
     <div class="section-card">
         <h2><span>Veille</span> <span class="grad-text">Technologique</span></h2>
-        <p>Je suis activement l'actualité cybersécurité via <a href="https://www.google.com/alerts" target="_blank">Google Alerts</a> depuis décembre 2025.</p>
+        <p>Je suis activement l'actualité cybersécurité via <a href="https://www.google.com/alerts" target="_blank">Google Alerts</a> depuis Mai 2026.</p>
         <p><strong>Sujets surveillés :</strong></p>
         <ul>
             <li>Menaces & attaques cybersécurité</li>
@@ -485,17 +665,23 @@
         <div class="alert-screenshot-section">
             <h3>📧 Preuve Google Alerts</h3>
             <p class="screenshot-description">Capture d'écran de ma boîte Gmail montrant les alertes cybersécurité quotidiennes reçues via Google Alerts.</p>
-            <a href="Capture d'écran-mail.google.com.jpeg" target="_blank" class="view-screenshot-btn">Voir la capture</a>
+            <a href="Capture -écran_.jpeg" target="_blank" class="view-screenshot-btn">Voir la capture</a>
         </div>
-        <div style="margin-top:4rem;">
-            <h3 style="font-size:2rem;margin-bottom:1.5rem;color:var(--light);">📡 Flux d'actualités cybersécurité en direct</h3>
-            <div class="rss-banner" role="region" aria-label="Fil d'actualités">
-                <div id="rssViewport" class="rss-viewport" tabindex="0" aria-live="polite"></div>
-                <div class="rss-controls">
-                    <button id="refreshBtn" title="Actualiser">🔄</button>
-                    <button id="pauseBtn" title="Pause">⏸</button>
-                </div>
-            </div>
+        <!-- ===================== FLUX RSS CONTINU (BFM TV STYLE) ===================== -->
+<section class="rss-ticker-section">
+    <div class="ticker-container">
+        <div class="ticker-label">
+            <span>📡 CYBER NEWS LIVE</span>
+        </div>
+        <div class="ticker-wrapper">
+            <div id="ticker-content" class="ticker-content"></div>
+        </div>
+        <div class="ticker-controls">
+            <button id="ticker-pause" title="Pause/Play">⏸</button>
+            <button id="ticker-refresh" title="Rafraîchir">🔄</button>
+        </div>
+    </div>
+</section>
         </div>
     </div>
 </section>
