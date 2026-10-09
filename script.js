@@ -7,11 +7,12 @@
 // ========================================
 // TYPED.JS
 // ========================================
-var typed = new Typed('#typed-text', {
+if (typeof Typed !== 'undefined') {
+  var typed = new Typed('#typed-text', {
   strings: [
     "Développeuse Full-Stack",
     "BTS SIO SLAM · INSTA Paris",
-    "Disponible en alternance · Sept. 2026",
+    "Disponible en alternance",
     "PHP · React · MySQL · API REST"
   ],
   typeSpeed: 60,
@@ -19,7 +20,8 @@ var typed = new Typed('#typed-text', {
   backDelay: 2000,
   loop: true,
   smartBackspace: true
-});
+  });
+}
 
 // ========================================
 // SCROLL PROGRESS BAR
@@ -53,6 +55,7 @@ if (menuToggle && navbar) {
     menuToggle.addEventListener('click', () => {
         const isOpen = navbar.classList.toggle('mobile-open');
         menuToggle.classList.toggle('open', isOpen);
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
     // Fermer le menu au clic sur un lien
@@ -64,28 +67,13 @@ if (menuToggle && navbar) {
     });
 }
 
-// ========================================
-// SMOOTH SCROLL
-// ========================================
-document.querySelectorAll('.navbar a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        if (targetSection) {
-            window.scrollTo({
-                top: targetSection.offsetTop - 80,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
+// (défilement fluide géré par CSS : scroll-behavior + scroll-margin-top)
 
 // ========================================
 // THEME TOGGLE (dark / light)
 // ========================================
 const themeToggle = document.getElementById('theme-toggle');
-let isLightMode = localStorage.getItem('theme') === 'light';
+let isLightMode = (() => { try { const t = localStorage.getItem('theme'); if (t) return t === 'light'; } catch (e) {} return window.matchMedia('(prefers-color-scheme: light)').matches; })();
 
 function applyTheme() {
     if (isLightMode) {
@@ -104,7 +92,7 @@ applyTheme();
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         isLightMode = !isLightMode;
-        localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+        try { localStorage.setItem('theme', isLightMode ? 'light' : 'dark'); } catch (e) {}
         applyTheme();
     });
 }
@@ -152,8 +140,13 @@ function createColorPicker() {
         }
     });
 
-    const saved = localStorage.getItem('portfolioGradient');
-    if (saved) applyGradient(JSON.parse(saved));
+    try {
+        const saved = JSON.parse(localStorage.getItem('portfolioGradient') || 'null');
+        if (saved && saved.primary && saved.gradient) {
+            applyGradient(saved);
+            options.forEach(o => o.classList.toggle('active', o.dataset.primary === saved.primary));
+        }
+    } catch (e) {}
 
     options.forEach(opt => {
         opt.addEventListener('click', function() {
@@ -176,7 +169,6 @@ function applyGradient(config) {
     root.style.setProperty('--primary', config.primary);
     root.style.setProperty('--secondary', config.secondary);
     root.style.setProperty('--gradient', `linear-gradient(${config.gradient})`);
-    root.style.setProperty('--gradient-2', `linear-gradient(${config.gradient})`);
 }
 
 createColorPicker();
@@ -227,36 +219,68 @@ function animateSkillBars() {
 // ACTIVE NAV ON SCROLL
 // ========================================
 function updateActiveNav() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.navbar a');
+    const links = [...document.querySelectorAll('.navbar a[href^="#"]')];
     let current = '';
 
-    sections.forEach(section => {
-        if (window.scrollY >= section.offsetTop - 120) {
-            current = section.getAttribute('id');
+    links.forEach(link => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target && target.getBoundingClientRect().top <= 140) {
+            current = link.getAttribute('href');
         }
     });
 
-    navLinks.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    // En bas de page, la dernière section (Contact) doit être active
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        current = links[links.length - 1].getAttribute('href');
+    }
+
+    links.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === current);
     });
 }
 
 window.addEventListener('scroll', updateActiveNav, { passive: true });
+window.addEventListener('load', updateActiveNav);
 
 // ========================================
 // 3D TILT SUR LES CARDS
 // ========================================
-function add3DTilt(selector) {
+function add3DTilt(selector, maxDeg = 8) {
+    // Désactivé sur tactile / mobile et si l'utilisateur réduit les animations
+    const canTilt = matchMedia('(hover: hover) and (pointer: fine)').matches &&
+                    !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!canTilt) return;
+
     document.querySelectorAll(selector).forEach(card => {
+        card.classList.add('tilt-ready');
+
+        const glare = document.createElement('span');
+        glare.className = 'tilt-glare';
+        glare.setAttribute('aria-hidden', 'true');
+        card.appendChild(glare);
+
+        let raf = null;
+
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width  - 0.5) * 16;
-            const y = ((e.clientY - rect.top)  / rect.height - 0.5) * 16;
-            card.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg) scale(1.03)`;
+            const px = (e.clientX - rect.left) / rect.width;   // 0 → 1
+            const py = (e.clientY - rect.top)  / rect.height;  // 0 → 1
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(() => {
+                card.classList.add('is-tilting');
+                card.style.transform =
+                    `perspective(1000px) rotateX(${(0.5 - py) * maxDeg * 2}deg) rotateY(${(px - 0.5) * maxDeg * 2}deg) scale3d(1.03,1.03,1.03)`;
+                glare.style.background =
+                    `radial-gradient(circle at ${px * 100}% ${py * 100}%, rgba(255,255,255,0.28), transparent 55%)`;
+                glare.style.opacity = '1';
+            });
         });
+
         card.addEventListener('mouseleave', () => {
+            cancelAnimationFrame(raf);
+            card.classList.remove('is-tilting');
             card.style.transform = '';
+            glare.style.opacity = '0';
         });
     });
 }
@@ -324,7 +348,7 @@ function initProjectFilters() {
 
             cards.forEach(card => {
                 const tags = card.dataset.tags || '';
-                const visible = filter === 'all' || tags.includes(filter);
+                const visible = filter === 'all' || tags.split(/\s+/).includes(filter);
                 card.classList.toggle('hidden', !visible);
             });
         });
@@ -334,12 +358,14 @@ function initProjectFilters() {
 // ========================================
 // EMAILJS — CONTACT FORM
 // ========================================
-emailjs.init('lF2CUuV8KmlUSMEN1');
+if (typeof emailjs !== 'undefined') emailjs.init('lF2CUuV8KmlUSMEN1');
 
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        if (contactForm.website && contactForm.website.value) return; // anti-spam (honeypot)
+        if (typeof emailjs === 'undefined') { alert("Le service d'envoi est indisponible. Écris-moi directement par e-mail."); return; }
 
         const name    = document.getElementById('name').value.trim();
         const email   = document.getElementById('email').value.trim();
@@ -390,17 +416,13 @@ document.addEventListener('DOMContentLoaded', () => {
     animateSkillBars();
     add3DTilt('.service-box');
     add3DTilt('.project-card');
+    add3DTilt('.veille-method-card', 6);
+    add3DTilt('.veille-source', 6);
     magneticButtons();
     createScrollTop();
     initProjectFilters();
 });
 
-// Légère animation d'entrée de page
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.6s ease';
-    requestAnimationFrame(() => { document.body.style.opacity = '1'; });
-});
 
 console.log('✅ Portfolio chargé — Melissa Bestani');
 
@@ -411,6 +433,7 @@ console.log('✅ Portfolio chargé — Melissa Bestani');
     const cursor = document.getElementById('custom-cursor');
     const trail  = document.getElementById('cursor-trail');
     if (!cursor || !trail) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
     let mouseX = 0, mouseY = 0;
 
@@ -514,116 +537,7 @@ console.log('✅ Portfolio chargé — Melissa Bestani');
 })();
 
 
-// ========================================
-// LUMOURA GALLERY — SWITCH SCREENSHOT
-// ========================================
-function switchLumoura(thumb, src, label) {
-    const mainImg = document.getElementById('lumouraMainImg');
-    const labelEl = document.getElementById('lumouraLabel');
-    const thumbs  = document.querySelectorAll('.lumoura-thumb');
-
-    if (mainImg) {
-        mainImg.style.opacity = '0';
-        setTimeout(() => {
-            mainImg.src = src;
-            mainImg.alt = label;
-            mainImg.style.opacity = '1';
-        }, 150);
-    }
-    if (labelEl) labelEl.textContent = label;
-    thumbs.forEach(t => t.classList.remove('active'));
-    thumb.classList.add('active');
-}
-
-function switchLumoura(el, src, label) {
-    document.getElementById('lumouraMainImg').src = src;
-    document.getElementById('lumouraLabel').textContent = label;
-    document.querySelectorAll('.lumoura-thumb-item').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-}
-
-// ========================================
-// CYBER NEWS TICKER (VRAIES ACTUALITÉS)
-// ========================================
-async function loadCyberNewsTicker() {
-    const tickerContent = document.getElementById('ticker-content');
-    if (!tickerContent) return;
-
-    tickerContent.innerHTML = `<div class="ticker-item"><span class="ticker-dot"></span>Chargement des actualités cybersécurité...</div>`;
-
-    const feeds = [
-        "https://feeds.feedburner.com/TheHackerNews",
-        "https://krebsonsecurity.com/feed/",
-        "https://www.darkreading.com/rss_simple.asp",
-        "https://www.zdnet.com/topic/security/rss.xml"
-    ];
-
-    let allItems = [];
-
-    for (let feed of feeds) {
-        try {
-            const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(feed)}`;
-            const res = await fetch(proxy);
-            if (!res.ok) continue;
-
-            const data = await res.json();
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(data.contents, "text/xml");
-
-            const items = xmlDoc.querySelectorAll("item");
-            items.forEach(item => {
-                const titleEl = item.querySelector("title");
-                const linkEl = item.querySelector("link");
-                if (titleEl && linkEl) {
-                    const title = titleEl.textContent.trim();
-                    const link = linkEl.textContent.trim();
-                    if (title.length > 15) {
-                        allItems.push({ title, link });
-                    }
-                }
-            });
-        } catch (err) {
-            console.warn("Feed échoué :", feed);
-        }
-    }
-
-    if (allItems.length < 3) {
-        allItems = [
-            { title: "Nouvelles vulnérabilités critiques dans les frameworks web", link: "https://thehackernews.com" },
-            { title: "Attaques par supply chain en hausse en 2026", link: "https://krebsonsecurity.com" },
-            { title: "Mise à jour urgente : CVE-2026-XXXX", link: "https://www.darkreading.com" }
-        ];
-    }
-
-    let html = '';
-    const displayItems = [...allItems, ...allItems];
-
-    displayItems.forEach(item => {
-        html += `
-            <div class="ticker-item">
-                <span class="ticker-dot"></span>
-                <a href="${item.link}" target="_blank" rel="noopener noreferrer">
-                    ${item.title}
-                </a>
-            </div>
-        `;
-    });
-
-    tickerContent.innerHTML = html;
-
-    const pauseBtn = document.getElementById('ticker-pause');
-    let paused = false;
-
-    pauseBtn?.addEventListener('click', () => {
-        paused = !paused;
-        tickerContent.style.animationPlayState = paused ? 'paused' : 'running';
-        pauseBtn.textContent = paused ? '▶' : '⏸';
-    });
-
-    document.getElementById('ticker-refresh')?.addEventListener('click', loadCyberNewsTicker);
-}
-
-document.addEventListener('DOMContentLoaded', loadCyberNewsTicker);
+// Ticker veille : voir veille-ticker.js
 
 /* =============================================
    MODAL GALERIE LUMOURA — captures du site
@@ -826,3 +740,12 @@ function closeCaseStudy() {
 
     window.launchMatrix = launchMatrix;
 })();
+
+/* Echap ferme aussi la case study et la capture du convertisseur */
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    [['caseStudyModal', closeCaseStudy], ['convertModal', closeConvertModal]].forEach(([id, fn]) => {
+        const m = document.getElementById(id);
+        if (m && m.classList.contains('open')) fn();
+    });
+});

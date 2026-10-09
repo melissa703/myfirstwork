@@ -1,0 +1,102 @@
+/* veille.css — à charger APRÈS style.css */
+
+/* Fondu d'entrée en CSS pur (remplace l'ancien JS qui faisait clignoter la page) */
+@keyframes pageIn { from { opacity: 0; } }
+body { animation: pageIn 0.5s ease; }
+
+/* ---------- Veille technologique ---------- */
+.tech-watch .vl-subject { font-size: 1.8rem; line-height: 1.6; max-width: 80ch; }
+.tech-watch .vl-subject strong { color: var(--primary-soft); }
+
+.tech-watch .vl-h3 {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    margin: 4rem 0 1.4rem;
+    color: var(--light);
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+
+.vl-question {
+    margin: 2.4rem 0 0;
+    padding: 2rem 2.4rem;
+    border-left: 4px solid var(--primary);
+    background: var(--card-bg);
+    border-radius: 0 1.2rem 1.2rem 0;
+    font-size: 1.8rem; line-height: 1.6;
+    color: var(--light);
+}
+.vl-q-label { display: block; font-size: 1.3rem; color: var(--primary-soft); margin-bottom: 0.6rem; font-weight: 600; }
+
+.vl-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1.4rem; }
+.vl-step {
+    padding: 1.8rem; border: 1px solid var(--card-border);
+    background: var(--card-bg); border-radius: 1.2rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+    font-size: 1.5rem; line-height: 1.5; color: var(--gray2);
+}
+.vl-step strong { color: var(--light); font-size: 1.7rem; font-family: var(--font-display); }
+
+.vl-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 1rem; padding: 0; margin: 0 0 2.4rem; }
+.vl-chips code, .vl-roadmap code {
+    font-family: ui-monospace, Consolas, monospace; font-size: 1.35rem;
+    padding: 0.5rem 1.1rem; border-radius: 0.8rem;
+    background: var(--card-bg); border: 1px solid var(--card-border); color: var(--primary-soft);
+}
+.vl-roadmap code { padding: 0.15rem 0.6rem; }
+
+.vl-table-wrap { overflow-x: auto; border: 1px solid var(--card-border); border-radius: 1.2rem; }
+.vl-table { width: 100%; border-collapse: collapse; min-width: 64rem; font-size: 1.5rem; line-height: 1.5; }
+.vl-table th, .vl-table td { padding: 1.3rem 1.6rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--card-border); }
+.vl-table thead th { background: var(--card-bg); color: var(--light); font-family: var(--font-display); }
+.vl-table td:first-child { color: var(--light); font-weight: 600; }
+.vl-table td { color: var(--gray2); }
+.vl-table tbody tr:last-child td { border-bottom: 0; }
+
+.vl-fiches { display: grid; grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr)); gap: 1.6rem; }
+.vl-fiche {
+    padding: 2rem; border: 1px solid var(--card-border); background: var(--card-bg);
+    border-radius: 1.4rem; display: flex; flex-direction: column; gap: 0.9rem;
+    font-size: 1.5rem; line-height: 1.55; color: var(--gray2);
+}
+.vl-fiche h4 { font-family: var(--font-display); font-size: 1.8rem; color: var(--light); margin: 0; }
+.vl-fiche-meta { display: flex; gap: 0.8rem; flex-wrap: wrap; font-size: 1.25rem; }
+.vl-fiche-meta span { padding: 0.25rem 0.9rem; border-radius: 99rem; border: 1px solid var(--card-border); color: var(--primary-soft); }
+.vl-fiche b { color: var(--light); }
+.vl-fiche a { color: var(--primary-soft); text-decoration: underline; text-underline-offset: 3px; margin-top: auto; }
+
+.vl-roadmap { padding-left: 2.4rem; display: grid; gap: 1rem; font-size: 1.6rem; line-height: 1.6; color: var(--gray2); }
+.vl-tag { font-family: var(--font-body); font-size: 1.2rem; font-weight: 500; padding: 0.3rem 1rem; border-radius: 99rem; border: 1px dashed var(--primary); color: var(--primary-soft); }
+
+/* Ticker : vitesse adaptée au nombre d'articles, source visible */
+.ticker-content { animation-duration: var(--ticker-duration, 45s); }
+.ticker-src { font-weight: 700; margin-right: 0.6rem; opacity: 0.75; }
+.vl-status { font-size: 1.3rem; color: var(--gray2); margin: 1rem 0 0; }
+
+@media (max-width: 600px) {
+    .vl-question { padding: 1.6rem; font-size: 1.6rem; }
+    .tech-watch .vl-h3 { font-size: 1.9rem; }
+}
+
+.vl-why { display: grid; gap: 1rem; padding-left: 2.4rem; font-size: 1.6rem; line-height: 1.6; color: var(--gray2); }
+.vl-why strong { color: var(--light); }
+
+/* Corrige les listes héritées de .section-card ul (centrage, flèches, retrait) */
+.section-card ul.vl-chips {
+    max-width: none; margin: 0 0 2.4rem; padding: 0;
+    display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 1rem;
+}
+.section-card ul.vl-chips li { padding: 0; }
+.section-card ul.vl-chips li::before { content: none; }
+.section-card ul.vl-why { max-width: none; margin: 0 0 1rem; padding: 0; gap: 0.4rem; }
+
+/* Chaîne d'automatisation + preuve */
+.vl-flow { list-style: none; padding: 0; margin: 1.6rem 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1.4rem; counter-reset: flow; }
+.vl-flow li { counter-increment: flow; padding: 1.8rem; border: 1px solid var(--card-border); background: var(--card-bg); border-radius: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; font-size: 1.5rem; line-height: 1.5; color: var(--gray2); }
+.vl-flow li::before { content: counter(flow); font-family: var(--font-display); font-size: 2.2rem; color: var(--primary-soft); }
+.vl-flow strong { color: var(--light); font-family: var(--font-display); font-size: 1.7rem; }
+.vl-flow-tag { align-self: flex-start; font-size: 1.2rem; padding: 0.25rem 1rem; border-radius: 99rem; border: 1px solid var(--card-border); }
+.vl-flow-tag.auto { color: #4ade80; border-color: rgba(74, 222, 128, 0.4); }
+.vl-flow-tag.manual { color: var(--primary-soft); border-color: var(--primary); }
+.vl-proof { margin: 2.4rem 0 0; }
+.vl-proof img { width: 100%; max-width: 90rem; border-radius: 1.2rem; border: 1px solid var(--card-border); display: block; }
+.vl-proof figcaption { font-size: 1.35rem; color: var(--gray2); margin-top: 0.8rem; }

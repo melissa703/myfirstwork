@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Melissa Bestani | Développeuse Web · BTS SIO SLAM</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="cors.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
@@ -14,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main">Aller au contenu</a>
 
 <!-- BARRE DE PROGRESSION SCROLL -->
 <div id="scroll-progress"></div>
@@ -23,10 +23,10 @@
 <div id="cursor-trail"></div>
 
 <!-- THEME TOGGLE -->
-<button id="theme-toggle" title="Changer le thème"><i class="bx bx-sun"></i></button>
+<button id="theme-toggle" title="Changer le thème" aria-label="Changer le thème clair/sombre"><i class="bx bx-sun"></i></button>
 
 <!-- MENU HAMBURGER MOBILE -->
-<button id="menu-toggle" class="menu-toggle" title="Menu">
+<button id="menu-toggle" class="menu-toggle" title="Menu" aria-label="Ouvrir le menu" aria-controls="navbar" aria-expanded="false">
     <span></span><span></span><span></span>
 </button>
 
@@ -42,11 +42,13 @@
         <a href="#tech-stack" style="--i:6">Tech Stack</a>
         <a href="#certifications" style="--i:7">Certifs</a>
         <a href="#skills" style="--i:8">Skills</a>
-        <a href="#Contact" style="--i:9">Contact</a>
+        <a href="#technology-watch" style="--i:9">Veille</a>
+        <a href="#Contact" style="--i:10">Contact</a>
     </nav>
 </header>
 
 <!-- ===================== HOME — HERO CENTRÉ ===================== -->
+<main id="main">
 <section class="Home" id="Home">
     <div class="hero-noise"></div>
     <div class="hero-grid-lines"></div>
@@ -57,13 +59,14 @@
             BTS SIO · Option SLAM · INSTA Paris
         </div>
 
+        <h1 class="sr-only">Melissa Bestani, développeuse web BTS SIO SLAM</h1>
         <div class="hero-name-wrap">
-            <h1 class="hero-firstname">BESTANI</h1>
+            <span class="hero-firstname">BESTANI</span>
             <div class="hero-img-inline">
                 <img src="images/image.png" alt="Melissa Bestani">
                 <div class="hero-img-glow"></div>
             </div>
-            <h1 class="hero-lastname">MELISSA</h1>
+            <span class="hero-lastname">MELISSA</span>
         </div>
 
         <div class="hero-sub-row">
@@ -71,7 +74,7 @@
                 <span class="role-label">// Je suis</span>
                 <span class="text hero-typed" id="typed-text"></span>
             </div>
-            <p class="hero-pitch">Quadrilingue · Bac Maths · Prépa · Développeuse full-stack PHP/React disponible en alternance dès septembre 2026 sur Paris.</p>
+            <p class="hero-pitch">Quadrilingue · Bac Maths · Prépa · Développeuse full-stack PHP/React disponible en alternance sur Paris.</p>
             <div class="hero-cta">
                 <a href="#projects" class="btn-box">Voir mes projets</a>
                 <a href="CV_alternance2026.pdf" class="btn-outline" download>Télécharger CV</a>
@@ -79,9 +82,9 @@
         </div>
 
         <div class="hero-socials">
-            <a href="https://www.linkedin.com/in/melissa-bestani-8324b435a" target="_blank" style="--i:7"><i class="bx bxl-linkedin"></i></a>
-            <a href="https://github.com/melissa703" target="_blank" style="--i:8"><i class="bx bxl-github"></i></a>
-            <a href="https://www.instagram.com/meelissa_sissa__" target="_blank" style="--i:9"><i class="bx bxl-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/melissa-bestani-8324b435a" target="_blank" style="--i:7" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bx bxl-linkedin"></i></a>
+            <a href="https://github.com/melissa703" target="_blank" style="--i:8" rel="noopener noreferrer" aria-label="GitHub"><i class="bx bxl-github"></i></a>
+            <a href="https://www.instagram.com/meelissa_sissa__" target="_blank" style="--i:9" rel="noopener noreferrer" aria-label="Instagram"><i class="bx bxl-instagram"></i></a>
         </div>
     </div>
 
@@ -96,7 +99,7 @@
     <div class="about-inner">
         <div class="about-left">
             <h2><span>À propos</span> <span class="grad-text">de moi</span></h2>
-            <p>Étudiante en 1 ère année de BTS SIO option SLAM à l'INSTA Paris. Titulaire d'un baccalauréat scientifique (Mathématiques) et de deux années de classes préparatoires en Algérie.</p>
+            <p>Étudiante en 2e année de BTS SIO option SLAM à l'INSTA Paris. Titulaire d'un baccalauréat scientifique (Mathématiques) et de deux années de classes préparatoires en Algérie.</p>
             <p>Passionnée par le développement full-stack, j'ai conçu <strong>Lumoura</strong>, une plateforme e-commerce de luxe complète avec architecture MVC, API REST, authentification OTP et génération de factures PDF.</p>
             <a href="#Contact" class="btn-box">Me contacter</a>
         </div>
@@ -170,13 +173,22 @@
         <div class="timeline-item left">
             <div class="timeline-dot"></div>
             <div class="timeline-card">
+                <span class="timeline-date">Sept. – Déc. 2026</span>
+                <h3>Stage · Développement front-end</h3>
+                <p class="timeline-place">Wave Transport · Nanterre</p>
+                <p>Conception de l'interface d'une application de gestion de flotte et de livreurs (WeWeb) : design premium, intégration des écrans et bonnes pratiques de sécurité.</p>
+            </div>
+        </div>
+        <div class="timeline-item right">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
                 <span class="timeline-date">2025 – 2026</span>
                 <h3>BTS SIO · Option SLAM</h3>
                 <p class="timeline-place">INSTA Paris</p>
                 <p>Formation en développement d'applications web et logicielles. PHP, MySQL, JavaScript, React, architecture MVC.</p>
             </div>
         </div>
-        <div class="timeline-item right">
+        <div class="timeline-item left">
             <div class="timeline-dot"></div>
             <div class="timeline-card">
                 <span class="timeline-date">Jan – Mars 2026</span>
@@ -185,7 +197,7 @@
                 <p>Développement d'une boutique e-commerce complète. Intégration front-end, back-end PHP/MySQL, gestion des commandes.</p>
             </div>
         </div>
-        <div class="timeline-item left">
+        <div class="timeline-item right">
             <div class="timeline-dot"></div>
             <div class="timeline-card">
                 <span class="timeline-date">2025 – 2026</span>
@@ -194,7 +206,7 @@
                 <p>Plateforme e-commerce de parfums de luxe : architecture MVC, API REST, authentification OTP, génération PDF, interface admin complète.</p>
             </div>
         </div>
-        <div class="timeline-item right">
+        <div class="timeline-item left">
             <div class="timeline-dot"></div>
             <div class="timeline-card">
                 <span class="timeline-date">2022 – 2024</span>
@@ -214,15 +226,16 @@
         <button class="filter-btn active" data-filter="all">Tous</button>
         <button class="filter-btn" data-filter="php">PHP</button>
         <button class="filter-btn" data-filter="javascript">JavaScript</button>
-        <button class="filter-btn" data-filter="react">React</button>
         <button class="filter-btn" data-filter="mysql">MySQL</button>
         <button class="filter-btn" data-filter="csharp">C#</button>
+        <button class="filter-btn" data-filter="bloc2">Bloc 2 · Développement</button>
+        <button class="filter-btn" data-filter="bloc3">Bloc 3 · Cybersécurité</button>
     </div>
 
     <div class="projects-container">
 
         <!-- LUMOURA -->
-        <div class="project-card lumoura-card" data-tags="php mysql javascript">
+        <div class="project-card lumoura-card" data-tags="php mysql javascript bloc2 bloc3">
             <div class="lumoura-split">
                 <!-- COLONNE GAUCHE : image + bouton captures amélioré -->
                 <div class="lumoura-left">
@@ -230,8 +243,7 @@
                         <img src="lumoura-accueil.png"
                              alt="Lumoura accueil"
                              class="lumoura-main-img"
-                             id="lumouraMainImg"
-                             onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683702?w=800&q=80'">
+                             id="lumouraMainImg">
                         <span class="lumoura-img-label" id="lumouraLabel">Accueil</span>
                         <!-- Overlay cliquable sur l'image pour ouvrir la galerie -->
                         <div class="lumoura-img-overlay" onclick="openLumouraGallery()">
@@ -270,12 +282,12 @@
                     <div class="project-links">
                         <a href="https://github.com/melissa703/lumoura-ecommerce"
                            target="_blank"
-                           class="btn-box">
+                           class="btn-box" rel="noopener noreferrer" aria-label="GitHub">
                             <i class="bx bxl-github"></i>
                         </a>
                         <a href="https://github.com/melissa703/lumoura-ecommerce"
                            target="_blank"
-                           class="btn-ghost">
+                           class="btn-ghost" rel="noopener noreferrer">
                             <i class="bx bx-link-external"></i>
                             Voir le projet
                         </a>
@@ -288,8 +300,33 @@
             </div>
         </div>
 
+        <!-- LUMOURA SAV (C#) -->
+        <div class="project-card" data-tags="csharp bloc2 bloc3">
+            <div class="project-img-wrap">
+                <img src="images/sav-tickets.png" alt="Application Lumoura SAV : liste des réclamations" class="project-img project-img--top" loading="lazy">
+                <div class="project-overlay">
+                    <a href="images/sav-connexion.png" target="_blank" rel="noopener noreferrer" class="overlay-btn">Connexion →</a>
+                    <a href="images/sav-tickets.png" target="_blank" rel="noopener noreferrer" class="overlay-btn">Espace SAV →</a>
+                </div>
+            </div>
+            <div class="project-body">
+                <div class="project-tags">
+                    <span class="tag">C#</span><span class="tag">WinForms</span><span class="tag">SQLite</span><span class="tag">En cours</span>
+                </div>
+                <h3>Lumoura SAV · Client lourd</h3>
+                <p><strong>Problématique :</strong> permettre aux clients de la boutique Lumoura de déclarer et suivre leurs réclamations après achat, de façon sécurisée.<br>
+                <strong>Briques :</strong> C# / WinForms, SQLite (Microsoft.Data.Sqlite), architecture en couches (interface, services d'authentification et de tickets, accès aux données).<br>
+                <strong>Réalisé :</strong> schéma de base (6 tables sav_*), connexion et inscription avec blocage après échecs, liste « Mes réclamations » filtrable par statut.<br>
+                <strong>En cours :</strong> création et traitement des tickets.</p>
+                <div class="lumoura-features-inline">
+                    <span><i class="bx bx-code-alt"></i> Bloc 2 · Conception et développement d'applications</span>
+                    <span><i class="bx bx-shield"></i> Bloc 3 · Cybersécurité</span>
+                </div>
+            </div>
+        </div>
+
         <!-- MULTICONVERTISSEUR -->
-        <div class="project-card" data-tags="csharp">
+        <div class="project-card" data-tags="csharp bloc2">
 
             <div class="project-img-wrap">
                 <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80"
@@ -330,7 +367,7 @@
         </div>
 
         <!-- TODO APP -->
-        <div class="project-card" data-tags="javascript">
+        <div class="project-card" data-tags="javascript bloc2">
 
             <div class="project-img-wrap">
                 <img src="https://images.unsplash.com/photo-1540350394557-8d14678e7f91?w=600&q=80"
@@ -340,11 +377,10 @@
                 <div class="project-overlay">
                     <a href="https://melissa703.github.io/myminiapp/"
                        target="_blank"
-                       class="overlay-btn">
-                    </a>
+                       class="overlay-btn" rel="noopener noreferrer">Démo →</a>
                     <a href="https://github.com/melissa703/myminiapp"
                        target="_blank"
-                       class="overlay-btn">
+                       class="overlay-btn" rel="noopener noreferrer">
                         GitHub →
                     </a>
                 </div>
@@ -368,14 +404,13 @@
                 <div class="project-links">
                     <a href="https://melissa703.github.io/myminiapp/"
                        target="_blank"
-                       class="btn-box">
-                    </a>
+                       class="btn-box" rel="noopener noreferrer"><i class="bx bx-link-external"></i> Voir le projet</a>
                 </div>
             </div>
         </div>
 
         <!-- PORTFOLIO -->
-        <div class="project-card" data-tags="javascript react">
+        <div class="project-card" data-tags="javascript bloc2">
 
             <div class="project-img-wrap">
                 <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80"
@@ -386,7 +421,7 @@
                     <a href="#Home" class="overlay-btn">Ce site →</a>
                     <a href="https://github.com/melissa703"
                        target="_blank"
-                       class="overlay-btn">
+                       class="overlay-btn" rel="noopener noreferrer">
                         GitHub →
                     </a>
                 </div>
@@ -410,8 +445,7 @@
                 <div class="project-links">
                     <a href="https://melissa703.github.io/myfirstwork/"
                        target="_blank"
-                       class="btn-box">
-                    </a>
+                       class="btn-box" rel="noopener noreferrer"><i class="bx bx-link-external"></i> Voir le projet</a>
                 </div>
             </div>
         </div>
@@ -482,7 +516,7 @@
     <h2><span>Mon</span> <span class="grad-text">CV</span></h2>
     <p>CV professionnel — disponible en consultation ou téléchargement</p>
     <div class="cv-buttons">
-        <a href="CV_alternance2026.pdf" class="btn-cv" target="_blank"><i class="bx bx-show"></i> Consulter</a>
+        <a href="CV_alternance2026.pdf" class="btn-cv" target="_blank" rel="noopener noreferrer"><i class="bx bx-show"></i> Consulter</a>
         <a href="CV_alternance2026.pdf" class="btn-cv btn-cv-outline" download><i class="bx bx-download"></i> Télécharger</a>
     </div>
 </section>
@@ -555,7 +589,7 @@
             <button class="modal-close" onclick="closeCertifModal()"><i class="bx bx-x"></i></button>
         </div>
         <div class="certif-modal-body">
-            <iframe id="modalIframe" src="" frameborder="0"></iframe>
+            <iframe id="modalIframe" src="about:blank" title="Visionneuse de certification"></iframe>
         </div>
         <div class="certif-modal-footer">
             <a id="modalDownload" href="" download class="btn-box"><i class="bx bx-download"></i> Télécharger</a>
@@ -616,22 +650,36 @@
 <section id="technology-watch" class="tech-watch">
     <div class="section-card">
         <h2><span>Veille</span> <span class="grad-text">Technologique</span></h2>
-        <p>Je suis activement l'actualité cybersécurité web et applicative via <a href="https://www.google.com/alerts" target="_blank">Google Alerts</a> depuis Mai 2026.</p>
-        <p><strong>Sujets surveillés :</strong></p>
-        <ul>
-            <li>Sécurité des applications web (OWASP Top 10)</li>
-            <li>Injections SQL & protection des bases de données</li>
-            <li>Failles XSS (Cross-Site Scripting) & CSRF</li>
-            <li>Vulnérabilités des API REST & authentification</li>
-            <li>Fuites de données & violations RGPD</li>
-        </ul>
+        <p>Je suis activement l'actualité cybersécurité web et applicative via <a href="https://www.google.com/alerts" target="_blank" rel="noopener noreferrer">Google Alerts</a> depuis Mai 2026.</p>
+        <div class="veille-problem"><small>Sujet de veille · BTS SIO</small>La sécurisation des API REST avec OAuth 2.0 et les jetons JWT : comment garantir l'authentification et l'autorisation fine des échanges de données sans exposer les identifiants des utilisateurs ?</div>
+        <div class="veille-method-grid">
+            <div class="veille-method-card"><i class="bx bx-transfer-alt"></i><h4>Flux OAuth 2.0 / 2.1</h4><p>Authorization Code avec PKCE : le client n'a jamais accès au mot de passe, seulement à un jeton limité.</p></div>
+            <div class="veille-method-card"><i class="bx bx-key"></i><h4>Jetons JWT</h4><p>Structure, signature, durée de vie courte et révocation : ce qui rend un jeton fiable.</p></div>
+            <div class="veille-method-card"><i class="bx bx-bug"></i><h4>Vulnérabilités</h4><p>Broken Authentication (OWASP API2), fuite de jetons, CSRF et XSS.</p></div>
+        </div>
+        <div class="veille-sources-grid">
+            <a class="veille-source" href="https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/" target="_blank" rel="noopener noreferrer"><strong>OWASP API Security Top 10</strong><span>Focus API2 : Broken Authentication</span><em>Lire la source →</em></a>
+            <a class="veille-source" href="https://portswigger.net/web-security/oauth" target="_blank" rel="noopener noreferrer"><strong>PortSwigger Web Security Academy</strong><span>Laboratoires OAuth et JWT</span><em>Lire la source →</em></a>
+            <a class="veille-source" href="https://www.cert.ssi.gouv.fr/" target="_blank" rel="noopener noreferrer"><strong>CERT-FR / ANSSI</strong><span>Alertes et avis de sécurité</span><em>Lire la source →</em></a>
+            <!-- TODO : remplace # par ton lien Feedly public -->
+            <a class="veille-source" href="#" target="_blank" rel="noopener noreferrer"><strong>Feedly + Google Alerts</strong><span>Collecte et tri des flux RSS</span><em>Ouvrir mon Feedly →</em></a>
+        </div>
+        <div class="veille-oral">
+            <h3>Ma méthodologie de veille</h3>
+            <ol>
+                <li><strong>Collecte :</strong> Google Alerts m'envoie chaque jour les actualités sur OAuth 2.0 et JWT, et Feedly regroupe mes flux RSS (OWASP, PortSwigger, CERT-FR).</li>
+                <li><strong>Tri :</strong> je garde les sources officielles et récentes, je recoupe avec une seconde source et j'écarte les articles purement commerciaux.</li>
+                <li><strong>Analyse :</strong> je note l'essentiel dans une fiche de synthèse et je relie chaque information à mon sujet (PKCE, durée de vie des jetons, OWASP API2).</li>
+                <li><strong>Exploitation :</strong> j'applique ces bonnes pratiques dans mes projets, par exemple l'authentification sécurisée de Lumoura et de Lumoura SAV.</li>
+            </ol>
+        </div>
         <div class="alert-screenshot-section">
             <h3>📧 Preuve Google Alerts</h3>
             <p class="screenshot-description">Capture d'écran de ma boîte Gmail montrant les alertes cybersécurité web quotidiennes reçues via Google Alerts.</p>
-            <a href="Capture -écran_.jpeg" target="_blank" class="view-screenshot-btn">Voir la capture</a>
+            <a href="Capture -écran_.jpeg" target="_blank" class="view-screenshot-btn" rel="noopener noreferrer">Voir la capture</a>
         </div>
         <!-- ===================== FLUX RSS CONTINU (BFM TV STYLE) ===================== -->
-        <section class="rss-ticker-section">
+        <div class="rss-ticker-section" role="region" aria-label="Actualités cybersécurité">
             <div class="ticker-container">
                 <div class="ticker-label">
                     <span>📡 CYBER NEWS LIVE</span>
@@ -644,7 +692,7 @@
                     <button id="ticker-refresh" title="Rafraîchir">🔄</button>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
 </section>
 
@@ -654,9 +702,10 @@
     <p>N'hésitez pas à me contacter pour une alternance ou un projet.</p>
     <div class="contact-container">
         <form id="contact-form" class="contact-form">
-            <input type="text" id="name" name="name" placeholder="Votre nom" required>
-            <input type="email" id="email" name="email" placeholder="Votre email" required>
-            <textarea id="message" name="message" rows="5" placeholder="Votre message" required></textarea>
+            <input type="text" id="name" name="name" placeholder="Votre nom" autocomplete="name" aria-label="Votre nom" required>
+            <input type="email" id="email" name="email" placeholder="Votre email" autocomplete="email" aria-label="Votre email" required>
+            <textarea id="message" name="message" rows="5" placeholder="Votre message" aria-label="Votre message" required></textarea>
+            <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <button type="submit" class="btn-contact" id="submit-btn">
                 Envoyer <i class="bx bx-send"></i>
             </button>
@@ -672,25 +721,25 @@
             </div>
             <div class="contact-card">
                 <i class="bx bxl-linkedin"></i>
-                <div><span class="contact-label">LinkedIn</span><a href="https://www.linkedin.com/in/melissa-bestani-8324b435a" target="_blank">Melissa Bestani</a></div>
+                <div><span class="contact-label">LinkedIn</span><a href="https://www.linkedin.com/in/melissa-bestani-8324b435a" target="_blank" rel="noopener noreferrer">Melissa Bestani</a></div>
             </div>
             <div class="contact-card">
                 <i class="bx bxl-github"></i>
-                <div><span class="contact-label">GitHub</span><a href="https://github.com/melissa703" target="_blank">melissa703</a></div>
+                <div><span class="contact-label">GitHub</span><a href="https://github.com/melissa703" target="_blank" rel="noopener noreferrer">melissa703</a></div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ===================== MODAL CASE STUDY LUMOURA ===================== -->
-<div id="caseStudyModal" class="lgm-overlay" onclick="if(event.target===this)closeCaseStudy()">
+<div id="caseStudyModal" class="lgm-overlay" role="dialog" aria-modal="true" aria-label="Case study Lumoura" onclick="if(event.target===this)closeCaseStudy()">
     <div class="lgm-inner cs-inner">
         <div class="lgm-header">
             <div class="lgm-title">
                 <i class="bx bx-book-open"></i>
                 <span>Case Study · Lumoura</span>
             </div>
-            <button class="lgm-close" onclick="closeCaseStudy()"><i class="bx bx-x"></i></button>
+            <button class="lgm-close" aria-label="Fermer" onclick="closeCaseStudy()"><i class="bx bx-x"></i></button>
         </div>
         <div class="cs-body">
 
@@ -763,17 +812,17 @@
 </div>
 
 <!-- ===================== MODAL CONVERTISSEUR ===================== -->
-<div id="convertModal" class="lgm-overlay" onclick="if(event.target===this)closeConvertModal()">
+<div id="convertModal" class="lgm-overlay" role="dialog" aria-modal="true" aria-label="MultiConvertisseur" onclick="if(event.target===this)closeConvertModal()">
     <div class="lgm-inner" style="max-width:56rem">
         <div class="lgm-header">
             <div class="lgm-title">
                 <i class="bx bx-desktop"></i>
                 <span>MultiConvertisseur · Capture</span>
             </div>
-            <button class="lgm-close" onclick="closeConvertModal()"><i class="bx bx-x"></i></button>
+            <button class="lgm-close" aria-label="Fermer" onclick="closeConvertModal()"><i class="bx bx-x"></i></button>
         </div>
         <div style="padding:2rem 2.4rem 2.4rem; display:flex; justify-content:center; background:#000;">
-            <img src="convertisseur.jpeg"
+            <img src="images/convertisseur.jpeg"
                  alt="MultiConvertisseur screenshot"
                  style="max-width:100%; max-height:70vh; object-fit:contain; border-radius:1rem; display:block;">
         </div>
@@ -781,14 +830,14 @@
 </div>
 
 <!-- ===================== MODAL GALERIE LUMOURA ===================== -->
-<div id="lumouraGalleryModal" class="lgm-overlay" onclick="closeLumouraGalleryBg(event)">
+<div id="lumouraGalleryModal" class="lgm-overlay" role="dialog" aria-modal="true" aria-label="Captures Lumoura" onclick="closeLumouraGalleryBg(event)">
     <div class="lgm-inner">
         <div class="lgm-header">
             <div class="lgm-title">
                 <i class="bx bx-images"></i>
                 <span>Lumoura · Captures du site</span>
             </div>
-            <button class="lgm-close" onclick="closeLumouraGallery()"><i class="bx bx-x"></i></button>
+            <button class="lgm-close" aria-label="Fermer" onclick="closeLumouraGallery()"><i class="bx bx-x"></i></button>
         </div>
         <div class="lgm-stage">
             <button class="lgm-nav lgm-prev" onclick="lgmNav(-1)"><i class="bx bx-chevron-left"></i></button>
@@ -803,25 +852,27 @@
     </div>
 </div>
 
+</main>
+
 <!-- FOOTER -->
 <footer class="footer">
     <p>Conçu & développé par <strong>Melissa Bestani</strong> · BTS SIO SLAM 2026</p>
     <div class="footer-links">
-        <a href="https://github.com/melissa703" target="_blank"><i class="bx bxl-github"></i></a>
-        <a href="https://www.linkedin.com/in/melissa-bestani-8324b435a" target="_blank"><i class="bx bxl-linkedin"></i></a>
+        <a href="https://github.com/melissa703" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bx bxl-github"></i></a>
+        <a href="https://www.linkedin.com/in/melissa-bestani-8324b435a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bx bxl-linkedin"></i></a>
     </div>
     <!-- Bouton easter egg caché -->
     <span id="egg-trigger" onclick="launchMatrix()" title="🎮">·</span>
 </footer>
 
 <!-- BADGE DISPONIBILITÉ -->
-<div id="availability-badge" title="Disponible en alternance dès septembre 2026">
+<div id="availability-badge" title="Disponible en alternance">
     <span class="badge-dot"></span>
-    <span class="badge-text">Disponible · Sept. 2026</span>
+    <span class="badge-text">Disponible en alternance</span>
 </div>
 
 <script src="script.js"></script>
-<script src="cors.js"></script>
+<script src="veille-ticker.js"></script>
 <script src="certifications.js"></script>
 </body>
 </html>
