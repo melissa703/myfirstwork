@@ -7,21 +7,39 @@
 // ========================================
 // TYPED.JS
 // ========================================
-if (typeof Typed !== 'undefined') {
-  var typed = new Typed('#typed-text', {
-  strings: [
+var typed = null;
+var TYPED_STRINGS = {
+  fr: [
     "Développeuse Full-Stack",
     "BTS SIO SLAM · INSTA Paris",
     "Disponible en alternance",
     "PHP · React · MySQL · API REST"
   ],
-  typeSpeed: 60,
-  backSpeed: 30,
-  backDelay: 2000,
-  loop: true,
-  smartBackspace: true
+  en: [
+    "Full-Stack Developer",
+    "BTS SIO SLAM · INSTA Paris",
+    "Available for work-study",
+    "PHP · React · MySQL · REST API"
+  ]
+};
+function initTyped() {
+  if (typeof Typed === 'undefined') return;
+  var el = document.getElementById('typed-text');
+  if (!el) return;
+  if (typed) { typed.destroy(); typed = null; }
+  el.textContent = '';
+  var lang = (window.I18N && window.I18N.lang()) || 'fr';
+  typed = new Typed('#typed-text', {
+    strings: TYPED_STRINGS[lang] || TYPED_STRINGS.fr,
+    typeSpeed: 60,
+    backSpeed: 30,
+    backDelay: 2000,
+    loop: true,
+    smartBackspace: true
   });
 }
+initTyped();
+document.addEventListener('langchange', initTyped);
 
 // ========================================
 // SCROLL PROGRESS BAR
@@ -360,12 +378,13 @@ function initProjectFilters() {
 // ========================================
 if (typeof emailjs !== 'undefined') emailjs.init('lF2CUuV8KmlUSMEN1');
 
+const tr = (txt) => (window.I18N ? window.I18N.t(txt) : txt);   // traduit les messages selon la langue
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         if (contactForm.website && contactForm.website.value) return; // anti-spam (honeypot)
-        if (typeof emailjs === 'undefined') { alert("Le service d'envoi est indisponible. Écris-moi directement par e-mail."); return; }
+        if (typeof emailjs === 'undefined') { alert(tr("Le service d'envoi est indisponible. Écris-moi directement par e-mail.")); return; }
 
         const name    = document.getElementById('name').value.trim();
         const email   = document.getElementById('email').value.trim();
@@ -373,11 +392,11 @@ if (contactForm) {
         const btn     = document.getElementById('submit-btn');
 
         if (!name || !email || !message) {
-            alert('Veuillez remplir tous les champs.');
+            alert(tr('Veuillez remplir tous les champs.'));
             return;
         }
         if (!email.includes('@')) {
-            alert('Veuillez entrer une adresse email valide.');
+            alert(tr('Veuillez entrer une adresse email valide.'));
             return;
         }
 
@@ -616,6 +635,63 @@ function closeConvertModal() {
 }
 
 /* =============================================
+   MODAL CAPTURES LUMOURA SAV
+   ============================================= */
+const SAV_SHOTS = {
+    connexion: { src: 'images/sav-connexion.png', alt: 'Lumoura SAV : écran de connexion' },
+    tickets:   { src: 'images/sav-tickets.png',   alt: 'Lumoura SAV : liste des réclamations' }
+};
+function switchSav(key) {
+    const shot = SAV_SHOTS[key];
+    if (!shot) return;
+    const img = document.getElementById('savImg');
+    img.src = shot.src;
+    img.alt = shot.alt;
+    document.querySelectorAll('#savModal .sav-tabs .filter-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.sav === key);
+    });
+}
+function openSavModal(key) {
+    switchSav(key || 'connexion');
+    document.getElementById('savModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeSavModal() {
+    document.getElementById('savModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+/* =============================================
+   MODAL JEU DES ALLUMETTES (jouable dans la page)
+   ============================================= */
+function openGameModal() {
+    const frame = document.getElementById('gameFrame');
+    const lang = (window.I18N && window.I18N.lang()) || 'fr';
+    if (!frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src + '?lang=' + lang);
+    document.getElementById('gameModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeGameModal() {
+    const frame = document.getElementById('gameFrame');
+    frame.removeAttribute('src');          /* arrête le son et remet le jeu à zéro */
+    document.body.classList.remove('cursor-hidden');
+    document.getElementById('gameModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+/* Si on change de langue pendant que le jeu est ouvert, on le recharge dans la nouvelle langue */
+document.addEventListener('langchange', function (e) {
+    const frame = document.getElementById('gameFrame');
+    if (frame && frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src + '?lang=' + e.detail);
+});
+/* Dans le jeu, c'est le curseur normal du navigateur qui s'affiche : on masque le curseur perso */
+(function () {
+    const frame = document.getElementById('gameFrame');
+    if (!frame) return;
+    frame.addEventListener('mouseenter', () => document.body.classList.add('cursor-hidden'));
+    frame.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hidden'));
+})();
+
+/* =============================================
    MODAL CASE STUDY LUMOURA
    ============================================= */
 function openCaseStudy() {
@@ -741,10 +817,10 @@ function closeCaseStudy() {
     window.launchMatrix = launchMatrix;
 })();
 
-/* Echap ferme aussi la case study et la capture du convertisseur */
+/* Echap ferme aussi la case study, la capture du convertisseur et les captures SAV */
 document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    [['caseStudyModal', closeCaseStudy], ['convertModal', closeConvertModal]].forEach(([id, fn]) => {
+    [['caseStudyModal', closeCaseStudy], ['convertModal', closeConvertModal], ['savModal', closeSavModal], ['gameModal', closeGameModal]].forEach(([id, fn]) => {
         const m = document.getElementById(id);
         if (m && m.classList.contains('open')) fn();
     });

@@ -17,7 +17,7 @@ function openCertifModal(pdfPath, title) {
     certifLastFocus = document.activeElement;
 
     modalTitle.textContent = title;
-    modalIframe.title = 'Certification : ' + title;
+    modalIframe.title = (window.I18N ? window.I18N.t('Certification :') : 'Certification :') + ' ' + title;
     modalIframe.src = pdfPath;
     modalDownload.href = pdfPath;
     modalDownload.setAttribute('download', title.replace(/[^\w\- ]+/g, '').trim() + '.pdf');

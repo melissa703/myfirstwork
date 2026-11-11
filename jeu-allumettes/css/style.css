@@ -1,0 +1,498 @@
+/* ==========================================================
+   LE JEU DES ALLUMETTES - feuille de style
+   Univers : étiquette de boîte d'allumettes, nuit chaude, flamme
+   ========================================================== */
+
+/* ---------- Variables : la palette et les polices ---------- */
+:root {
+  --nuit: #1a120d;        /* fond principal (brun très sombre) */
+  --bois-sombre: #2b1f17; /* surfaces */
+  --bois: #d9b77a;        /* tige de l'allumette */
+  --or: #e0a93b;          /* accent principal (touches dorées) */
+  --braise: #d9432b;      /* tête d'allumette */
+  --ivoire: #f2e8d3;      /* texte */
+  --ivoire-doux: #b9ab92; /* texte secondaire */
+
+  --police-titre: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --police-texte: "Figtree", system-ui, sans-serif;
+  --rayon: 14px;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  font-family: var(--police-texte);
+  color: var(--ivoire);
+  background:
+    radial-gradient(ellipse at 70% 40%, #3a2517 0%, transparent 55%),
+    var(--nuit);
+  overflow-x: hidden;
+}
+
+/* ---------- Gestion des écrans (un seul visible à la fois) ---------- */
+.ecran {
+  display: none;
+  min-height: 100vh;
+  padding: 2rem clamp(1.25rem, 6vw, 6rem);
+  align-items: center;
+}
+.ecran.actif {
+  display: flex;
+  animation: apparition 0.45s ease both;
+}
+@keyframes apparition {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- Boutons ---------- */
+.btn {
+  font-family: var(--police-texte);
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn:focus-visible { outline: 3px solid var(--ivoire); outline-offset: 3px; }
+
+.btn-or {
+  background: var(--or);
+  color: var(--nuit);
+  box-shadow: 0 6px 22px rgba(224, 169, 59, 0.28);
+}
+.btn-or:hover { box-shadow: 0 10px 30px rgba(224, 169, 59, 0.45); }
+
+.btn-contour {
+  background: transparent;
+  color: var(--ivoire);
+  border-color: var(--ivoire-doux);
+}
+.btn-contour:hover { border-color: var(--or); color: var(--or); }
+
+.btn-discret {
+  background: transparent;
+  color: var(--ivoire-doux);
+  padding-inline: 0.8rem;
+}
+.btn-discret:hover { color: var(--ivoire); }
+
+/* ---------- Page d'accueil ---------- */
+.accueil {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+h1 {
+  font-family: var(--police-titre);
+  font-weight: 900;
+  font-size: clamp(3.4rem, 9vw, 7rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--ivoire);
+}
+
+.accroche {
+  margin: 1.5rem 0 2rem;
+  max-width: 34ch;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: var(--ivoire-doux);
+}
+
+.boutons-accueil {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* ---------- Allumettes dessinées en CSS ---------- */
+.illustration {
+  position: relative;
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.6rem;
+}
+.illustration.mini { height: 200px; margin-bottom: 1rem; }
+
+.allumette {
+  position: relative;
+  width: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Tête : la petite boule rouge */
+.allumette .tete {
+  width: 22px;
+  height: 30px;
+  border-radius: 50% 50% 45% 45%;
+  background: radial-gradient(circle at 35% 30%, #f06a4f, var(--braise) 60%, #8e2514);
+  z-index: 2;
+}
+/* Tige : le bâton de bois */
+.allumette .bois {
+  width: 12px;
+  flex: 1;
+  margin-top: -6px;
+  border-radius: 2px 2px 5px 5px;
+  background: linear-gradient(90deg, #b8935a, var(--bois) 45%, #a07c45);
+}
+/* Hauteurs et inclinaisons différentes pour un rendu naturel */
+.a1 { height: 250px; transform: rotate(-9deg); }
+.a2 { height: 300px; transform: rotate(-4deg); }
+.a3 { height: 360px; }
+.a4 { height: 290px; transform: rotate(5deg); }
+.a5 { height: 240px; transform: rotate(10deg); }
+
+/* ---------- La flamme (le seul élément animé de l'accueil) ---------- */
+.flamme {
+  position: absolute;
+  top: -58px;
+  width: 26px;
+  height: 56px;
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  background: radial-gradient(ellipse at 50% 75%, #fff3b0 0%, #ffb52e 40%, #e8561a 80%, transparent 100%);
+  filter: blur(0.6px);
+  transform-origin: 50% 100%;
+  animation: vacille 1.4s ease-in-out infinite;
+  box-shadow: 0 0 60px 20px rgba(255, 150, 40, 0.35);
+}
+@keyframes vacille {
+  0%, 100% { transform: scale(1, 1) rotate(-2deg); }
+  30%      { transform: scale(0.93, 1.08) rotate(3deg); }
+  60%      { transform: scale(1.05, 0.95) rotate(-3deg); }
+}
+
+/* ---------- Écrans provisoires (remplacés plus tard) ---------- */
+.provisoire {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+.provisoire h2 {
+  font-family: var(--police-titre);
+  font-weight: 900;
+  font-size: 3rem;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.provisoire p {
+  color: var(--ivoire-doux);
+  margin-bottom: 1.6rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 800px) {
+  .accueil { grid-template-columns: 1fr; gap: 1rem; }
+  .illustration { height: 300px; order: -1; gap: 1rem; }
+  .a1 { height: 170px; } .a2 { height: 210px; } .a3 { height: 250px; }
+  .a4 { height: 200px; } .a5 { height: 160px; }
+}
+
+/* ---------- Accessibilité : respect de "réduire les animations" ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ==========================================================
+   ÉTAPES 2 à 6 : configuration, plateau, fin, règles
+   ========================================================== */
+
+/* ---------- Panneaux (config, fin, règles) ---------- */
+.panneau {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem clamp(1.2rem, 4vw, 2.4rem);
+  background: linear-gradient(160deg, rgba(60, 40, 26, 0.75), rgba(34, 24, 17, 0.9));
+  border: 1px solid rgba(224, 169, 59, 0.25);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+.panneau.large { max-width: 900px; }
+.titre-ecran {
+  font-family: var(--police-titre);
+  font-weight: 900;
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 1.4rem;
+}
+.ecran { overflow-y: auto; }
+#ecran-config, #ecran-regles { padding-block: 2rem; }
+
+/* ---------- Formulaire ---------- */
+.champ { border: 0; margin-bottom: 1.2rem; }
+.champ label, .champ legend {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+  color: var(--ivoire);
+}
+input[type="number"], input[type="text"] {
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--ivoire);
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(185, 171, 146, 0.35);
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+}
+input[type="number"] { max-width: 120px; }
+input:focus-visible { outline: none; border-color: var(--or); box-shadow: 0 0 0 3px rgba(224, 169, 59, 0.25); }
+.ligne { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; }
+.presets { display: flex; gap: 0.5rem; }
+.chip {
+  font: inherit; font-weight: 600; cursor: pointer;
+  color: var(--ivoire-doux); background: transparent;
+  border: 1.5px solid rgba(185, 171, 146, 0.4);
+  border-radius: 999px; padding: 0.4rem 0.9rem;
+  transition: all 0.15s ease;
+}
+.chip:hover { color: var(--or); border-color: var(--or); }
+
+.modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+.carte-mode { cursor: pointer; margin: 0 !important; }
+.carte-mode input { position: absolute; opacity: 0; pointer-events: none; }
+.carte-contenu {
+  display: flex; flex-direction: column; gap: 0.2rem; height: 100%;
+  padding: 0.9rem; border-radius: 14px;
+  border: 2px solid rgba(185, 171, 146, 0.3);
+  background: rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+.carte-contenu small { color: var(--ivoire-doux); font-weight: 400; }
+.carte-mode:hover .carte-contenu { border-color: var(--or); transform: translateY(-2px); }
+.carte-mode input:checked + .carte-contenu {
+  border-color: var(--or);
+  background: rgba(224, 169, 59, 0.12);
+  box-shadow: 0 0 0 1px var(--or) inset;
+}
+.carte-mode input:focus-visible + .carte-contenu { outline: 3px solid var(--ivoire); outline-offset: 2px; }
+
+.erreur { min-height: 1.4em; color: #ff8f7a; font-weight: 600; margin-bottom: 0.6rem; }
+.actions { display: flex; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.4rem; }
+.actions.centre { justify-content: center; }
+
+/* ---------- Plateau ---------- */
+.plateau {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.plateau-haut { display: flex; justify-content: space-between; align-items: center; }
+.badge-mode {
+  display: inline-block;
+  font-weight: 600; font-size: 0.95rem;
+  color: var(--or);
+  border: 1.5px solid rgba(224, 169, 59, 0.5);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+}
+
+.joueurs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; }
+.carte-joueur {
+  text-align: center;
+  font-family: var(--police-titre);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  padding: 0.7rem 0.5rem;
+  border-radius: 16px;
+  border: 2px solid rgba(185, 171, 146, 0.25);
+  color: var(--ivoire-doux);
+  background: rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  overflow-wrap: anywhere;
+}
+.carte-joueur.active {
+  color: var(--nuit);
+  background: var(--or);
+  border-color: var(--or);
+  box-shadow: 0 0 30px rgba(224, 169, 59, 0.45);
+  transform: scale(1.05);
+}
+.compteur { text-align: center; line-height: 1; }
+.compteur span {
+  display: block;
+  font-family: var(--police-titre);
+  font-weight: 900;
+  font-size: clamp(3rem, 9vw, 5rem);
+  color: var(--ivoire);
+}
+.compteur span.pulse { animation: pulse 0.4s ease; }
+@keyframes pulse { 50% { transform: scale(1.25); color: var(--or); } }
+.compteur small { color: var(--ivoire-doux); }
+
+.indicateur { text-align: center; min-height: 1.6em; font-size: 1.1rem; font-weight: 600; }
+.indicateur.reflechit::after {
+  content: "...";
+  display: inline-block; width: 1.2em; text-align: left;
+  animation: points 1.2s steps(4, end) infinite;
+  overflow: hidden; vertical-align: bottom;
+}
+@keyframes points { from { width: 0; } to { width: 1.2em; } }
+
+/* Zone des allumettes */
+.zone-allumettes {
+  --haut: 150px;
+  min-height: calc(var(--haut) + 40px);
+  display: flex; flex-wrap: wrap;
+  justify-content: center; align-content: center;
+  gap: calc(var(--haut) * 0.09);
+  padding: 1.2rem;
+  border-radius: 20px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(224, 169, 59, 0.1), rgba(0, 0, 0, 0.25));
+  border: 1px solid rgba(185, 171, 146, 0.18);
+}
+.allu {
+  height: var(--haut);
+  width: calc(var(--haut) * 0.13);
+  display: flex; flex-direction: column; align-items: center;
+  animation: entree 0.5s ease backwards;
+}
+.allu .tete {
+  width: 100%; height: calc(var(--haut) * 0.2);
+  border-radius: 50% 50% 45% 45%;
+  background: radial-gradient(circle at 35% 30%, #f06a4f, var(--braise) 60%, #8e2514);
+  z-index: 1;
+}
+.allu .bois {
+  width: 62%; flex: 1; margin-top: -3px;
+  border-radius: 1px 1px 3px 3px;
+  background: linear-gradient(90deg, #b8935a, var(--bois) 45%, #a07c45);
+}
+@keyframes entree { from { opacity: 0; transform: translateY(14px); } }
+.allu.retiree { animation: envol 0.45s ease-in forwards; }
+@keyframes envol {
+  0%   { transform: none; opacity: 1; filter: none; }
+  30%  { filter: brightness(1.8) drop-shadow(0 0 8px #ffb52e); }
+  100% { transform: translateY(-50px) rotate(18deg) scale(0.6); opacity: 0; }
+}
+
+/* Boutons de retrait */
+.commandes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+.btn-retrait {
+  font: inherit; font-weight: 600; font-size: 1.05rem; cursor: pointer;
+  padding: 1rem 0.6rem;
+  color: var(--ivoire);
+  background: linear-gradient(180deg, #4a3322, #2f2116);
+  border: 2px solid rgba(224, 169, 59, 0.5);
+  border-radius: 16px;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.btn-retrait:hover:not(:disabled) {
+  transform: translateY(-3px);
+  color: var(--nuit);
+  background: var(--or);
+  box-shadow: 0 10px 26px rgba(224, 169, 59, 0.4);
+}
+.btn-retrait:active:not(:disabled) { transform: translateY(0); }
+.btn-retrait:focus-visible { outline: 3px solid var(--ivoire); outline-offset: 3px; }
+.btn-retrait:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Historique */
+.historique {
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 16px;
+  padding: 0.9rem 1.2rem;
+  min-height: 3rem;
+}
+.historique h3 { font-size: 1rem; color: var(--ivoire-doux); margin-bottom: 0.4rem; }
+.historique ol { list-style: none; }
+.historique li { padding: 0.25rem 0; color: var(--ivoire-doux); animation: apparition 0.3s ease both; }
+.historique li:first-child { color: var(--ivoire); }
+.historique li strong { color: var(--or); }
+
+/* ---------- Fin de partie ---------- */
+.fin { text-align: center; position: relative; z-index: 1; }
+.fin .badge-mode { margin-bottom: 1rem; }
+.fin .titre-ecran { animation: surgit 0.7s cubic-bezier(.2, 1.4, .4, 1) both; }
+@keyframes surgit { from { transform: scale(0.5); opacity: 0; } }
+.fin-detail { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.fin-resume { color: var(--ivoire-doux); margin-bottom: 1.6rem; }
+.braises { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+.braises span {
+  position: absolute; bottom: -20px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: radial-gradient(circle, #ffd27a, #e8561a);
+  box-shadow: 0 0 12px 3px rgba(255, 150, 40, 0.6);
+  animation: monte 4s ease-in infinite;
+}
+@keyframes monte {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(-105vh) translateX(40px); opacity: 0; }
+}
+
+/* ---------- Règles ---------- */
+.regles-grille { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 1.6rem; }
+.regles-grille h3, .sous-titre { font-family: var(--police-titre); font-size: 1.5rem; text-transform: uppercase; color: var(--or); margin-bottom: 0.4rem; }
+.regles-grille p { line-height: 1.55; color: var(--ivoire-doux); }
+.regles-grille strong { color: var(--ivoire); }
+.exemple { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 0.6rem 0 1.6rem; }
+.etape { background: rgba(0, 0, 0, 0.25); border-radius: 14px; padding: 1rem; text-align: center; }
+.etape p { color: var(--ivoire-doux); margin-top: 0.7rem; line-height: 1.4; }
+.etape strong { color: var(--ivoire); }
+.mini-rangee { display: flex; justify-content: center; align-items: flex-end; gap: 8px; height: 56px; }
+.mini-allu {
+  position: relative; display: block; width: 7px; height: 44px; margin-top: 8px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #b8935a, var(--bois), #a07c45);
+}
+.mini-allu::before {
+  content: ""; position: absolute; top: -8px; left: -2px; width: 11px; height: 13px;
+  border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f06a4f, var(--braise));
+}
+.mini-allu.perdue { opacity: 0.2; filter: grayscale(0.7); }
+
+/* ---------- Responsive (étapes 2 à 6) ---------- */
+@media (max-width: 700px) {
+  .modes, .regles-grille, .exemple { grid-template-columns: 1fr; }
+  .commandes { grid-template-columns: 1fr; }
+  .joueurs { grid-template-columns: 1fr 1fr; }
+  .compteur { grid-column: 1 / -1; order: -1; }
+  .carte-joueur.active { transform: none; }
+}
+
+/* ---------- Bouton son (en haut à droite, sur tous les écrans) ---------- */
+.btn-son {
+  position: fixed;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--police-texte);
+  font-size: 0.85rem;
+  color: var(--ivoire-doux);
+  background: rgba(43, 31, 23, 0.85);
+  border: 1px solid rgba(224, 169, 59, 0.35);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.btn-son:hover { color: var(--ivoire); border-color: var(--or); }
+.btn-son:focus-visible { outline: 2px solid var(--or); outline-offset: 2px; }
+.btn-son[aria-pressed="false"] { opacity: 0.75; }

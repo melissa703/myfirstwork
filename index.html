@@ -10,6 +10,23 @@
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <meta name="description" content="Portfolio de Melissa Bestani – BTS SIO SLAM, développeuse web, PHP, React, MySQL.">
+    <meta name="theme-color" content="#0a0e1f">
+    <link rel="canonical" href="https://melissa703.github.io/myfirstwork/">
+    <!-- Aperçu lors du partage (LinkedIn, WhatsApp, Facebook...) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Melissa Bestani · Portfolio">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:url" content="https://melissa703.github.io/myfirstwork/">
+    <meta property="og:title" content="Melissa Bestani | Développeuse Web · BTS SIO SLAM">
+    <meta property="og:description" content="Développeuse web full-stack (PHP, MySQL, JavaScript), étudiante en BTS SIO option SLAM, disponible en alternance à Paris. Découvrez mes projets.">
+    <meta property="og:image" content="https://melissa703.github.io/myfirstwork/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Melissa Bestani, développeuse web, BTS SIO SLAM">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Melissa Bestani | Développeuse Web · BTS SIO SLAM">
+    <meta name="twitter:description" content="Développeuse web full-stack, BTS SIO SLAM, disponible en alternance à Paris.">
+    <meta name="twitter:image" content="https://melissa703.github.io/myfirstwork/images/og-image.jpg">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
@@ -24,6 +41,9 @@
 
 <!-- THEME TOGGLE -->
 <button id="theme-toggle" title="Changer le thème" aria-label="Changer le thème clair/sombre"><i class="bx bx-sun"></i></button>
+
+<!-- LANGUE FR / EN -->
+<button id="lang-toggle" class="lang-toggle" type="button" data-no-i18n aria-label="Switch to English" title="Switch to English">EN</button>
 
 <!-- MENU HAMBURGER MOBILE -->
 <button id="menu-toggle" class="menu-toggle" title="Menu" aria-label="Ouvrir le menu" aria-controls="navbar" aria-expanded="false">
@@ -77,7 +97,7 @@
             <p class="hero-pitch">Quadrilingue · Bac Maths · Prépa · Développeuse full-stack PHP/React disponible en alternance sur Paris.</p>
             <div class="hero-cta">
                 <a href="#projects" class="btn-box">Voir mes projets</a>
-                <a href="CV_alternance2026.pdf" class="btn-outline" download>Télécharger CV</a>
+                <a href="CV_alternance2026.pdf" data-href-en="CV_alternance2026_EN.pdf" class="btn-outline" download>Télécharger CV</a>
             </div>
         </div>
 
@@ -105,7 +125,7 @@
         </div>
         <div class="about-stats">
             <div class="stat-card">
-                <span class="stat-number" data-target="3" data-suffix="+">0</span>
+                <span class="stat-number" data-target="6" data-suffix="+">0</span>
                 <span class="stat-label">Projets réalisés</span>
             </div>
             <div class="stat-card">
@@ -305,8 +325,8 @@
             <div class="project-img-wrap">
                 <img src="images/sav-tickets.png" alt="Application Lumoura SAV : liste des réclamations" class="project-img project-img--top" loading="lazy">
                 <div class="project-overlay">
-                    <a href="images/sav-connexion.png" target="_blank" rel="noopener noreferrer" class="overlay-btn">Connexion →</a>
-                    <a href="images/sav-tickets.png" target="_blank" rel="noopener noreferrer" class="overlay-btn">Espace SAV →</a>
+                    <button type="button" class="overlay-btn" onclick="openSavModal('connexion')">Connexion →</button>
+                    <button type="button" class="overlay-btn" onclick="openSavModal('tickets')">Espace SAV →</button>
                 </div>
             </div>
             <div class="project-body">
@@ -328,10 +348,10 @@
         <!-- MULTICONVERTISSEUR -->
         <div class="project-card" data-tags="csharp bloc2">
 
-            <div class="project-img-wrap">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80"
-                     alt="MultiConvertisseur"
-                     class="project-img">
+            <div class="project-img-wrap project-img-wrap--contain">
+                <img src="images/convertisseur.jpeg"
+                     alt="MultiConvertisseur : fenêtre du convertisseur universel"
+                     class="project-img project-img--contain">
                 <div class="project-overlay">
                     <button class="overlay-btn" onclick="openConvertModal()">
                         <i class="bx bx-zoom-in"></i> Voir la capture
@@ -366,12 +386,59 @@
             </div>
         </div>
 
+        <!-- JEU DES ALLUMETTES -->
+        <div class="project-card" data-tags="javascript bloc2">
+
+            <div class="project-img-wrap">
+                <img src="images/jeu-allumettes.jpg"
+                     alt="Jeu des allumettes : plateau de jeu"
+                     class="project-img" loading="lazy">
+
+                <div class="project-overlay">
+                    <button type="button" class="overlay-btn" onclick="openGameModal()">Jouer ici →</button>
+                    <a href="https://github.com/melissa703/jeu-des-allumettes"
+                       target="_blank"
+                       class="overlay-btn" rel="noopener noreferrer">
+                        GitHub →
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-body">
+                <div class="project-tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">HTML</span>
+                    <span class="tag">CSS</span>
+                </div>
+
+                <h3>Jeu des allumettes</h3>
+
+                <p>
+                    Jeu web en JavaScript natif, sans serveur ni framework :
+                    deux joueurs, joueur contre machine aléatoire, ou contre une
+                    IA stratégique. Plusieurs écrans (accueil, configuration,
+                    plateau, fin de partie, règles), code séparé en modules
+                    (logique de jeu, IA, interface, sons).
+                </p>
+
+                <div class="lumoura-features-inline">
+                    <span><i class="bx bx-joystick"></i> 3 modes de jeu</span>
+                    <span><i class="bx bx-brain"></i> IA stratégique</span>
+                    <span><i class="bx bx-code-alt"></i> JS modulaire</span>
+                </div>
+
+                <div class="project-links">
+                    <button type="button" class="btn-box" onclick="openGameModal()"><i class="bx bx-play"></i> Jouer ici</button>
+                </div>
+            </div>
+        </div>
+
         <!-- TODO APP -->
         <div class="project-card" data-tags="javascript bloc2">
 
             <div class="project-img-wrap">
-                <img src="https://images.unsplash.com/photo-1540350394557-8d14678e7f91?w=600&q=80"
-                     alt="To-Do App"
+                <img src="images/todo.jpg"
+                     alt="To-Do List : liste de tâches"
                      class="project-img">
 
                 <div class="project-overlay">
@@ -413,8 +480,8 @@
         <div class="project-card" data-tags="javascript bloc2">
 
             <div class="project-img-wrap">
-                <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80"
-                     alt="Portfolio"
+                <img src="images/portfolio.jpg"
+                     alt="Portfolio personnel : page d'accueil"
                      class="project-img">
 
                 <div class="project-overlay">
@@ -516,8 +583,8 @@
     <h2><span>Mon</span> <span class="grad-text">CV</span></h2>
     <p>CV professionnel — disponible en consultation ou téléchargement</p>
     <div class="cv-buttons">
-        <a href="CV_alternance2026.pdf" class="btn-cv" target="_blank" rel="noopener noreferrer"><i class="bx bx-show"></i> Consulter</a>
-        <a href="CV_alternance2026.pdf" class="btn-cv btn-cv-outline" download><i class="bx bx-download"></i> Télécharger</a>
+        <a href="CV_alternance2026.pdf" data-href-en="CV_alternance2026_EN.pdf" class="btn-cv" target="_blank" rel="noopener noreferrer"><i class="bx bx-show"></i> Consulter</a>
+        <a href="CV_alternance2026.pdf" data-href-en="CV_alternance2026_EN.pdf" class="btn-cv btn-cv-outline" download><i class="bx bx-download"></i> Télécharger</a>
     </div>
 </section>
 
@@ -649,7 +716,7 @@
 <!-- ===================== TECHNOLOGY WATCH ===================== -->
 <section id="technology-watch" class="tech-watch">
     <div class="section-card">
-        <h2><span>Veille</span> <span class="grad-text">Technologique</span></h2>
+        <h2><span data-en="Tech">Veille</span> <span class="grad-text">Technologique</span></h2>
         <p>Je suis activement l'actualité cybersécurité web et applicative via <a href="https://www.google.com/alerts" target="_blank" rel="noopener noreferrer">Google Alerts</a> depuis Mai 2026.</p>
         <div class="veille-problem"><small>Sujet de veille · BTS SIO</small>La sécurisation des API REST avec OAuth 2.0 et les jetons JWT : comment garantir l'authentification et l'autorisation fine des échanges de données sans exposer les identifiants des utilisateurs ?</div>
         <div class="veille-method-grid">
@@ -829,6 +896,41 @@
     </div>
 </div>
 
+<!-- ===================== MODAL SAV (captures) ===================== -->
+<div id="savModal" class="lgm-overlay" role="dialog" aria-modal="true" aria-label="Lumoura SAV · Captures" onclick="if(event.target===this)closeSavModal()">
+    <div class="lgm-inner" style="max-width:96rem">
+        <div class="lgm-header">
+            <div class="lgm-title">
+                <i class="bx bx-desktop"></i>
+                <span>Lumoura SAV · Captures de l'application</span>
+            </div>
+            <button class="lgm-close" aria-label="Fermer" onclick="closeSavModal()"><i class="bx bx-x"></i></button>
+        </div>
+        <div class="sav-tabs">
+            <button type="button" class="filter-btn active" data-sav="connexion" onclick="switchSav('connexion')">Connexion</button>
+            <button type="button" class="filter-btn" data-sav="tickets" onclick="switchSav('tickets')">Espace SAV</button>
+        </div>
+        <div class="sav-stage">
+            <img id="savImg" src="images/sav-connexion.png" alt="Lumoura SAV : écran de connexion">
+        </div>
+        <p class="sav-note"><i class="bx bx-info-circle"></i> Application Windows (C# / WinForms) : ces captures montrent l'interface, elle ne s'exécute pas dans le navigateur.</p>
+    </div>
+</div>
+
+<!-- ===================== MODAL JEU DES ALLUMETTES ===================== -->
+<div id="gameModal" class="lgm-overlay" role="dialog" aria-modal="true" aria-label="Jeu des allumettes" onclick="if(event.target===this)closeGameModal()">
+    <div class="lgm-inner" style="max-width:100rem">
+        <div class="lgm-header">
+            <div class="lgm-title">
+                <i class="bx bx-joystick"></i>
+                <span>Jeu des allumettes · Jouable ici</span>
+            </div>
+            <button class="lgm-close" aria-label="Fermer" onclick="closeGameModal()"><i class="bx bx-x"></i></button>
+        </div>
+        <iframe id="gameFrame" class="game-frame" title="Jeu des allumettes" data-src="jeu-allumettes/index.html" loading="lazy"></iframe>
+    </div>
+</div>
+
 <!-- ===================== MODAL GALERIE LUMOURA ===================== -->
 <div id="lumouraGalleryModal" class="lgm-overlay" role="dialog" aria-modal="true" aria-label="Captures Lumoura" onclick="closeLumouraGalleryBg(event)">
     <div class="lgm-inner">
@@ -871,6 +973,7 @@
     <span class="badge-text">Disponible en alternance</span>
 </div>
 
+<script src="i18n.js"></script>
 <script src="script.js"></script>
 <script src="veille-ticker.js"></script>
 <script src="certifications.js"></script>

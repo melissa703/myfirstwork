@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Le jeu des allumettes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Bouton son (visible sur tous les écrans) -->
+  <button type="button" class="btn-son" id="btn-son" aria-pressed="true" aria-label="Couper le son">
+    <span id="btn-son-icone" aria-hidden="true">🔊</span> <span id="btn-son-texte">Son</span>
+  </button>
+
+  <!-- ÉCRAN 1 : ACCUEIL -->
+  <main id="ecran-accueil" class="ecran actif" aria-labelledby="titre-accueil">
+    <div class="accueil">
+      <div class="accueil-texte">
+        <h1 id="titre-accueil">Le jeu<br>des allumettes</h1>
+        <p class="accroche">Retirez 1, 2 ou 3 allumettes à chaque tour. Celui qui prend la dernière a gagné.</p>
+        <div class="boutons-accueil">
+          <button class="btn btn-or" data-aller="ecran-config">Nouvelle partie</button>
+          <button class="btn btn-contour" data-aller="ecran-regles">Découvrir les règles</button>
+          <button class="btn btn-discret" data-aller="ecran-quitter">Quitter</button>
+        </div>
+      </div>
+
+      <!-- Illustration : allumettes dessinées en CSS -->
+      <div class="illustration" aria-hidden="true">
+        <div class="allumette a1"><span class="tete"></span><span class="bois"></span></div>
+        <div class="allumette a2"><span class="tete"></span><span class="bois"></span></div>
+        <div class="allumette a3 allumee">
+          <span class="flamme"></span>
+          <span class="tete"></span><span class="bois"></span>
+        </div>
+        <div class="allumette a4"><span class="tete"></span><span class="bois"></span></div>
+        <div class="allumette a5"><span class="tete"></span><span class="bois"></span></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ÉCRAN 2 : CONFIGURATION -->
+  <main id="ecran-config" class="ecran">
+    <div class="panneau">
+      <h2 class="titre-ecran">Nouvelle partie</h2>
+
+      <div class="champ">
+        <label for="nb-allumettes">Nombre d'allumettes au départ</label>
+        <div class="ligne">
+          <input type="number" id="nb-allumettes" min="1" max="100" value="17" inputmode="numeric">
+          <div class="presets">
+            <button type="button" class="chip" data-nb="11">11</button>
+            <button type="button" class="chip" data-nb="17">17</button>
+            <button type="button" class="chip" data-nb="21">21</button>
+            <button type="button" class="chip" data-nb="31">31</button>
+          </div>
+        </div>
+      </div>
+
+      <fieldset class="champ">
+        <legend>Mode de jeu</legend>
+        <div class="modes">
+          <label class="carte-mode">
+            <input type="radio" name="mode" value="deux" checked>
+            <span class="carte-contenu"><strong>Deux joueurs</strong><small>Sur le même ordinateur</small></span>
+          </label>
+          <label class="carte-mode">
+            <input type="radio" name="mode" value="machine">
+            <span class="carte-contenu"><strong>Contre la machine</strong><small>Elle joue au hasard</small></span>
+          </label>
+          <label class="carte-mode">
+            <input type="radio" name="mode" value="ia">
+            <span class="carte-contenu"><strong>Contre l'IA</strong><small>Elle joue pour gagner</small></span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="champ">
+        <label for="champ-nom1-saisie" id="label-nom1">Nom du joueur 1</label>
+        <input type="text" id="champ-nom1-saisie" maxlength="16" value="Joueur 1" autocomplete="off">
+      </div>
+      <div class="champ" id="champ-nom2">
+        <label for="champ-nom2-saisie">Nom du joueur 2</label>
+        <input type="text" id="champ-nom2-saisie" maxlength="16" value="Joueur 2" autocomplete="off">
+      </div>
+
+      <p id="erreur-config" class="erreur" role="alert"></p>
+
+      <div class="actions">
+        <button class="btn btn-contour" data-aller="ecran-accueil">Retour</button>
+        <button class="btn btn-or" id="btn-commencer">Commencer la partie</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ÉCRAN 3 : PLATEAU DE JEU -->
+  <main id="ecran-jeu" class="ecran">
+    <div class="plateau">
+      <header class="plateau-haut">
+        <span class="badge-mode" id="info-mode">Deux joueurs</span>
+        <button class="btn btn-discret" data-aller="ecran-accueil">Abandonner</button>
+      </header>
+
+      <div class="joueurs">
+        <div class="carte-joueur" id="carte-j1"><span id="nom-j1">Joueur 1</span></div>
+        <div class="compteur">
+          <span id="compteur-restantes">17</span>
+          <small id="libelle-restantes">allumettes restantes</small>
+        </div>
+        <div class="carte-joueur" id="carte-j2"><span id="nom-j2">Joueur 2</span></div>
+      </div>
+
+      <p id="indicateur-tour" class="indicateur" role="status" aria-live="polite"></p>
+
+      <div id="zone-allumettes" class="zone-allumettes" aria-hidden="true"></div>
+
+      <div class="commandes">
+        <button class="btn-retrait" data-retrait="1">Retirer 1 allumette</button>
+        <button class="btn-retrait" data-retrait="2">Retirer 2 allumettes</button>
+        <button class="btn-retrait" data-retrait="3">Retirer 3 allumettes</button>
+      </div>
+
+      <section class="historique" aria-label="Historique des coups">
+        <h3>Derniers coups</h3>
+        <ol id="liste-historique"></ol>
+      </section>
+    </div>
+  </main>
+
+  <!-- ÉCRAN 4 : FIN DE PARTIE -->
+  <main id="ecran-fin" class="ecran">
+    <div class="braises" id="braises" aria-hidden="true"></div>
+    <div class="panneau fin">
+      <span class="badge-mode" id="fin-badge">Partie terminée</span>
+      <h2 class="titre-ecran" id="fin-titre">Joueur 1 gagne !</h2>
+      <p class="fin-detail" id="fin-detail"></p>
+      <p class="fin-resume" id="fin-resume"></p>
+      <div class="actions centre">
+        <button class="btn btn-or" id="btn-rejouer">Rejouer</button>
+        <button class="btn btn-contour" data-aller="ecran-accueil">Retour à l'accueil</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ÉCRAN 5 : RÈGLES -->
+  <main id="ecran-regles" class="ecran">
+    <div class="panneau large">
+      <h2 class="titre-ecran">Règles du jeu</h2>
+
+      <div class="regles-grille">
+        <section>
+          <h3>L'objectif</h3>
+          <p>Être celui qui retire la <strong>dernière allumette</strong>. Celui qui la retire a gagné.</p>
+        </section>
+        <section>
+          <h3>À chaque tour</h3>
+          <p>Retire <strong>1, 2 ou 3</strong> allumettes du tas. Pas plus que ce qu'il en reste. Puis c'est à l'autre joueur.</p>
+        </section>
+        <section>
+          <h3>Les modes</h3>
+          <p><strong>Deux joueurs :</strong> vous jouez à tour de rôle sur le même ordinateur.<br>
+             <strong>Contre la machine :</strong> elle retire un nombre au hasard.<br>
+             <strong>Contre l'IA :</strong> elle calcule ses coups pour gagner.</p>
+        </section>
+      </div>
+
+      <h3 class="sous-titre">Exemple de partie</h3>
+      <div class="exemple">
+        <div class="etape">
+          <div class="mini-rangee"><i class="mini-allu"></i><i class="mini-allu"></i><i class="mini-allu"></i><i class="mini-allu"></i></div>
+          <p>Il reste 4 allumettes. C'est à Tom.</p>
+        </div>
+        <div class="etape">
+          <div class="mini-rangee"><i class="mini-allu perdue"></i><i class="mini-allu"></i><i class="mini-allu"></i><i class="mini-allu"></i></div>
+          <p>Tom en retire 1. Il en reste 3.</p>
+        </div>
+        <div class="etape">
+          <div class="mini-rangee"><i class="mini-allu perdue"></i><i class="mini-allu perdue"></i><i class="mini-allu perdue"></i><i class="mini-allu perdue"></i></div>
+          <p>Léa retire les 3 dernières. <strong>Léa gagne, Tom perd.</strong></p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-or" data-aller="ecran-accueil">Retour</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ÉCRAN : AU REVOIR (bouton Quitter) -->
+  <main id="ecran-quitter" class="ecran">
+    <div class="provisoire">
+      <div class="illustration mini" aria-hidden="true">
+        <div class="allumette a3"><span class="tete"></span><span class="bois"></span></div>
+      </div>
+      <h2>À bientôt !</h2>
+      <p>La flamme est éteinte. Revenez quand vous voulez.</p>
+      <button class="btn btn-or" data-aller="ecran-accueil">Rallumer</button>
+    </div>
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

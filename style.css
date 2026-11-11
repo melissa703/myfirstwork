@@ -237,6 +237,36 @@ textarea:focus-visible {
 #theme-toggle:hover { transform: rotate(20deg) scale(1.1); }
 #theme-toggle i { font-size: 2.4rem; }
 
+/* ---- Bouton langue FR / EN (sous le bouton thème) ---- */
+.lang-toggle {
+    position: fixed;
+    top: 8.5rem;
+    right: 2rem;
+    z-index: 9999;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    color: var(--light);
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+.lang-toggle:hover {
+    background: var(--gradient);
+    color: #fff;
+    border-color: transparent;
+    transform: scale(1.1);
+}
+
 /* ---- Hamburger ---- */
 .menu-toggle {
     display: none;
@@ -503,9 +533,10 @@ body.light-theme .header { background: rgba(248, 250, 252, 0.9); }
 
 .hero-sub-row {
     display: flex;
+    flex-direction: column;   /* texte au-dessus, boutons en dessous */
     align-items: center;
     justify-content: center;
-    gap: 4rem;
+    gap: 3rem;
     flex-wrap: wrap;
     margin-bottom: 3.5rem;
     animation: fadeInUp 0.9s ease 0.45s both;
@@ -786,7 +817,7 @@ body.light-theme .header { background: rgba(248, 250, 252, 0.9); }
     width: 1.2rem;
     height: 1.2rem;
     background: var(--primary);
-    z-index: 99999;
+    z-index: 2147483647;   /* toujours au-dessus des modales (z-index 99999+) */
     transition: width 0.2s ease, height 0.2s ease, background 0.3s ease;
     mix-blend-mode: difference;
 }
@@ -794,7 +825,7 @@ body.light-theme .header { background: rgba(248, 250, 252, 0.9); }
     width: 3.6rem;
     height: 3.6rem;
     border: 1.5px solid rgba(99, 102, 241, 0.5);
-    z-index: 99998;
+    z-index: 2147483646;
     transition: width 0.2s ease, height 0.2s ease, border-color 0.3s ease;
 }
 body.cursor-hover #custom-cursor { width: 0.6rem; height: 0.6rem; background: #fff; }
@@ -1556,6 +1587,55 @@ body.light-theme #availability-badge { background: rgba(248, 250, 252, 0.95); }
     transition: all 0.2s;
 }
 .lgm-close:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* ---- Modale captures SAV ---- */
+.sav-tabs {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding: 1.6rem 2.4rem 0;
+    flex-shrink: 0;
+}
+.sav-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.6rem 2.4rem;
+    background: #000;
+    margin: 1.6rem 2.4rem 0;
+    border-radius: 1.2rem;
+    min-height: 0;
+    overflow: auto;
+}
+.sav-stage img {
+    max-width: 100%;
+    max-height: 55vh;
+    object-fit: contain;
+    border-radius: 0.8rem;
+    display: block;
+}
+.sav-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1.4rem 2.4rem 1.8rem;
+    font-size: 1.3rem;
+    color: var(--gray2);
+    text-align: center;
+}
+
+/* ---- Modale jeu des allumettes (iframe) ---- */
+.game-frame {
+    display: block;
+    width: 100%;
+    height: min(72vh, 70rem);
+    border: 0;
+    background: #1a120d;
+}
+/* Curseur perso masqué au-dessus de l'iframe (le jeu utilise le curseur du navigateur) */
+body.cursor-hidden #custom-cursor,
+body.cursor-hidden #cursor-trail { opacity: 0; }
 
 .lgm-stage {
     display: flex;
@@ -3210,6 +3290,7 @@ body.light-theme .home-badge            { background: rgba(99, 102, 241, 0.1); }
 
     .menu-toggle { display: flex; left: 2rem; top: 2.2rem; width: 4.5rem; height: 4.5rem; }
     #theme-toggle { right: 2rem; top: 2.2rem; width: 4.5rem; height: 4.5rem; }
+    .lang-toggle { right: 2rem; top: 7.9rem; width: 4.5rem; height: 4.5rem; font-size: 1.4rem; }
     .logo { font-size: 2.4rem; margin-left: 6rem; }
 
     .navbar {
@@ -3444,6 +3525,15 @@ body.light-theme .home-badge            { background: rgba(99, 102, 241, 0.1); }
 
 /* Miniature du projet SAV : on garde le haut de l'écran (titre + menu) visible */
 .project-img--top { object-position: top left; }
+
+/* Capture entière, sans recadrage (ex. fenêtre en format portrait) */
+.project-img-wrap--contain { background: linear-gradient(135deg, #0b1020 0%, #151a2e 100%); }
+.project-img--contain {
+    object-fit: contain;
+    padding: 1.4rem 0;
+    box-sizing: border-box;
+}
+.project-card:hover .project-img--contain { transform: scale(1.03); }
 
 /* Sources de veille cliquables */
 a.veille-source { display: block; text-decoration: none; color: inherit; transition: border-color 0.3s ease, transform 0.3s ease; }
