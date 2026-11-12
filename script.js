@@ -1,7 +1,7 @@
 /* ========================================
-   SCRIPT.JS — VERSION CORRIGÉE
-   Corrections : color picker, parallax,
-   hamburger menu, scroll progress, active nav
+   SCRIPT.JS — VERSION OPTIMISÉE
+   Un seul écouteur de scroll (throttlé), nav active
+   sans recalcul de mise en page, curseur au repos.
    ======================================== */
 
 // ========================================
@@ -40,28 +40,6 @@ function initTyped() {
 }
 initTyped();
 document.addEventListener('langchange', initTyped);
-
-// ========================================
-// SCROLL PROGRESS BAR
-// ========================================
-window.addEventListener('scroll', () => {
-    const scrollProgress = document.getElementById('scroll-progress');
-    if (!scrollProgress) return;
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    scrollProgress.style.width = percent + '%';
-});
-
-// ========================================
-// HEADER SCROLL EFFECT
-// ========================================
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('.header');
-    if (header) {
-        header.classList.toggle('scrolled', window.scrollY > 50);
-    }
-});
 
 // ========================================
 // HAMBURGER MENU MOBILE
@@ -116,7 +94,7 @@ if (themeToggle) {
 }
 
 // ========================================
-// COLOR PICKER — CORRIGÉ
+// COLOR PICKER
 // ========================================
 function createColorPicker() {
     const existing = document.querySelector('.color-picker-widget');
@@ -177,7 +155,7 @@ function createColorPicker() {
                 gradient: this.dataset.gradient,
             };
             applyGradient(config);
-            localStorage.setItem('portfolioGradient', JSON.stringify(config));
+            try { localStorage.setItem('portfolioGradient', JSON.stringify(config)); } catch (e) {}
         });
     });
 }
@@ -200,6 +178,7 @@ function revealOnScroll() {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.1 });
@@ -234,31 +213,72 @@ function animateSkillBars() {
 }
 
 // ========================================
-// ACTIVE NAV ON SCROLL
+// SCROLL UNIFIÉ (un seul écouteur, throttlé avec requestAnimationFrame)
+// Barre de progression + header + nav active + bouton « haut de page »
 // ========================================
-function updateActiveNav() {
-    const links = [...document.querySelectorAll('.navbar a[href^="#"]')];
-    let current = '';
+let scrollTopBtn = null;
+let navLinks = null;      // [{ link, href, target }] calculé une seule fois
+let scrollTicking = false;
 
-    links.forEach(link => {
-        const target = document.querySelector(link.getAttribute('href'));
-        if (target && target.getBoundingClientRect().top <= 140) {
-            current = link.getAttribute('href');
-        }
+function buildNavLinks() {
+    navLinks = [...document.querySelectorAll('.navbar a[href^="#"]')]
+        .map(link => {
+            const href = link.getAttribute('href');
+            let target = null;
+            try { target = href.length > 1 ? document.querySelector(href) : null; } catch (e) {}
+            return { link, href, target };
+        })
+        .filter(item => item.target);   // ignore les liens sans section (ex. tableau en fenêtre modale)
+}
+
+function updateActiveNav() {
+    if (!navLinks) buildNavLinks();
+    if (!navLinks.length) return;
+
+    let current = '';
+    navLinks.forEach(item => {
+        if (item.target.getBoundingClientRect().top <= 140) current = item.href;
     });
 
     // En bas de page, la dernière section (Contact) doit être active
     if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
-        current = links[links.length - 1].getAttribute('href');
+        current = navLinks[navLinks.length - 1].href;
     }
 
-    links.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === current);
+    navLinks.forEach(item => {
+        item.link.classList.toggle('active', item.href === current);
     });
 }
 
-window.addEventListener('scroll', updateActiveNav, { passive: true });
-window.addEventListener('load', updateActiveNav);
+function onScrollFrame() {
+    const y = window.scrollY;
+
+    const scrollProgress = document.getElementById('scroll-progress');
+    if (scrollProgress) {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        scrollProgress.style.width = (docHeight > 0 ? (y / docHeight) * 100 : 0) + '%';
+    }
+
+    const header = document.querySelector('.header');
+    if (header) header.classList.toggle('scrolled', y > 50);
+
+    if (scrollTopBtn) {
+        const show = y > 500;
+        scrollTopBtn.style.opacity    = show ? '1' : '0';
+        scrollTopBtn.style.visibility = show ? 'visible' : 'hidden';
+    }
+
+    updateActiveNav();
+    scrollTicking = false;
+}
+
+window.addEventListener('scroll', () => {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(onScrollFrame);
+}, { passive: true });
+
+window.addEventListener('load', () => { buildNavLinks(); onScrollFrame(); });
 
 // ========================================
 // 3D TILT SUR LES CARDS
@@ -319,7 +339,7 @@ function magneticButtons() {
 }
 
 // ========================================
-// SCROLL TO TOP
+// SCROLL TO TOP (visibilité gérée par le scroll unifié)
 // ========================================
 function createScrollTop() {
     const btn = document.createElement('button');
@@ -338,12 +358,7 @@ function createScrollTop() {
         display:flex; align-items:center; justify-content:center;
     `;
     document.body.appendChild(btn);
-
-    window.addEventListener('scroll', () => {
-        const show = window.scrollY > 500;
-        btn.style.opacity      = show ? '1' : '0';
-        btn.style.visibility   = show ? 'visible' : 'hidden';
-    });
+    scrollTopBtn = btn;
 
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.15) translateY(-4px)'; });
@@ -354,7 +369,7 @@ function createScrollTop() {
 // FILTRES PROJETS
 // ========================================
 function initProjectFilters() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
+    const filterBtns = document.querySelectorAll('.project-filters .filter-btn');
     const cards = document.querySelectorAll('.project-card');
 
     filterBtns.forEach(btn => {
@@ -440,13 +455,14 @@ document.addEventListener('DOMContentLoaded', () => {
     magneticButtons();
     createScrollTop();
     initProjectFilters();
+    buildNavLinks();
+    onScrollFrame();
 });
-
 
 console.log('✅ Portfolio chargé — Melissa Bestani');
 
 // ========================================
-// CURSEUR PERSONNALISÉ
+// CURSEUR PERSONNALISÉ (la boucle s'arrête quand la souris est immobile)
 // ========================================
 (function initCustomCursor() {
     const cursor = document.getElementById('custom-cursor');
@@ -455,23 +471,28 @@ console.log('✅ Portfolio chargé — Melissa Bestani');
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
     let mouseX = 0, mouseY = 0;
+    let trailX = 0, trailY = 0;
+    let running = false;
+
+    function animateTrail() {
+        trailX += (mouseX - trailX) * 0.13;
+        trailY += (mouseY - trailY) * 0.13;
+        trail.style.left = trailX + 'px';
+        trail.style.top  = trailY + 'px';
+        if (Math.abs(mouseX - trailX) > 0.5 || Math.abs(mouseY - trailY) > 0.5) {
+            requestAnimationFrame(animateTrail);
+        } else {
+            running = false;
+        }
+    }
 
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
         cursor.style.left = mouseX + 'px';
         cursor.style.top  = mouseY + 'px';
-    });
-
-    let trailX = 0, trailY = 0;
-    function animateTrail() {
-        trailX += (mouseX - trailX) * 0.13;
-        trailY += (mouseY - trailY) * 0.13;
-        trail.style.left = trailX + 'px';
-        trail.style.top  = trailY + 'px';
-        requestAnimationFrame(animateTrail);
-    }
-    animateTrail();
+        if (!running) { running = true; requestAnimationFrame(animateTrail); }
+    }, { passive: true });
 
     const hoverTargets = 'a, button, .btn-box, .btn-outline, .project-card, .ts-card, .certif-card, .wid-item, .stat-card';
     document.querySelectorAll(hoverTargets).forEach(el => {
@@ -523,6 +544,7 @@ console.log('✅ Portfolio chargé — Melissa Bestani');
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateX(0)';
                 }, i * 120);
+                observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.2 });
@@ -543,6 +565,7 @@ console.log('✅ Portfolio chargé — Melissa Bestani');
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0) scale(1)';
                 }, i * 60);
+                tsObserver.unobserve(entry.target);
             }
         });
     }, { threshold: 0.1 });

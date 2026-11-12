@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Melissa Bestani | Développeuse Web · BTS SIO SLAM</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="e4-summary.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
@@ -63,7 +64,8 @@
         <a href="#certifications" style="--i:7">Certifs</a>
         <a href="#skills" style="--i:8">Skills</a>
         <a href="#technology-watch" style="--i:9">Veille</a>
-        <a href="#Contact" style="--i:10">Contact</a>
+        <a href="#e4-summary" style="--i:10" onclick="openE4Modal(event)">Tableau E4</a>
+        <a href="#Contact" style="--i:11">Contact</a>
     </nav>
 </header>
 
@@ -97,7 +99,7 @@
             <p class="hero-pitch">Quadrilingue · Bac Maths · Prépa · Développeuse full-stack PHP/React disponible en alternance sur Paris.</p>
             <div class="hero-cta">
                 <a href="#projects" class="btn-box">Voir mes projets</a>
-                <a href="CV_alternance2026.pdf" data-href-en="CV_alternance2026_EN.pdf" class="btn-outline" download>Télécharger CV</a>
+                <a href="#e4-summary" class="btn-outline" onclick="openE4Modal(event)">Tableau de synthèse E4</a>
             </div>
         </div>
 
@@ -125,7 +127,7 @@
         </div>
         <div class="about-stats">
             <div class="stat-card">
-                <span class="stat-number" data-target="6" data-suffix="+">0</span>
+                <span class="stat-number" data-target="7" data-suffix="+">0</span>
                 <span class="stat-label">Projets réalisés</span>
             </div>
             <div class="stat-card">
@@ -133,7 +135,7 @@
                 <span class="stat-label">Langues parlées</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number" data-target="6" data-suffix="+">0</span>
+                <span class="stat-number" data-target="12" data-suffix="+">0</span>
                 <span class="stat-label">Technologies maîtrisées</span>
             </div>
             <div class="stat-card">
@@ -202,7 +204,7 @@
         <div class="timeline-item right">
             <div class="timeline-dot"></div>
             <div class="timeline-card">
-                <span class="timeline-date">2025 – 2026</span>
+                <span class="timeline-date">2025 – 2027</span>
                 <h3>BTS SIO · Option SLAM</h3>
                 <p class="timeline-place">INSTA Paris</p>
                 <p>Formation en développement d'applications web et logicielles. PHP, MySQL, JavaScript, React, architecture MVC.</p>
@@ -263,7 +265,7 @@
                         <img src="lumoura-accueil.png"
                              alt="Lumoura accueil"
                              class="lumoura-main-img"
-                             id="lumouraMainImg">
+                             id="lumouraMainImg" loading="lazy">
                         <span class="lumoura-img-label" id="lumouraLabel">Accueil</span>
                         <!-- Overlay cliquable sur l'image pour ouvrir la galerie -->
                         <div class="lumoura-img-overlay" onclick="openLumouraGallery()">
@@ -351,7 +353,7 @@
             <div class="project-img-wrap project-img-wrap--contain">
                 <img src="images/convertisseur.jpeg"
                      alt="MultiConvertisseur : fenêtre du convertisseur universel"
-                     class="project-img project-img--contain">
+                     class="project-img project-img--contain" loading="lazy">
                 <div class="project-overlay">
                     <button class="overlay-btn" onclick="openConvertModal()">
                         <i class="bx bx-zoom-in"></i> Voir la capture
@@ -439,7 +441,7 @@
             <div class="project-img-wrap">
                 <img src="images/todo.jpg"
                      alt="To-Do List : liste de tâches"
-                     class="project-img">
+                     class="project-img" loading="lazy">
 
                 <div class="project-overlay">
                     <a href="https://melissa703.github.io/myminiapp/"
@@ -476,13 +478,37 @@
             </div>
         </div>
 
+        <!-- STAGE WAVE TRANSPORT (WeWeb + Supabase) -->
+        <div class="project-card" data-tags="bloc2 bloc3">
+            <div class="project-body">
+                <div class="project-tags">
+                    <span class="tag">WeWeb</span>
+                    <span class="tag">Supabase</span>
+                    <span class="tag">IA</span>
+                    <span class="tag">Stage</span>
+                </div>
+                <h3>Wave Transport · Gestion de flotte et de livreurs</h3>
+                <p>
+                    Front-end d'une application de gestion de flotte et de livreurs
+                    sous WeWeb (assisté par IA), avec Supabase en back-end :
+                    conception des écrans, intégration, bonnes pratiques de sécurité,
+                    travail en équipe.
+                </p>
+                <div class="lumoura-features-inline">
+                    <span><i class="bx bx-layout"></i> Front-end WeWeb</span>
+                    <span><i class="bx bx-data"></i> Back-end Supabase</span>
+                    <span><i class="bx bx-shield"></i> Sécurité</span>
+                </div>
+            </div>
+        </div>
+
         <!-- PORTFOLIO -->
         <div class="project-card" data-tags="javascript bloc2">
 
             <div class="project-img-wrap">
                 <img src="images/portfolio.jpg"
                      alt="Portfolio personnel : page d'accueil"
-                     class="project-img">
+                     class="project-img" loading="lazy">
 
                 <div class="project-overlay">
                     <a href="#Home" class="overlay-btn">Ce site →</a>
@@ -574,6 +600,18 @@
         <div class="ts-card" data-tip="VS Code">
             <div class="ts-icon"><i class="bx bxl-visual-studio"></i></div>
             <span>VS Code</span>
+        </div>
+        <div class="ts-card" data-tip="WeWeb">
+            <div class="ts-icon"><i class="bx bx-layout"></i></div>
+            <span>WeWeb</span>
+        </div>
+        <div class="ts-card" data-tip="Supabase">
+            <div class="ts-icon"><i class="bx bx-data"></i></div>
+            <span>Supabase</span>
+        </div>
+        <div class="ts-card" data-tip="Développement assisté par IA">
+            <div class="ts-icon"><i class="bx bxs-brain"></i></div>
+            <span>IA (Claude)</span>
         </div>
     </div>
 </section>
@@ -699,6 +737,18 @@
                     <div class="skill-header"><span class="skill-icon"><i class="bx bxl-git"></i> Git</span><span class="skill-percentage">78%</span></div>
                     <div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div>
                 </div>
+                <div class="skill-bar-item">
+                    <div class="skill-header"><span class="skill-icon"><i class="bx bx-layout"></i> WeWeb</span><span class="skill-percentage">70%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-header"><span class="skill-icon"><i class="bx bx-data"></i> Supabase</span><span class="skill-percentage">70%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="skill-header"><span class="skill-icon"><i class="bx bxs-brain"></i> Développement assisté par IA</span><span class="skill-percentage">75%</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+                </div>
             </div>
         </div>
         <div class="professional-skills">
@@ -797,6 +847,146 @@
         </div>
     </div>
 </section>
+
+<!-- ===================== MODAL TABLEAU DE SYNTHÈSE E4 (caché jusqu'au clic) ===================== -->
+<div id="e4Modal" class="e4-modal" role="dialog" aria-modal="true" aria-labelledby="e4-title">
+<div class="e4-modal-inner">
+<button type="button" class="e4-modal-close" aria-label="Fermer" onclick="closeE4Modal()"><i class="bx bx-x"></i></button>
+    <div class="section-card e4-card">
+        <h2 id="e4-title"><span data-en="Summary">Tableau de</span> <span class="grad-text" data-en="Table">synthèse</span></h2>
+        <p class="e4-intro">Épreuve E4 · BTS SIO option SLAM. Compétences du bloc 1 mobilisées dans chacune de mes réalisations.</p>
+        <div class="e4-wrap">
+        <table class="e4-table">
+            <caption class="e4-sr">Tableau de synthèse des réalisations professionnelles, avec les compétences mobilisées pour chaque réalisation.</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Réalisation</th>
+                    <th scope="col">Gérer le patrimoine informatique</th>
+                    <th scope="col">Répondre aux incidents et aux demandes d’assistance et d’évolution</th>
+                    <th scope="col">Développer la présence en ligne de l’organisation</th>
+                    <th scope="col">Travailler en mode projet</th>
+                    <th scope="col">Mettre à disposition des utilisateurs un service informatique</th>
+                    <th scope="col">Organiser son développement professionnel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="e4-group"><th scope="colgroup" colspan="7">Réalisations en cours de formation</th></tr>
+                <tr>
+                    <th scope="row" class="e4-project">
+                        <span class="e4-ref">P6</span>
+                        <span class="e4-name">Jeu des allumettes</span>
+                        <span class="e4-period"><i class="bx bx-calendar" aria-hidden="true"></i> Novembre 2026</span>
+                        <span class="e4-desc">JavaScript modulaire : moteur de jeu, IA de décision, interface multilingue FR/EN et effets sonores.</span>
+                        <a class="e4-link" href="https://github.com/melissa703/jeu-des-allumettes" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github" aria-hidden="true"></i> Voir sur GitHub</a>
+                    </th>
+                    <td></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Présence en ligne</span></td>
+                    <td></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Développement pro</span></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="e4-project">
+                        <span class="e4-ref">P5</span>
+                        <span class="e4-name">Système de blog</span>
+                        <span class="e4-period"><i class="bx bx-calendar" aria-hidden="true"></i> Octobre 2026</span>
+                        <span class="e4-desc">TP PHP, MySQL et Smarty : séparation de la logique et de la présentation, création, affichage et commentaires d’articles.</span>
+                    </th>
+                    <td></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Présence en ligne</span></td>
+                    <td></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Développement pro</span></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="e4-project">
+                        <span class="e4-ref">P4</span>
+                        <span class="e4-name">MultiConvertisseur · application C#</span>
+                        <span class="e4-period"><i class="bx bx-calendar" aria-hidden="true"></i> Avril – mai 2026</span>
+                        <span class="e4-desc">Application Windows en C# .NET (Windows Forms) : conversions multiples, programmation orientée objet et gestion des événements.</span>
+                        <a class="e4-link" href="https://github.com/melissa703/convertisseur-btssio" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github" aria-hidden="true"></i> Voir sur GitHub</a>
+                    </th>
+                    <td class="e4-on"><span class="e4-label">Patrimoine</span></td>
+                    <td></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Mode projet</span></td>
+                    <td class="e4-on"><span class="e4-label">Service aux utilisateurs</span></td>
+                    <td class="e4-on"><span class="e4-label">Développement pro</span></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="e4-project">
+                        <span class="e4-ref">P3</span>
+                        <span class="e4-name">Lumoura · e-commerce de parfums de luxe</span>
+                        <span class="e4-period"><i class="bx bx-calendar" aria-hidden="true"></i> Janvier – mars 2026</span>
+                        <span class="e4-desc">Boutique full-stack en PHP (MVC maison) : MySQL, authentification OTP par e-mail, API Adresse, factures PDF avec mPDF, administration.</span>
+                        <a class="e4-link" href="https://github.com/melissa703/lumoura-ecommerce" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github" aria-hidden="true"></i> Voir sur GitHub</a>
+                    </th>
+                    <td class="e4-on"><span class="e4-label">Patrimoine</span></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Présence en ligne</span></td>
+                    <td class="e4-on"><span class="e4-label">Mode projet</span></td>
+                    <td class="e4-on"><span class="e4-label">Service aux utilisateurs</span></td>
+                    <td class="e4-on"><span class="e4-label">Développement pro</span></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="e4-project">
+                        <span class="e4-ref">P2</span>
+                        <span class="e4-name">Portfolio personnel</span>
+                        <span class="e4-period"><i class="bx bx-calendar" aria-hidden="true"></i> Novembre – décembre 2025</span>
+                        <span class="e4-desc">Portfolio responsive en HTML, CSS et JavaScript : animations, mode sombre/clair, filtres dynamiques, mise en ligne via GitHub Pages.</span>
+                        <a class="e4-link" href="https://github.com/melissa703/myfirstwork" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github" aria-hidden="true"></i> Voir sur GitHub</a>
+                    </th>
+                    <td class="e4-on"><span class="e4-label">Patrimoine</span></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Présence en ligne</span></td>
+                    <td class="e4-on"><span class="e4-label">Mode projet</span></td>
+                    <td class="e4-on"><span class="e4-label">Service aux utilisateurs</span></td>
+                    <td class="e4-on"><span class="e4-label">Développement pro</span></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="e4-project">
+                        <span class="e4-ref">P1</span>
+                        <span class="e4-name">To-Do List App</span>
+                        <span class="e4-period"><i class="bx bx-calendar" aria-hidden="true"></i> Novembre 2025</span>
+                        <span class="e4-desc">Application web de gestion de tâches en JavaScript : ajout, suppression et suivi, sauvegarde locale, mise en ligne via GitHub Pages.</span>
+                        <a class="e4-link" href="https://github.com/melissa703/myminiapp" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github" aria-hidden="true"></i> Voir sur GitHub</a>
+                    </th>
+                    <td class="e4-on"><span class="e4-label">Patrimoine</span></td>
+                    <td class="e4-on"><span class="e4-label">Incidents et évolutions</span></td>
+                    <td class="e4-on"><span class="e4-label">Présence en ligne</span></td>
+                    <td class="e4-on"><span class="e4-label">Mode projet</span></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Développement pro</span></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr class="e4-group"><th scope="colgroup" colspan="7">Réalisations en milieu professionnel en cours de seconde année</th></tr>
+                <tr>
+                    <th scope="row" class="e4-project">
+                        <span class="e4-ref">Stage</span>
+                        <span class="e4-name">Wave Transport · Nanterre</span>
+                        <span class="e4-period"><i class="bx bx-calendar" aria-hidden="true"></i> Septembre – décembre 2026</span>
+                        <span class="e4-desc">Front-end d’une application de gestion de flotte et de livreurs sous WeWeb (assisté par IA), avec Supabase en back-end : conception des écrans, intégration, bonnes pratiques de sécurité, travail en équipe.</span>
+                    </th>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Incidents et évolutions</span></td>
+                    <td></td>
+                    <td class="e4-on"><span class="e4-label">Mode projet</span></td>
+                    <td class="e4-on"><span class="e4-label">Service aux utilisateurs</span></td>
+                    <td class="e4-on"><span class="e4-label">Développement pro</span></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        <p class="e4-legend">Les coches indiquent les compétences mobilisées.</p>
+        <div class="e4-actions">
+            <a class="e4-download" href="Tableau_de_synthese.pdf" download><i class="bx bx-download" aria-hidden="true"></i> Télécharger le tableau officiel (PDF)</a>
+        </div>
+    </div>
+</div>
+</div>
 
 <!-- ===================== MODAL CASE STUDY LUMOURA ===================== -->
 <div id="caseStudyModal" class="lgm-overlay" role="dialog" aria-modal="true" aria-label="Case study Lumoura" onclick="if(event.target===this)closeCaseStudy()">
@@ -958,7 +1148,7 @@
 
 <!-- FOOTER -->
 <footer class="footer">
-    <p>Conçu & développé par <strong>Melissa Bestani</strong> · BTS SIO SLAM 2026</p>
+    <p>Conçu & développé par <strong>Melissa Bestani</strong> · BTS SIO SLAM 2025 – 2027</p>
     <div class="footer-links">
         <a href="https://github.com/melissa703" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bx bxl-github"></i></a>
         <a href="https://www.linkedin.com/in/melissa-bestani-8324b435a" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bx bxl-linkedin"></i></a>
@@ -977,5 +1167,26 @@
 <script src="script.js"></script>
 <script src="veille-ticker.js"></script>
 <script src="certifications.js"></script>
+<script>
+/* Tableau de synthèse E4 : fenêtre modale */
+function openE4Modal(e) {
+    if (e) e.preventDefault();
+    var m = document.getElementById('e4Modal');
+    m.classList.add('open');
+    document.body.classList.add('e4-lock');
+    m.scrollTop = 0;
+}
+function closeE4Modal() {
+    document.getElementById('e4Modal').classList.remove('open');
+    document.body.classList.remove('e4-lock');
+}
+document.getElementById('e4Modal').addEventListener('click', function (e) {
+    if (e.target === this) closeE4Modal();
+});
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeE4Modal();
+});
+if (location.hash === '#e4-summary') openE4Modal();
+</script>
 </body>
 </html>

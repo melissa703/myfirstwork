@@ -1,0 +1,178 @@
+/* ==========================================================
+   e4-summary.css : tableau de synthèse E4 (BTS SIO SLAM)
+   Reprend les variables et les composants du portfolio
+   (--gradient, --card-border, .section-card, thème clair/sombre).
+   Sélecteurs préfixés par .e4-card pour passer devant
+   .section-card p / .section-card a de style.css.
+   ========================================================== */
+
+/* ---------- Fenêtre modale (cachée jusqu'au clic) ---------- */
+.e4-modal {
+    position: fixed; inset: 0; z-index: 10000;
+    display: none; overflow-y: auto;
+    padding: 4rem 2rem;
+    background: rgba(5, 8, 20, 0.85);
+}
+.e4-modal.open { display: block; }
+.e4-modal-inner { position: relative; max-width: 120rem; margin: 0 auto; }
+.e4-modal-close {
+    position: absolute; top: 1.2rem; right: 1.2rem; z-index: 2;
+    width: 4rem; height: 4rem; display: grid; place-items: center;
+    font-size: 2.6rem; color: #fff; cursor: pointer;
+    background: var(--gradient); border: 0; border-radius: 50%;
+}
+body.e4-lock { overflow: hidden; }
+/* Évite que l'animation « apparition » rende la carte invisible */
+.e4-modal .section-card,
+.e4-modal .e4-card {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+@media (max-width: 760px) { .e4-modal { padding: 2rem 1rem; } }
+
+/* ---------- Mise en page ---------- */
+.e4-section { padding: 10rem 8%; }
+.e4-card { padding: 5rem 3rem; }
+.e4-card .e4-intro { max-width: 68rem; margin: -1rem auto 3.5rem; }
+
+.e4-sr, .e4-label {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Tableau ---------- */
+.e4-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+}
+.e4-table { width: 100%; min-width: 92rem; border-collapse: collapse; }
+.e4-table thead th {
+    padding: 1.8rem 1rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--gray2);
+    text-align: center;
+    vertical-align: bottom;
+    border-bottom: 1px solid var(--card-border);
+}
+.e4-table thead th:first-child { text-align: left; padding-left: 2.4rem; }
+
+.e4-group th {
+    padding: 1.3rem 2.4rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: left;
+    color: var(--primary-soft);
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.16), transparent 75%);
+    border-left: 3px solid var(--primary);
+    border-top: 1px solid var(--card-border);
+}
+.e4-table tbody:first-of-type .e4-group th { border-top: 0; }
+
+.e4-table tbody tr:not(.e4-group) { transition: background 0.25s ease; }
+.e4-table tbody tr:not(.e4-group):hover { background: rgba(99, 102, 241, 0.06); }
+.e4-table tbody tr:not(.e4-group) > * { border-top: 1px solid var(--card-border); }
+
+/* ---------- Colonne réalisation ---------- */
+.e4-project { padding: 2.2rem 1.5rem 2.2rem 2.4rem; text-align: left; vertical-align: top; width: 42%; font-weight: 400; }
+.e4-project > * { display: block; }
+.e4-ref {
+    display: inline-block;
+    margin-bottom: 0.6rem;
+    padding: 0.2rem 0.9rem;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--gradient);
+    border-radius: 999px;
+}
+.e4-name { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; line-height: 1.3; color: var(--light); }
+.e4-period {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin: 0.5rem 0 0.9rem;
+    font-size: 1.35rem; font-weight: 600; color: var(--accent-soft);
+}
+.e4-desc { font-size: 1.4rem; line-height: 1.65; color: var(--gray2); max-width: 56rem; }
+.e4-card .e4-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin-top: 1rem; font-size: 1.35rem; font-weight: 600;
+    color: var(--primary-soft);
+}
+.e4-card .e4-link:hover { color: var(--light); }
+
+/* ---------- Coches ---------- */
+.e4-table td { padding: 1rem; text-align: center; vertical-align: middle; position: relative; }
+.e4-on::before {
+    content: "\2713";
+    display: inline-grid; place-items: center;
+    width: 3rem; height: 3rem;
+    font-size: 1.5rem; font-weight: 700; color: #fff;
+    background: var(--gradient);
+    border-radius: 50%;
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+}
+
+/* ---------- Légende et téléchargement ---------- */
+.e4-card .e4-legend { margin: 1.6rem 0 0; font-size: 1.3rem; line-height: 1.5; text-align: left; }
+.e4-actions { display: flex; justify-content: center; margin-top: 3.5rem; }
+.e4-card .e4-download {
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    padding: 1.3rem 3rem;
+    font-size: 1.5rem; font-weight: 600; color: #fff;
+    background: var(--gradient);
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.e4-card .e4-download:hover { color: #fff; transform: translateY(-3px); box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4); }
+.e4-card a:focus-visible { outline: 2px solid var(--primary-soft); outline-offset: 3px; border-radius: 6px; }
+
+/* ---------- Mobile : chaque réalisation devient une carte ---------- */
+@media (max-width: 760px) {
+    .e4-section { padding: 8rem 5%; }
+    .e4-card { padding: 3rem 1.6rem; }
+    .e4-wrap { overflow: visible; border: 0; border-radius: 0; }
+    .e4-table, .e4-table tbody, .e4-table tr, .e4-table th, .e4-table td { display: block; min-width: 0; width: auto; }
+    .e4-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .e4-group th { margin: 2.4rem 0 1.2rem; padding: 1rem 1.4rem; border-radius: 0 10px 10px 0; }
+    .e4-table tbody tr:not(.e4-group) {
+        margin-bottom: 1.4rem; padding: 1.8rem 1.6rem;
+        border: 1px solid var(--card-border); border-radius: 16px;
+    }
+    .e4-table tbody tr:not(.e4-group) > * { border-top: 0; }
+    .e4-project { padding: 0 0 1rem; }
+    .e4-table td { display: none; padding: 0; }
+    .e4-table td.e4-on { display: inline-block; margin: 0.3rem 0.4rem 0 0; }
+    .e4-on::before { display: none; }
+    .e4-label::before { content: "\2713\00a0"; }
+    .e4-label {
+        position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal;
+        padding: 0.4rem 1.1rem; font-size: 1.2rem; font-weight: 600;
+        color: var(--primary-soft); background: rgba(99, 102, 241, 0.14); border-radius: 999px;
+    }
+    .e4-on { background: none; }
+    .e4-card .e4-legend { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .e4-table tbody tr, .e4-card .e4-download { transition: none; }
+    .e4-card .e4-download:hover { transform: none; }
+}
+
+/* ---------- Fenêtre E4 : fond opaque (lisible sur n'importe quelle page) ---------- */
+.e4-modal { background: rgba(5, 8, 20, 0.96); }
+.e4-modal .e4-card {
+    background: #0f1430;
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+body.light-theme .e4-modal { background: rgba(225, 229, 245, 0.97); }
+body.light-theme .e4-modal .e4-card {
+    background: #ffffff;
+    box-shadow: 0 30px 80px rgba(60, 70, 140, 0.25);
+}
